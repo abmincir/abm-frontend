@@ -1,38 +1,27 @@
-.App {
-  text-align: center;
+:root {
+  --bittersweet: rgba(255, 107, 107, 1);
+  --caribbean-green: rgba(37, 225, 161, 1);
+  --dove-gray: rgba(112, 112, 112, 1);
+  --pizazz: rgba(255, 145, 0, 1);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+@font-face {
+  font-family: 'SegoeUI-Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://fonts.animaapp.com/SegoeUI-Regular') format('truetype');
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+@font-face {
+  font-family: 'Dana-Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://fonts.animaapp.com/Dana-Regular') format('truetype');
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+@font-face {
+  font-family: 'Dana-Bold';
+  font-style: normal;
+  font-weight: 700;
+  src: url('https://fonts.animaapp.com/Dana-Bold') format('truetype');
 }
