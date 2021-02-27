@@ -1,0 +1,145 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css');
+
+@font-face {
+  font-family: 'Dana-Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../../fonts/woff2/dana-regular.woff2') format('truetype');
+}
+
+.border-1px-dove-gray {
+  border: 1px solid var(--dove-gray);
+}
+.border-class-1 {
+  border: 1px solid rgba(255, 255, 255, 1);
+}
+.dana-bold-white-26px {
+  color: white;
+  font-family: 'Dana-Bold', Helvetica, Arial, serif;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 700;
+}
+.dana-regular-normal-black-18px {
+  color: black;
+  font-family: 'Dana-Regular', Helvetica, Arial, serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+}
+.dana-regular-normal-white-20px {
+  color: white;
+  font-family: 'Dana-Regular', Helvetica, Arial, serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+}
+.user-menu {
+  background-color: white;
+  height: 100%;
+  position: fixed;
+  width: 333px;
+  right: 0;
+}
+.user-menu .avatar {
+  background-color: white;
+  border-radius: 73px;
+  height: 146px;
+  left: 95px;
+  position: absolute;
+  top: 30px;
+  width: 146px;
+}
+.user-menu .change-pass-btntxt {
+  letter-spacing: 0px;
+  line-height: 20px;
+  min-height: 29px;
+  min-width: 136px;
+  text-align: center;
+  white-space: nowrap;
+}
+.user-menu .container {
+  background-color: var(--dove-gray);
+  height: 768px;
+  left: 0px;
+  opacity: 0.9;
+  position: relative;
+  top: 0px;
+  width: 333px;
+}
+.user-menu .exit-btntxt {
+  letter-spacing: 0px;
+  line-height: 20px;
+  min-height: 29px;
+  min-width: 44px;
+  text-align: center;
+  white-space: nowrap;
+}
+.user-menu .export-btntxt {
+  letter-spacing: 0px;
+  line-height: 18px;
+  min-height: 26px;
+  min-width: 148px;
+  text-align: center;
+  white-space: nowrap;
+}
+.user-menu .overlap-group {
+  align-items: flex-end;
+  background-color: var(--bittersweet);
+  border-radius: 20px;
+  display: flex;
+  height: 55px;
+  justify-content: flex-end;
+  left: 72px;
+  min-width: 192px;
+  padding: 12.5px 73px;
+  position: absolute;
+  top: 609px;
+}
+.user-menu .overlap-group1 {
+  align-items: flex-end;
+  background-color: white;
+  border-radius: 20px;
+  display: flex;
+  height: 55px;
+  justify-content: flex-end;
+  left: 72px;
+  min-width: 192px;
+  padding: 13px 21px;
+  position: absolute;
+  top: 541px;
+}
+.user-menu .overlap-group2 {
+  align-items: flex-start;
+  border-radius: 20px;
+  display: flex;
+  height: 55px;
+  left: 72px;
+  min-width: 192px;
+  padding: 12.5px 28px;
+  position: absolute;
+  top: 337px;
+}
+.user-menu .username {
+  left: 55px;
+  letter-spacing: 0px;
+  line-height: 26px;
+  position: absolute;
+  text-align: center;
+  top: 204px;
+  white-space: nowrap;
+  cursor: context-menu;
+}
+:root {
+  --bittersweet: rgba(255, 107, 107, 1);
+  --dove-gray: rgba(112, 112, 112, 1);
+}
+
+.side-menu-btn {
+  pointer-events: auto;
+  transition: all 0.2s ease;
+}
+.side-menu-btn:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}

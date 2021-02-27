@@ -17,14 +17,14 @@
   font-family: 'Dana-Regular';
   font-style: normal;
   font-weight: 400;
-  src: url('https://fonts.animaapp.com/Dana-Regular') format('truetype');
+  src: url('fonts/woff2/dana-regular.woff2') format('truetype');
 }
 
 @font-face {
   font-family: 'Dana-Bold';
   font-style: normal;
   font-weight: 700;
-  src: url('https://fonts.animaapp.com/Dana-Bold') format('truetype');
+  src: url('fonts/woff2/dana-bold.woff2') format('truetype');
 }
 
 .modal {
@@ -162,4 +162,13 @@
 
   width: 10%;
   min-height: 38px;
+}
+.menu-animation:hover {
+  pointer-events: auto;
+  transition: all 0.3s ease;
+}
+
+.menu-animation:hover {
+  transform: scale(0.9);
+  cursor: pointer;
 }

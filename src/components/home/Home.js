@@ -14,7 +14,7 @@ const menu = (
     stroke-width="2"
     stroke-linecap="round"
     stroke-linejoin="round"
-    class="feather feather-menu"
+    class="feather feather-menu menu-animation"
   >
     <line x1="3" y1="12" x2="21" y2="12"></line>
     <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -83,6 +83,8 @@ const fail = (
 );
 
 const Home = () => {
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const [isShowingModal, setIsShowingModal] = useState(false);
 
   const switchModal = () => {
@@ -100,7 +102,7 @@ const Home = () => {
 
         <ButtonsContainer>
           <Button green>
-            <ButtonText>استعلام</ButtonText>
+            <ButtonText>جست و جو</ButtonText>
           </Button>
 
           <Button gray>
@@ -110,11 +112,45 @@ const Home = () => {
           <DateSection>
             <DateText>از تاریخ</DateText>
             <DateInput>
-              <DateValue>---- / -- / --</DateValue>
-            </DateInput>
-            <DateText>تا تاریخ</DateText>
-            <DateInput>
-              <DateValue>---- / -- / --</DateValue>
+              <DateValue
+                placeholder="---- / -- / --"
+                type="text"
+                value={startDate}
+                onChange={(e) => {
+                  if (e.target.value.length > 10) return;
+                  if (e.target.value.length < startDate.length) {
+                    setStartDate('');
+                    return;
+                  }
+                  if (
+                    e.target.value.length === 4 ||
+                    e.target.value.length === 7
+                  )
+                    setStartDate(e.target.value + '/');
+                  else setStartDate(e.target.value);
+                }}
+              ></DateValue>
+
+              <DateText>تا تاریخ</DateText>
+
+              <DateValue
+                placeholder="---- / -- / --"
+                type="text"
+                value={endDate}
+                onChange={(e) => {
+                  if (e.target.value.length > 10) return;
+                  if (e.target.value.length < endDate.length) {
+                    setEndDate('');
+                    return;
+                  }
+                  if (
+                    e.target.value.length === 4 ||
+                    e.target.value.length === 7
+                  )
+                    setEndDate(e.target.value + '/');
+                  else setEndDate(e.target.value);
+                }}
+              ></DateValue>
             </DateInput>
           </DateSection>
         </ButtonsContainer>
@@ -350,6 +386,12 @@ const ButtonsContainer = styled.div`
 `;
 
 const Button = styled.div`
+  pointer-events: auto;
+  transition: all 0.2s ease;
+  &:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+  }
   ${(props) =>
     props.green &&
     css`
@@ -400,10 +442,18 @@ const DateText = styled.p`
   font-weight: 400;
   text-align: center;
   white-space: nowrap;
-  margin: 0 0 0 24px;
+  margin: 0 40px 0 24px;
 `;
 
-const DateInput = styled.div`
+const DateInput = styled.form`
+width=100%;
+display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction= row-reverse;
+`;
+
+const DateValue = styled.input`
   border: 1px solid var(--dove-gray);
   background-color: white;
   border-radius: 20px;
@@ -415,9 +465,7 @@ const DateInput = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
 
-const DateValue = styled.p`
   color: var(--dove-gray);
   font-family: 'Dana-Regular', Helvetica, Arial, serif;
   font-size: 24px;
