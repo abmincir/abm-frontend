@@ -1,11 +1,13 @@
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import './App.css';
 import ChangePass from './components/change-pass/ChangePass';
+import CreateUser from './components/crateUser/createUser';
 import Home from './components/home/Home';
 import SideMenu from './components/SideMenu/SideMenu';
 import SignIn from './components/sign-in/SignIn';
 const App = () => {
+  const isAdmin = true;
   const pages = (
     <BrowserRouter>
       <Switch>
@@ -22,10 +24,14 @@ const App = () => {
         </Route>
 
         <Route path="/sign-In">
+          <SignIn />
+        </Route>
+
+        <Route path="/create-user">
           <Wrapper>
-            <Header />
+            <AdminHeader />
             <Content>
-              <SignIn />
+              <CreateUser />
             </Content>
           </Wrapper>
         </Route>
@@ -60,7 +66,19 @@ const Wrapper = styled.div`
   width: 100%;
 `;
 const Header = styled.div`
-  background-color: var(--caribbean-green);
+  height: 66px;
+  width: 1366px;
+  ${(props) =>
+    props.isAdmin
+      ? css`
+          background-color: rgba(112, 112, 112, 1) !important;
+        `
+      : css`
+          background-color: var(--caribbean-green);
+        `}
+`;
+const AdminHeader = styled.div`
+  background-color: rgba(112, 112, 112, 1);
   height: 66px;
   width: 1366px;
 `;

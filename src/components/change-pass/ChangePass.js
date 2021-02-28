@@ -1,5 +1,6 @@
+import Axios from 'axios';
 import React, { useState } from 'react';
-import './style.css';
+import '../change-pass/style.css';
 
 function ChangePass() {
   return (
@@ -19,6 +20,15 @@ function Changepassword(props) {
   const [cPass, changePass] = useState('');
   const [nPass, setNewPass] = useState('');
   const [nrPass, repeatNewPass] = useState('');
+  const data = {
+    cPassword: cPass,
+    npassword: nPass,
+    rnPassword: nrPass,
+  };
+
+  const headers = {
+    'Content-Type': 'application/json',
+  };
   const {
     passChangeTitle,
     currentPassTxt,
@@ -34,7 +44,7 @@ function Changepassword(props) {
       </div>
       <form className="change-pass-form">
         <input
-          type="text"
+          type="password"
           placeholder={currentPassTxt}
           className="current-pass-txt dana-regular-normal-dove-gray-16px"
           value={cPass}
@@ -45,7 +55,7 @@ function Changepassword(props) {
         ></input>
 
         <input
-          type="text"
+          type="password"
           placeholder={newPassTxt}
           className="new-pass-txt dana-regular-normal-dove-gray-16px"
           value={nPass}
@@ -56,7 +66,7 @@ function Changepassword(props) {
         ></input>
 
         <input
-          type="text"
+          type="password"
           placeholder={newPassRepeatTxt}
           className="new-pass-repeat-txt dana-regular-normal-dove-gray-16px"
           value={nrPass}
@@ -65,7 +75,17 @@ function Changepassword(props) {
             console.log(nrp.target.value);
           }}
         ></input>
-        <button className="pass-change-confirm dana-regular-normal-white-16px">
+        <button
+          className="pass-change-confirm dana-regular-normal-white-16px"
+          onClick={() => {
+            Axios.post('/update-course-picture/', data, headers)
+              .then((res) => console.log(res))
+              .catch((err) => console.log(err.response))
+              .finally(() => {
+                //allways run
+              });
+          }}
+        >
           {passChangeConfirm}
         </button>
       </form>

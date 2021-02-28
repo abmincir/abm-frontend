@@ -16,6 +16,7 @@
 .border-1px-dove-gray {
   border: 1px solid var(--dove-gray);
 }
+
 .change-password {
   align-items: flex-start;
   background-color: white;
@@ -176,4 +177,7 @@
   align-items: center;
   justify-content: flex-start;
   margin-top: 39px;
+}
+.create-user-btn {
+  background-color: rgba(112, 112, 112, 1) !important;
 }

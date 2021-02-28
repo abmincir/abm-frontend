@@ -4,7 +4,7 @@
   font-family: 'Dana-Regular';
   font-style: normal;
   font-weight: 400;
-  src: url('../../fonts/woff2/dana-regular.woff2') format('truetype');
+  src: url('../../fonts/woff2/dana-fanum-regular.woff2') format('truetype');
 }
 
 .border-1px-dove-gray {
@@ -37,9 +37,10 @@
 .user-menu {
   background-color: white;
   height: 100%;
-  position: fixed;
   width: 333px;
-  right: 0;
+  right: -333px;
+  text-align: center;
+  width: 100%;
 }
 .user-menu .avatar {
   background-color: white;
@@ -142,4 +143,7 @@
 .side-menu-btn:hover {
   transform: scale(1.1);
   cursor: pointer;
+}
+.dark-back {
+  background-color: rgb(0, 0, 0) !important;
 }
