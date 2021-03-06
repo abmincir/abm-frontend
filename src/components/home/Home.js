@@ -5,85 +5,6 @@ import styled, { css } from 'styled-components';
 import SideMenu from '../SideMenu/SideMenu';
 import Modal from './Modal';
 
-const menu = (
-  <svg
-    xmlns="http://www.w4.org/2000/svg"
-    viewBox="0 0 24 24"
-    width="30"
-    height="30"
-    fill="none"
-    stroke="#FFF"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    class="feather feather-menu menu-animation menu-button"
-  >
-    <line x1="3" y1="12" x2="21" y2="12"></line>
-    <line x1="3" y1="6" x2="21" y2="6"></line>
-    <line x1="3" y1="18" x2="21" y2="18"></line>
-  </svg>
-);
-
-const success = (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
-    <circle cx="25" cy="25" r="25" fill="#25e1a1" />
-    <path
-      width="32"
-      height="32"
-      fill="none"
-      stroke="#fff"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-miterlimit="10"
-      d="M38 15L22 33l-10-8"
-    />
-  </svg>
-);
-
-const unknown = (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-    <path
-      d="M256 0C114.8 0 0 114.8 0 256s114.8 256 256 256 256-114.8 256-256S397.2 0 256 0z"
-      fill="#707070"
-    />
-    <path
-      d="M277.3 384c0 11.8-9.6 21.3-21.3 21.3s-21.3-9.6-21.3-21.3 9.6-21.3 21.3-21.3 21.3 9.5 21.3 21.3z"
-      fill="#eceff1"
-    />
-    <path
-      d="M289.8 269.7c-7.6 3.5-12.4 11.1-12.4 19.4v9.6c0 11.8-9.5 21.3-21.3 21.3s-21.3-9.6-21.3-21.3v-9.6c0-24.9 14.6-47.7 37.2-58.2 21.7-10 37.4-36.6 37.4-49.6 0-29.4-23.9-53.3-53.3-53.3s-53.3 23.9-53.3 53.3c0 11.8-9.5 21.3-21.3 21.3s-21.3-9.6-21.3-21.3c0-52.9 43.1-96 96-96s96 43.1 96 96c-.2 28.9-25.2 71.2-62.4 88.4z"
-      fill="#fafafa"
-    />
-  </svg>
-);
-
-const warning = (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-    <path
-      d="M256 0C114.8 0 0 114.8 0 256s114.8 256 256 256 256-114.8 256-256S397.2 0 256 0z"
-      fill="#ff9100"
-    />
-    <path
-      d="M277.3 384c0 11.8-9.6 21.3-21.3 21.3s-21.3-9.6-21.3-21.3 9.6-21.3 21.3-21.3 21.3 9.5 21.3 21.3z"
-      fill="#eceff1"
-    />
-    <path
-      d="M277.3 298.7c0 11.8-9.6 21.3-21.3 21.3s-21.3-9.6-21.3-21.3V128c0-11.8 9.6-21.3 21.3-21.3s21.3 9.6 21.3 21.3v170.7z"
-      fill="#fafafa"
-    />
-  </svg>
-);
-
-const fail = (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72.434 72.437">
-    <path
-      d="M36.22 0C16.212 0 0 16.215 0 36.223c0 19.999 16.212 36.214 36.22 36.214s36.214-16.215 36.214-36.214C72.434 16.215 56.228 0 36.22 0zm15.592 48.083l-4.565 4.565-11.02-11.021L24.86 52.995l-4.565-4.565 11.367-11.367L20.639 26.04l4.568-4.565 11.02 11.02 11.349-11.343 4.565 4.565-11.349 11.346 11.02 11.02z"
-      fill="#FF6B6B"
-    />
-  </svg>
-);
-
 const Home = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -321,6 +242,86 @@ const Home = () => {
     </>
   );
 };
+
+const menu = (
+  <svg
+    xmlns="http://www.w4.org/2000/svg"
+    viewBox="0 0 24 24"
+    width="30"
+    height="30"
+    fill="none"
+    stroke="#FFF"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="feather feather-menu menu-animation menu-button"
+  >
+    <line x1="3" y1="12" x2="21" y2="12"></line>
+    <line x1="3" y1="6" x2="21" y2="6"></line>
+    <line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+);
+
+const success = (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+    <circle cx="25" cy="25" r="25" fill="#25e1a1" />
+    <path
+      width="32"
+      height="32"
+      fill="none"
+      stroke="#fff"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-miterlimit="10"
+      d="M38 15L22 33l-10-8"
+    />
+  </svg>
+);
+
+const unknown = (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <path
+      d="M256 0C114.8 0 0 114.8 0 256s114.8 256 256 256 256-114.8 256-256S397.2 0 256 0z"
+      fill="#707070"
+    />
+    <path
+      d="M277.3 384c0 11.8-9.6 21.3-21.3 21.3s-21.3-9.6-21.3-21.3 9.6-21.3 21.3-21.3 21.3 9.5 21.3 21.3z"
+      fill="#eceff1"
+    />
+    <path
+      d="M289.8 269.7c-7.6 3.5-12.4 11.1-12.4 19.4v9.6c0 11.8-9.5 21.3-21.3 21.3s-21.3-9.6-21.3-21.3v-9.6c0-24.9 14.6-47.7 37.2-58.2 21.7-10 37.4-36.6 37.4-49.6 0-29.4-23.9-53.3-53.3-53.3s-53.3 23.9-53.3 53.3c0 11.8-9.5 21.3-21.3 21.3s-21.3-9.6-21.3-21.3c0-52.9 43.1-96 96-96s96 43.1 96 96c-.2 28.9-25.2 71.2-62.4 88.4z"
+      fill="#fafafa"
+    />
+  </svg>
+);
+
+const warning = (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <path
+      d="M256 0C114.8 0 0 114.8 0 256s114.8 256 256 256 256-114.8 256-256S397.2 0 256 0z"
+      fill="#ff9100"
+    />
+    <path
+      d="M277.3 384c0 11.8-9.6 21.3-21.3 21.3s-21.3-9.6-21.3-21.3 9.6-21.3 21.3-21.3 21.3 9.5 21.3 21.3z"
+      fill="#eceff1"
+    />
+    <path
+      d="M277.3 298.7c0 11.8-9.6 21.3-21.3 21.3s-21.3-9.6-21.3-21.3V128c0-11.8 9.6-21.3 21.3-21.3s21.3 9.6 21.3 21.3v170.7z"
+      fill="#fafafa"
+    />
+  </svg>
+);
+
+const fail = (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72.434 72.437">
+    <path
+      d="M36.22 0C16.212 0 0 16.215 0 36.223c0 19.999 16.212 36.214 36.22 36.214s36.214-16.215 36.214-36.214C72.434 16.215 56.228 0 36.22 0zm15.592 48.083l-4.565 4.565-11.02-11.021L24.86 52.995l-4.565-4.565 11.367-11.367L20.639 26.04l4.568-4.565 11.02 11.02 11.349-11.343 4.565 4.565-11.349 11.346 11.02 11.02z"
+      fill="#FF6B6B"
+    />
+  </svg>
+);
+
 const BlurContainer = styled.div`
   with: 100%;
   height: 100%;
