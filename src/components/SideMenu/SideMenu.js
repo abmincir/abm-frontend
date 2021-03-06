@@ -44,9 +44,9 @@ function Usermenu(props) {
     <div className="wrapper">
       <div className="user-menu">
         {isAdmin ? (
-          <div className="container border-1px-dove-gray dark-back"></div>
+          <div className="container dark-back"></div>
         ) : (
-          <div className="container border-1px-dove-gray"></div>
+          <div className="container"></div>
         )}
 
         <div className="avatar border-1px-dove-gray"></div>
