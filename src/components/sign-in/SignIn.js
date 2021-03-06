@@ -1,8 +1,12 @@
+import { IonLoading, IonToast } from '@ionic/react';
 import Axios from 'axios';
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 const SignIn = () => {
+  const history = useHistory();
+
   const [user, setUser] = useState('');
 
   const [pass, setPass] = useState('');
@@ -15,9 +19,56 @@ const SignIn = () => {
     'Content-Type': 'application/json',
   };
   const [isAdmin, setAdmin] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [showMassage, setShowMassage] = useState(false);
+
+  const adminLoginHandler = (event) => {
+    setLoading(true);
+    // event.preventDefault();
+    localStorage.setItem('isAdmin', 'true');
+    localStorage.removeItem('userId');
+
+    //history
+    Axios.post('/update-course-picture/', data, headers)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err.response))
+      .finally(() => {
+        setLoading(false);
+        setShowMassage(true);
+        setTimeout(() => {
+          history.push('/home');
+        }, 1000);
+      });
+  };
+
+  const userLoginHandler = (event) => {
+    setLoading(true);
+    // event.preventDefault();
+    localStorage.setItem('userId', '1');
+    localStorage.setItem('isAdmin', 'false');
+
+    //history
+    Axios.post('/update-course-picture/', data, headers)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err.response))
+      .finally(() => {
+        setLoading(false);
+        setShowMassage(true);
+        setTimeout(() => {
+          history.push('/home');
+        }, 1000);
+      });
+  };
 
   return (
     <Wrapper>
+      <IonLoading
+        cssClass="custom-loading"
+        isOpen={loading}
+        onDidDismiss={() => setLoading(false)}
+        message={'در حال ورود'}
+        duration={5000}
+      />
       <Header isAdmin={isAdmin} />
       <Content>
         <SignInBox>
@@ -54,21 +105,22 @@ const SignIn = () => {
               }}
             ></Password>
             <Enter
+              type="button"
               isAdmin={isAdmin}
-              onClick={() => {
-                Axios.post('/update-course-picture/', data, headers)
-                  .then((res) => console.log(res))
-                  .catch((err) => console.log(err.response))
-                  .finally(() => {
-                    //allways run
-                  });
-              }}
+              onClick={isAdmin ? adminLoginHandler : userLoginHandler}
             >
               ورود
             </Enter>
           </FlexWrapper>
         </SignInBox>
       </Content>
+      <IonToast
+        isOpen={showMassage}
+        cssClass="custom-toast"
+        onDidDismiss={() => setShowMassage(false)}
+        message="با موفقیت وارد شدید"
+        duration={1000}
+      />
     </Wrapper>
   );
 };
@@ -87,7 +139,7 @@ const Wrapper = styled.div`
 `;
 const Header = styled.div`
   height: 66px;
-  width: 1366px;
+  width: 100%;
   ${(props) =>
     props.isAdmin
       ? css`

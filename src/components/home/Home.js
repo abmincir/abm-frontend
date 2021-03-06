@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import { IonLoading } from '@ionic/react';
+import { Dialog } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { Calendar } from 'react-modern-calendar-datepicker';
 import styled, { css } from 'styled-components';
 import { toPersian } from '../../numbers';
 import SideMenu from '../SideMenu/SideMenu';
 import Modal from './Modal';
-
 const menu = (
   <svg
     xmlns="http://www.w4.org/2000/svg"
@@ -84,19 +86,59 @@ const fail = (
 );
 
 const Home = () => {
+  const [calOpen, setCalOpen] = React.useState(false);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [isShowingModal, setIsShowingModal] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [isAdmin, setAdmin] = useState(true);
+  const [isAdmin, setAdmin] = useState(false);
+
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [fetchLoading, setFetchLoading] = useState(false);
+  const searchHanldler = () => {
+    setSearchLoading(true);
+    setTimeout(() => {
+      setSearchLoading(false);
+    }, 1000);
+  };
+  const fetchHanldler = () => {
+    setFetchLoading(true);
+    setTimeout(() => {
+      setFetchLoading(false);
+    }, 1000);
+  };
+  const [date, setDate] = React.useState(null);
+  const faDate = React.useMemo(
+    () => date && `${date.year}/${date.month}/${date.day}`,
+    [date]
+  );
 
   const switchModal = () => {
     setIsShowingModal(!isShowingModal);
   };
 
+  useEffect(() => {
+    console.log('checked', localStorage.getItem('isAdmin'));
+    setAdmin(localStorage.getItem('isAdmin') === 'true');
+  }, []);
+
   return (
     <>
       <Container>
+        <IonLoading
+          cssClass="custom-loading"
+          isOpen={fetchLoading}
+          // onDidDismiss={() => setLoading(false)}
+          message={'در حال به روز رسانی'}
+          duration={5000}
+        />
+        <IonLoading
+          cssClass="custom-loading"
+          isOpen={searchLoading}
+          // onDidDismiss={() => setLoading(false)}
+          message={'در حال جستجو'}
+          duration={5000}
+        />
         <SideMenuContainer visible={visible}>
           <SideMenu setVisible={(visible, setVisible)} />
         </SideMenuContainer>
@@ -109,15 +151,29 @@ const Home = () => {
         </Header>
         <ButtonsContainer>
           <Button color={isAdmin ? 'gray' : 'green'}>
-            <ButtonText>جست و جو</ButtonText>
+            <ButtonText onClick={searchHanldler}>جست و جو</ButtonText>
           </Button>
 
           <Button color={isAdmin ? 'black' : 'gray'}>
-            <ButtonText>بروزرسانی</ButtonText>
+            <ButtonText onClick={fetchHanldler}>بروزرسانی</ButtonText>
           </Button>
 
           <DateSection>
             <DateText>از تاریخ</DateText>
+
+            <Dialog open={calOpen}>
+              <Calendar
+                value={date}
+                onChange={(v) => {
+                  console.log(v);
+                  setDate(v);
+                  setCalOpen(false);
+                }}
+                locale="fa"
+                shouldHighlightWeekends
+              />
+            </Dialog>
+
             <DateInput>
               <DateValue
                 placeholder="---- / -- / --"
@@ -384,7 +440,7 @@ const SideMenuContainer = styled.div`
   top: 0px;
   right: -333px;
   width: 333px;
-  hight: 100%;
+  height: 100%;
   position: fixed;
   z-index: 2;
   transition: all 0.8s ease;

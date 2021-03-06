@@ -1,6 +1,8 @@
-import React from 'react';
+import { IonToast } from '@ionic/react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import './style.css';
+
 function App(props) {
   return (
     <Usermenu
@@ -16,13 +18,27 @@ export default App;
 
 function Usermenu(props) {
   const history = useHistory();
-  const isAdmin = true;
+  const [isAdmin, setAdmin] = useState(false);
+  const [showMassage, setShowMassage] = useState(false);
+
+  useEffect(() => {
+    console.log('checked', localStorage.getItem('isAdmin'));
+    setAdmin(localStorage.getItem('isAdmin') === 'true');
+  }, []);
+
   const handleClick = () => {
     history.push(isAdmin ? '/create-user' : '/change-password');
   };
+
   const logout = () => {
-    history.push('/sign-in');
+    setShowMassage(true);
+    localStorage.removeItem('isAdmin');
+    localStorage.removeItem('userId');
+    setTimeout(() => {
+      history.push('/sign-in');
+    }, 1000);
   };
+
   const { username, changePassBtn__Txt, exportBtn__Txt, exitBtn__Txt } = props;
   return (
     <div className="wrapper">
@@ -56,6 +72,13 @@ function Usermenu(props) {
           </div>
         </div>
       </div>
+      <IonToast
+        isOpen={showMassage}
+        cssClass="custom-toast"
+        onDidDismiss={() => setShowMassage(false)}
+        message="خارج شدید"
+        duration={1000}
+      />
     </div>
   );
 }

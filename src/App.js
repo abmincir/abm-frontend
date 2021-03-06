@@ -36,7 +36,7 @@ const App = () => {
           </Wrapper>
         </Route>
 
-        <Route path="/change-pass">
+        <Route path="/change-password">
           <Wrapper>
             <Header />
             <Content>
@@ -67,7 +67,7 @@ const Wrapper = styled.div`
 `;
 const Header = styled.div`
   height: 66px;
-  width: 1366px;
+  width: 100%;
   ${(props) =>
     props.isAdmin
       ? css`
@@ -80,7 +80,7 @@ const Header = styled.div`
 const AdminHeader = styled.div`
   background-color: rgba(112, 112, 112, 1);
   height: 66px;
-  width: 1366px;
+  width: 100%;
 `;
 const Content = styled.div`
   display: flex;
