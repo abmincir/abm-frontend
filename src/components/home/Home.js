@@ -1,11 +1,8 @@
 import { IonLoading } from '@ionic/react';
-import { Dialog } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { Calendar } from 'react-modern-calendar-datepicker';
 import styled, { css } from 'styled-components';
 import { toPersian } from '../../numbers';
 import SideMenu from '../SideMenu/SideMenu';
-import Modal from './Modal';
 const menu = (
   <svg
     xmlns="http://www.w4.org/2000/svg"
@@ -95,23 +92,20 @@ const Home = () => {
 
   const [searchLoading, setSearchLoading] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(false);
-  const searchHanldler = () => {
+
+  const searchHandler = () => {
     setSearchLoading(true);
     setTimeout(() => {
       setSearchLoading(false);
     }, 1000);
   };
-  const fetchHanldler = () => {
+
+  const fetchHandler = () => {
     setFetchLoading(true);
     setTimeout(() => {
       setFetchLoading(false);
     }, 1000);
   };
-  const [date, setDate] = React.useState(null);
-  const faDate = React.useMemo(
-    () => date && `${date.year}/${date.month}/${date.day}`,
-    [date]
-  );
 
   const switchModal = () => {
     setIsShowingModal(!isShowingModal);
@@ -128,14 +122,14 @@ const Home = () => {
         <IonLoading
           cssClass="custom-loading"
           isOpen={fetchLoading}
-          // onDidDismiss={() => setLoading(false)}
+          onDidDismiss={() => setFetchLoading(false)}
           message={'در حال به روز رسانی'}
           duration={5000}
         />
         <IonLoading
           cssClass="custom-loading"
           isOpen={searchLoading}
-          // onDidDismiss={() => setLoading(false)}
+          onDidDismiss={() => setSearchLoading(false)}
           message={'در حال جستجو'}
           duration={5000}
         />
@@ -150,29 +144,16 @@ const Home = () => {
           <p>کشت و صنعت اکسون</p>
         </Header>
         <ButtonsContainer>
-          <Button color={isAdmin ? 'gray' : 'green'}>
-            <ButtonText onClick={searchHanldler}>جست و جو</ButtonText>
+          <Button onClick={searchHandler} color={isAdmin ? 'gray' : 'green'}>
+            <ButtonText>جست و جو</ButtonText>
           </Button>
 
-          <Button color={isAdmin ? 'black' : 'gray'}>
-            <ButtonText onClick={fetchHanldler}>بروزرسانی</ButtonText>
+          <Button onClick={fetchHandler} color={isAdmin ? 'black' : 'gray'}>
+            <ButtonText>بروزرسانی</ButtonText>
           </Button>
 
           <DateSection>
             <DateText>از تاریخ</DateText>
-
-            <Dialog open={calOpen}>
-              <Calendar
-                value={date}
-                onChange={(v) => {
-                  console.log(v);
-                  setDate(v);
-                  setCalOpen(false);
-                }}
-                locale="fa"
-                shouldHighlightWeekends
-              />
-            </Dialog>
 
             <DateInput>
               <DateValue
@@ -388,7 +369,7 @@ const Home = () => {
           <StatusColumn>{unknown}</StatusColumn>
         </DataRow>
       </Container>
-      <Modal displayModal={isShowingModal} closeModal={switchModal} />
+      {/* <Modal displayModal={isShowingModal} closeModal={switchModal} /> */}
     </>
   );
 };
