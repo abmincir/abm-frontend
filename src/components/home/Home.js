@@ -1,8 +1,10 @@
 import { IonLoading } from '@ionic/react';
+import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { toPersian } from '../../numbers';
 import SideMenu from '../SideMenu/SideMenu';
+import Modal from './Modal';
+
 const menu = (
   <svg
     xmlns="http://www.w4.org/2000/svg"
@@ -83,28 +85,56 @@ const fail = (
 );
 
 const Home = () => {
-  const [calOpen, setCalOpen] = React.useState(false);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [isShowingModal, setIsShowingModal] = useState(false);
   const [visible, setVisible] = useState(false);
   const [isAdmin, setAdmin] = useState(false);
 
+  const [bills, setBills] = useState([]);
+
   const [searchLoading, setSearchLoading] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(false);
 
   const searchHandler = () => {
     setSearchLoading(true);
-    setTimeout(() => {
-      setSearchLoading(false);
-    }, 1000);
+    const data = {
+      startDate,
+      endDate,
+    };
+
+    Axios.post('http://localhost:3000/bill/all', data)
+      .then((result) => {
+        console.log(result.data);
+        setBills(result.data.bill);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        setFetchLoading(false);
+      });
   };
 
   const fetchHandler = () => {
     setFetchLoading(true);
-    setTimeout(() => {
-      setFetchLoading(false);
-    }, 1000);
+
+    const data = {
+      startDate,
+      endDate,
+    };
+
+    Axios.post('http://localhost:3000/bill/update-db', data)
+      .then((result) => {
+        console.log(result);
+        setBills(result.data.bill);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        setFetchLoading(false);
+      });
   };
 
   const switchModal = () => {
@@ -143,6 +173,7 @@ const Home = () => {
           <div onClick={() => setVisible(!visible)}>{menu}</div>
           <p>کشت و صنعت اکسون</p>
         </Header>
+
         <ButtonsContainer>
           <Button onClick={searchHandler} color={isAdmin ? 'gray' : 'green'}>
             <ButtonText>جست و جو</ButtonText>
@@ -153,9 +184,8 @@ const Home = () => {
           </Button>
 
           <DateSection>
-            <DateText>از تاریخ</DateText>
-
             <DateInput>
+              <DateText>از تاریخ</DateText>
               <DateValue
                 placeholder="---- / -- / --"
                 type="text"
@@ -229,147 +259,65 @@ const Home = () => {
           </StatusColumn>
         </ColumnsSection>
 
-        <DataRow success onClick={switchModal}>
-          <CheckBoxColumn></CheckBoxColumn>
-          <Column>
-            <DataValue>{toPersian(349203)}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>{toPersian(116200)}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>{toPersian(25077)}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>{toPersian('99/11/03')}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>{toPersian('384120-32/99')}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>ذرت برزيل</DataValue>
-          </Column>
+        <RowsContainer>
+          {bills.map((bill) => {
+            return (
+              <DataRow
+                unknown={bill.status === -1}
+                success={bill.status === 1}
+                warning={bill.status === 0}
+                fail={bill.status === 2}
+                onClick={switchModal}
+              >
+                <CheckBoxColumn></CheckBoxColumn>
+                <Column>
+                  <DataValue>{bill.purchaseId}</DataValue>
+                </Column>
+                <Column>
+                  <DataValue>
+                    {bill.spsWeight ? bill.spsWeight : 'نامشخص'}
+                  </DataValue>
+                </Column>
+                <Column>
+                  <DataValue>{bill.bill.weight}</DataValue>
+                </Column>
+                <Column>
+                  <DataValue>{bill.bill.date}</DataValue>
+                </Column>
+                <Column>
+                  <DataValue>{bill.bill.number}</DataValue>
+                </Column>
+                <Column>
+                  <DataValue>{bill.product.name}</DataValue>
+                </Column>
 
-          <NameColumn>
-            <DataValue>کشت و صنعت فتح خرم دشت</DataValue>
-          </NameColumn>
+                <NameColumn>
+                  <DataValue>{bill.customer.name}</DataValue>
+                </NameColumn>
 
-          <StatusColumn>{success}</StatusColumn>
-        </DataRow>
+                <StatusColumn>
+                  {bill.status === -1
+                    ? unknown
+                    : bill.status === 1
+                    ? success
+                    : bill.status === 0
+                    ? warning
+                    : fail}
+                </StatusColumn>
+              </DataRow>
+            );
+          })}
 
-        <DataRow success onClick={switchModal}>
-          <CheckBoxColumn></CheckBoxColumn>
-          <Column>
-            <DataValue>{toPersian(349203)}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>{toPersian(116200)}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>{toPersian(25009)}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>{toPersian('99/11/03')}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>{toPersian('384119-32/99')}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>ذرت برزيل</DataValue>
-          </Column>
-
-          <NameColumn>
-            <DataValue>کشت و صنعت فتح خرم دشت</DataValue>
-          </NameColumn>
-
-          <StatusColumn>{success}</StatusColumn>
-        </DataRow>
-
-        <DataRow warning onClick={switchModal}>
-          <CheckBoxColumn></CheckBoxColumn>
-          <Column>
-            <DataValue>{toPersian(349204)}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>{toPersian(116100)}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>{toPersian(20626)}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>{toPersian('99/11/02')}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>{toPersian('384118-32/99')}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>سويا پرک</DataValue>
-          </Column>
-
-          <NameColumn>
-            <DataValue>شماره 28 مرغ مادر پيرانشهر</DataValue>
-          </NameColumn>
-
-          <StatusColumn>{warning}</StatusColumn>
-        </DataRow>
-
-        <DataRow fail onClick={switchModal}>
-          <CheckBoxColumn></CheckBoxColumn>
-          <Column>
-            <DataValue>{toPersian(349100)}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>{toPersian(116350)}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>{toPersian(23420)}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>{toPersian('99/11/02')}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>{toPersian('384129-32/99')}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>جو روس</DataValue>
-          </Column>
-
-          <NameColumn>
-            <DataValue>توليد کشاورزي دامداران استان کردستان</DataValue>
-          </NameColumn>
-
-          <StatusColumn>{fail}</StatusColumn>
-        </DataRow>
-
-        <DataRow unknown onClick={switchModal}>
-          <CheckBoxColumn></CheckBoxColumn>
-          <Column>
-            <DataValue>{toPersian(349225)}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>{toPersian(116157)}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>{toPersian(25149)}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>{toPersian('99/11/04')}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>{toPersian('384173-32/98')}</DataValue>
-          </Column>
-          <Column>
-            <DataValue>سويا پرک</DataValue>
-          </Column>
-
-          <NameColumn>
-            <DataValue>خوراك دام و طيور بهمن زواره</DataValue>
-          </NameColumn>
-
-          <StatusColumn>{unknown}</StatusColumn>
-        </DataRow>
+          {bills.length === 0 && (
+            <DataRow>
+              <Column>
+                <DataValue>موردی یافت نشد</DataValue>
+              </Column>
+            </DataRow>
+          )}
+        </RowsContainer>
       </Container>
-      {/* <Modal displayModal={isShowingModal} closeModal={switchModal} /> */}
+      <Modal displayModal={isShowingModal} closeModal={switchModal} />
     </>
   );
 };
@@ -442,7 +390,8 @@ const Header = styled.div`
   align-items: center;
 
   width: 100vw;
-  height: 66px;
+  height: 70px;
+  min-height: 70px;
   padding-right: 48px;
 
   p {
@@ -476,7 +425,7 @@ const ButtonsContainer = styled.div`
 
   background-color: white;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.161);
-  height: 70px;
+  height: 80px;
   width: 100vw;
 
   padding: 0 48px;
@@ -546,11 +495,11 @@ const DateText = styled.p`
 `;
 
 const DateInput = styled.form`
-width=100%;
-display: flex;
+  width: 100%;
+  display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction= row-reverse;
+  flex-direction: row-reverse;
 `;
 
 const DateValue = styled.input`
@@ -580,9 +529,9 @@ const DateValue = styled.input`
 const ColumnsSection = styled.div`
   display: flex;
   flex-direction: row-reverse;
-  min-height: 65px;
+  min-height: 70px;
   width: 100%;
-  padding: 48px 48px 0 48px;
+  padding: 14px 48px 10px 48px;
 `;
 
 const CheckBoxColumn = styled.div`
@@ -637,17 +586,36 @@ const ColumnsTitle = styled.p`
   margin: 0;
 `;
 
+const RowsContainer = styled.div`
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+`;
+
 const DataRow = styled.div`
   display: flex;
   flex-direction: row-reverse;
 
   min-height: 66px;
-  width: calc(100% - 96px);
+  width: calc(100% - 81px);
   padding: 0;
   margin-top: 24px;
+  margin-left: 48px;
 
   background-color: white;
   border-radius: 12px;
+
+  pointer-events: auto;
+  transition: all 0.3s ease;
+
+  &:first-of-type {
+    margin-top: 10px;
+  }
+
+  &:hover {
+    transform: scale(1.025);
+    cursor: pointer;
+  }
 
   ${(props) =>
     props.success &&
