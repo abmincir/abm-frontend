@@ -1,50 +1,121 @@
+import { useEffect, useState } from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import './App.css';
 import ChangePass from './components/change-pass/ChangePass';
 import CreateUser from './components/crateUser/createUser';
 import Home from './components/home/Home';
-import SideMenu from './components/SideMenu/SideMenu';
 import SignIn from './components/sign-in/SignIn';
+
 const App = () => {
-  const isAdmin = true;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    setIsLoggedIn(
+      localStorage.getItem('isAdmin') === 'true' ||
+        localStorage.getItem('userId')
+    );
+    setIsAdmin(localStorage.getItem('isAdmin') === 'true');
+  }, []);
+
+  const AdminPages = (
+    <Switch>
+      <Route exact path="/">
+        <Redirect to="/home" />
+      </Route>
+
+      <Route path="/home">
+        <Home />
+      </Route>
+
+      <Route path="/sign-In">
+        <SignIn />
+      </Route>
+
+      <Route path="/create-user">
+        <Wrapper>
+          <AdminHeader />
+          <Content>
+            <CreateUser />
+          </Content>
+        </Wrapper>
+      </Route>
+
+      <Route path="/sign-In">
+        <SignIn />
+      </Route>
+    </Switch>
+  );
+
+  const UserPages = (
+    <Switch>
+      <Route exact path="/">
+        <Redirect to="/home" />
+      </Route>
+
+      <Route path="/home">
+        <Home />
+      </Route>
+
+      <Route path="/sign-In">
+        <SignIn />
+      </Route>
+
+      <Route path="/change-password">
+        <Wrapper>
+          <Header />
+          <Content>
+            <ChangePass />
+          </Content>
+        </Wrapper>
+      </Route>
+    </Switch>
+  );
+
   const pages = (
     <BrowserRouter>
-      <Switch>
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
+      {isAdmin ? (
+        AdminPages
+      ) : isLoggedIn ? (
+        UserPages
+      ) : (
+        <Switch>
+          <Route exact path="/">
+            <Redirect to="/home" />
+          </Route>
 
-        <Route path="/home">
-          <Home />
-        </Route>
+          <Route path="/home">
+            <Home />
+          </Route>
 
-        <Route path="/side-menu">
-          <SideMenu />
-        </Route>
+          <Route path="/sign-In">
+            <SignIn />
+          </Route>
 
-        <Route path="/sign-In">
-          <SignIn />
-        </Route>
+          <Route path="/create-user">
+            <Wrapper>
+              <AdminHeader />
+              <Content>
+                <CreateUser />
+              </Content>
+            </Wrapper>
+          </Route>
 
-        <Route path="/create-user">
-          <Wrapper>
-            <AdminHeader />
-            <Content>
-              <CreateUser />
-            </Content>
-          </Wrapper>
-        </Route>
+          <Route path="/change-password">
+            <Wrapper>
+              <Header />
+              <Content>
+                <ChangePass />
+              </Content>
+            </Wrapper>
+          </Route>
 
-        <Route path="/change-password">
-          <Wrapper>
-            <Header />
-            <Content>
-              <ChangePass />
-            </Content>
-          </Wrapper>
-        </Route>
-      </Switch>
+          <Route path="/sign-In">
+            <SignIn />
+          </Route>
+        </Switch>
+      )}
     </BrowserRouter>
   );
 
