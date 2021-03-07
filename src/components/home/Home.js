@@ -1,4 +1,4 @@
-import { IonLoading, IonToast } from '@ionic/react';
+﻿import { IonLoading, IonToast } from '@ionic/react';
 import { Dialog } from '@material-ui/core';
 import Axios from 'axios';
 import moment from 'moment-jalaali';
@@ -40,7 +40,7 @@ const Home = () => {
       endDate,
     };
 
-    Axios.post('http://localhost:3000/bill/all', data)
+    Axios.post('http://192.168.1.14:3000/bill/all', data)
       .then((result) => {
         console.log(result.data);
         setBills(result.data.bill);
@@ -61,7 +61,7 @@ const Home = () => {
       endDate,
     };
 
-    Axios.post('http://localhost:3000/bill/update-db', data)
+    Axios.post('http://192.168.1.14:3000/bill/update-db', data)
       .then((result) => {
         console.log(result);
         setBills(result.data.bill);
