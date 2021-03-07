@@ -1,6 +1,10 @@
-import { IonLoading } from '@ionic/react';
+import { IonLoading, IonToast } from '@ionic/react';
+import { Dialog } from '@material-ui/core';
 import Axios from 'axios';
+import moment from 'moment-jalaali';
 import React, { useEffect, useState } from 'react';
+import { Calendar } from 'react-modern-calendar-datepicker';
+import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import styled, { css } from 'styled-components';
 import SideMenu from '../SideMenu/SideMenu';
 import Modal from './Modal';
@@ -8,14 +12,26 @@ import Modal from './Modal';
 const Home = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+
+  const [calendarStartDate, setCalendarStartDate] = useState(null);
+  const [calendarEndDate, setCalendarEndDate] = useState(null);
+
+  const [startDateCalendarOpen, setStartDateCalendarOpen] = useState(false);
+  const [endDateCalendarOpen, setEndDateCalendarOpen] = useState(false);
+
   const [isShowingModal, setIsShowingModal] = useState(false);
+
   const [visible, setVisible] = useState(false);
   const [isAdmin, setAdmin] = useState(false);
 
+  const [bill, setBill] = useState();
   const [bills, setBills] = useState([]);
 
   const [searchLoading, setSearchLoading] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(false);
+  const [checkLoading, setCheckLoading] = useState(false);
+
+  const [showMassage, setShowMassage] = useState(false);
 
   const searchHandler = () => {
     setSearchLoading(true);
@@ -58,14 +74,33 @@ const Home = () => {
       });
   };
 
-  const switchModal = () => {
+  const onCheckClick = (e) => {
+    e.stopPropagation();
+    setCheckLoading(true);
+  };
+
+  const switchModal = (bill) => {
+    setBill(bill);
     setIsShowingModal(!isShowingModal);
   };
 
   useEffect(() => {
     console.log('checked', localStorage.getItem('isAdmin'));
     setAdmin(localStorage.getItem('isAdmin') === 'true');
+
+    searchHandler();
   }, []);
+
+  const calculateTime = (v) => {
+    const faDate = v && `${v.year}/${v.month}/${v.day}`;
+
+    if (!faDate) {
+      return null;
+    }
+
+    const momentTime = moment(faDate, 'jYYYY/jMM/jDD');
+    return momentTime.format('jYYYY/jMM/jDD');
+  };
 
   return (
     <>
@@ -84,6 +119,18 @@ const Home = () => {
           message={'در حال جستجو'}
           duration={5000}
         />
+
+        <IonLoading
+          cssClass="custom-loading"
+          isOpen={checkLoading}
+          onDidDismiss={() => {
+            setCheckLoading(false);
+            setShowMassage(true);
+          }}
+          message={'در حال استعلام'}
+          duration={8000}
+        />
+
         <SideMenuContainer visible={visible}>
           <SideMenu setVisible={(visible, setVisible)} />
         </SideMenuContainer>
@@ -104,48 +151,56 @@ const Home = () => {
             <ButtonText>بروزرسانی</ButtonText>
           </Button>
 
+          <Dialog
+            open={startDateCalendarOpen}
+            onClose={() => setStartDateCalendarOpen(false)}
+          >
+            <Calendar
+              calendarClassName="custom-calendar"
+              value={calendarStartDate}
+              onChange={(value) => {
+                setCalendarStartDate(value);
+                setStartDate(calculateTime(value));
+                setStartDateCalendarOpen(false);
+              }}
+              locale="fa"
+              shouldHighlightWeekends
+            />
+          </Dialog>
+
+          <Dialog
+            open={endDateCalendarOpen}
+            onClose={() => setEndDateCalendarOpen(false)}
+          >
+            <Calendar
+              calendarClassName="custom-calendar"
+              value={calendarEndDate}
+              onChange={(value) => {
+                setCalendarEndDate(value);
+                setEndDate(calculateTime(value));
+                setEndDateCalendarOpen(false);
+              }}
+              locale="fa"
+              shouldHighlightWeekends
+            />
+          </Dialog>
+
           <DateSection>
             <DateInput>
-              <DateText>از تاریخ</DateText>
-              <DateValue
-                placeholder="---- / -- / --"
-                type="text"
-                value={startDate}
-                onChange={(e) => {
-                  if (e.target.value.length > 10) return;
-                  if (e.target.value.length < startDate.length) {
-                    setStartDate('');
-                    return;
-                  }
-                  if (
-                    e.target.value.length === 4 ||
-                    e.target.value.length === 7
-                  )
-                    setStartDate(e.target.value + '/');
-                  else setStartDate(e.target.value);
-                }}
-              ></DateValue>
+              <DateText onClick={() => setStartDateCalendarOpen(true)}>
+                از تاریخ
+              </DateText>
+              <DateValue onClick={() => setStartDateCalendarOpen(true)}>
+                {startDate || 'امروز'}
+              </DateValue>
 
-              <DateText>تا تاریخ</DateText>
+              <DateText onClick={() => setEndDateCalendarOpen(true)}>
+                تا تاریخ
+              </DateText>
 
-              <DateValue
-                placeholder="---- / -- / --"
-                type="text"
-                value={endDate}
-                onChange={(e) => {
-                  if (e.target.value.length > 10) return;
-                  if (e.target.value.length < endDate.length) {
-                    setEndDate('');
-                    return;
-                  }
-                  if (
-                    e.target.value.length === 4 ||
-                    e.target.value.length === 7
-                  )
-                    setEndDate(e.target.value + '/');
-                  else setEndDate(e.target.value);
-                }}
-              ></DateValue>
+              <DateValue onClick={() => setEndDateCalendarOpen(true)}>
+                {endDate || 'امروز'}
+              </DateValue>
             </DateInput>
           </DateSection>
         </ButtonsContainer>
@@ -184,11 +239,12 @@ const Home = () => {
           {bills.map((bill) => {
             return (
               <DataRow
+                id={bill._id}
                 unknown={bill.status === -1}
                 success={bill.status === 1}
                 warning={bill.status === 0}
                 fail={bill.status === 2}
-                onClick={switchModal}
+                onClick={() => switchModal(bill)}
               >
                 <CheckBoxColumn></CheckBoxColumn>
                 <Column>
@@ -216,7 +272,7 @@ const Home = () => {
                   <DataValue>{bill.customer.name}</DataValue>
                 </NameColumn>
 
-                <StatusColumn>
+                <StatusColumn onClick={onCheckClick}>
                   {bill.status === -1
                     ? unknown
                     : bill.status === 1
@@ -238,7 +294,20 @@ const Home = () => {
           )}
         </RowsContainer>
       </Container>
-      <Modal displayModal={isShowingModal} closeModal={switchModal} />
+
+      <Modal
+        bill={bill}
+        displayModal={isShowingModal}
+        closeModal={switchModal}
+      />
+
+      <IonToast
+        isOpen={showMassage}
+        cssClass="custom-toast"
+        onDidDismiss={() => setShowMassage(false)}
+        message="عدم ارتباط با سامانه"
+        duration={1000}
+      />
     </>
   );
 };
@@ -503,7 +572,7 @@ const DateInput = styled.form`
   flex-direction: row-reverse;
 `;
 
-const DateValue = styled.input`
+const DateValue = styled.p`
   border: 1px solid var(--dove-gray);
   background-color: white;
   border-radius: 20px;
