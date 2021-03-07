@@ -38,7 +38,10 @@ function Modal(props) {
           <div>
             <div className="row">
               <p className="field-title">شناسه بازارگاه</p>
-              <p className="field-value">{bill.purchaseId}</p>
+              <p className="field-value">
+                {bill.purchaseId ? bill.purchaseId : 'نامشخص'}
+              </p>
+
               <p className="field-title">وزن بازارگاه</p>
               <p className="field-value">
                 {bill.spsWeight ? bill.spsWeight : 'نامشخص'}

@@ -248,7 +248,9 @@ const Home = () => {
               >
                 <CheckBoxColumn></CheckBoxColumn>
                 <Column>
-                  <DataValue>{bill.purchaseId}</DataValue>
+                  <DataValue>
+                    {bill.purchaseId ? bill.purchaseId : 'نامشخص'}
+                  </DataValue>
                 </Column>
                 <Column>
                   <DataValue>
