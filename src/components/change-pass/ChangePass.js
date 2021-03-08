@@ -32,22 +32,21 @@ function Changepassword(props) {
 
   const setNewPassword = () => {
     setLoading(true);
-    Axios.post('/update-course-picture/', data, headers)
-      .then((res) => console.log(res))
+
+    // Axios.post('http://localhost:3000/user/changePassword', data)
+    Axios.post('http://192.168.1.14:3000/user/changePassword', data)
+      .then((res) => {
+        console.log(res);
+        history.push('/sign-in');
+        setShowMassage(true);
+      })
       .catch((err) => console.log(err.response))
       .finally(() => {
         setLoading(false);
-        setShowMassage(true);
-        setTimeout(() => {
-          history.push('/sign-in');
-        }, 1000);
       });
   };
   const history = useHistory();
 
-  const headers = {
-    'Content-Type': 'application/json',
-  };
   const {
     passChangeTitle,
     currentPassTxt,

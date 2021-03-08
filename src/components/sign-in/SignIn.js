@@ -24,39 +24,30 @@ const SignIn = () => {
 
   const adminLoginHandler = (event) => {
     setLoading(true);
-    // event.preventDefault();
-    localStorage.setItem('isAdmin', 'true');
-    localStorage.removeItem('userId');
-
-    //history
-    Axios.post('/update-course-picture/', data, headers)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err.response))
-      .finally(() => {
-        setLoading(false);
-        setShowMassage(true);
-        setTimeout(() => {
-          history.push('/home');
-        }, 1000);
-      });
+    if (user === 'exon' && pass === 'Exon@123') {
+      localStorage.setItem('isAdmin', 'true');
+      localStorage.removeItem('userId');
+      history.push('/home');
+    }
+    setLoading(false);
   };
 
   const userLoginHandler = (event) => {
     setLoading(true);
-    // event.preventDefault();
-    localStorage.setItem('userId', '1');
-    localStorage.setItem('isAdmin', 'false');
 
-    //history
-    Axios.post('/update-course-picture/', data, headers)
-      .then((res) => console.log(res))
+    // Axios.post('http://localhost:3000/user/auth', data)
+    Axios.post('http://192.168.1.14:3000/user/auth', data)
+      .then((res) => {
+        localStorage.setItem('userId', res.data.user._id);
+        localStorage.setItem('username', res.data.user.username);
+        localStorage.setItem('isAdmin', 'false');
+
+        setShowMassage(true);
+        history.push('/home');
+      })
       .catch((err) => console.log(err.response))
       .finally(() => {
         setLoading(false);
-        setShowMassage(true);
-        setTimeout(() => {
-          history.push('/home');
-        }, 1000);
       });
   };
 

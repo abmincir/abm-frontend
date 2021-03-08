@@ -53,6 +53,7 @@ function Modal(props) {
               <p className="field-value">
                 {bill.cottageNumber ? bill.cottageNumber : 'نامشخص'}
               </p>
+
               <p className="field-title">وزن بازرگان</p>
               <p className="field-value">
                 {bill.merchantWeight ? bill.merchantWeight : 'نامشخص'}
@@ -62,45 +63,57 @@ function Modal(props) {
             <div className="row">
               <p className="field-title">وزن بارنامه</p>
               <p className="field-value">{bill.bill.weight}</p>
+
               <p className="field-title">شماره ماشین</p>
               <p className="field-value">{bill.carNumber}</p>
             </div>
+
             <div className="row">
               <p className="field-title">تاریخ بارنامه</p>
               <p className="field-value">{bill.bill.date}</p>
-              <p className="field-title">کد ملی گیرنده</p>
-              <p className="field-value">{bill.receiver.nationalId}</p>
-            </div>
-            <div className="row">
-              <p className="field-title">نام کالا</p>
-              <p className="field-value">{bill.product.name}</p>
-              <p className="field-title">شناسه تخصیص</p>
-              <p className="field-value">{bill.allocationId}</p>
-            </div>
-            <div className="row">
-              <p className="field-title">مبدا حمل</p>
-              <p className="field-value">{bill.origin.name}</p>
-              <p className="field-title">فی فروش</p>
-              <p className="field-value">{bill.product.pricePerSale}</p>
-            </div>
-            <div className="row">
+
               <p className="field-title">شماره بارنامه</p>
               <p className="field-value">{bill.bill.number}</p>
+            </div>
+
+            <div className="row">
+              <p className="field-title">شناسه تخصیص</p>
+              <p className="field-value">{bill.allocationId}</p>
+
               <p className="field-title">شماره حواله</p>
               <p className="field-value">{bill.draft.number}</p>
             </div>
+
             <div className="row">
               <p className="field-title">وزن حواله</p>
               <p className="field-value">{bill.draft.weight}</p>
+
               <p className="field-title">تاریخ حواله</p>
               <p className="field-value">{bill.draft.date}</p>
             </div>
 
             <div className="row">
-              <p className="field-title">نام گیرنده</p>
-              <p className="field-value">{bill.receiver.name}</p>
+              <p className="field-title">نام کالا</p>
+              <p className="field-value">{bill.product.name}</p>
+
+              <p className="field-title">فی فروش</p>
+              <p className="field-value">{bill.product.pricePerSale}</p>
+            </div>
+
+            <div className="row">
               <p className="field-title">نام خریدار</p>
               <p className="field-value">{bill.customer.name}</p>
+
+              <p className="field-title">مبدا حمل</p>
+              <p className="field-value">{bill.origin.name}</p>
+            </div>
+
+            <div className="row">
+              <p className="field-title">نام گیرنده</p>
+              <p className="field-value">{bill.receiver.name}</p>
+
+              <p className="field-title">کد ملی گیرنده</p>
+              <p className="field-value">{bill.receiver.nationalId}</p>
             </div>
 
             <div className="row address-row">

@@ -4,9 +4,10 @@ import { useHistory } from 'react-router-dom';
 import './style.css';
 
 function App(props) {
+  const user = localStorage.getItem('username');
   return (
     <Usermenu
-      username="کاربر آزمایشی شماره ۱"
+      username={user}
       changePassBtn__Txt="ویرایش رمز عبور"
       exportBtn__Txt="دریافت فایل خروجی"
       exitBtn__Txt="خروج"

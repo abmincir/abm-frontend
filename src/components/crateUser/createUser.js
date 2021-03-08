@@ -24,16 +24,8 @@ function CreateNewUser(props) {
   const [rPass, repeatPass] = useState('');
   const [loading, setLoading] = useState(false);
   const [showMassage, setShowMassage] = useState(false);
-  const data = {
-    username: nUser,
-    password: pass,
-    rPassword: rPass,
-  };
+  const [errorMessage, setErrorMessage] = useState(false);
   const history = useHistory();
-
-  const headers = {
-    'Content-Type': 'application/json',
-  };
 
   const {
     createUserTitle,
@@ -46,15 +38,26 @@ function CreateNewUser(props) {
   const createUserHandler = () => {
     setLoading(true);
 
-    Axios.post('/update-course-picture/', data, headers)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err.response))
+    if (pass !== rPass) {
+      return;
+    }
+
+    const data = {
+      username: nUser,
+      password: pass,
+    };
+
+    // Axios.post('http://localhost:3000/user/create', data)
+    Axios.post('http://192.168.1.14:3000/user/create', data)
+      .then((result) => {
+        history.push('/home');
+      })
+      .catch((error) => {
+        setErrorMessage(true);
+        console.log(error);
+      })
       .finally(() => {
         setLoading(false);
-        setShowMassage(true);
-        setTimeout(() => {
-          history.push('/home');
-        }, 1000);
       });
   };
 
@@ -67,6 +70,7 @@ function CreateNewUser(props) {
         message={'در حال بارگزاری'}
         duration={5000}
       />
+
       <div className="pass-change-title dana-regular-normal-black-20px">
         {createUserTitle}
       </div>
@@ -111,6 +115,15 @@ function CreateNewUser(props) {
           {createUserConfirm}
         </button>
       </form>
+
+      <IonToast
+        isOpen={errorMessage}
+        cssClass="custom-toast"
+        onDidDismiss={() => setErrorMessage(false)}
+        message="خطا"
+        duration={1000}
+      />
+
       <IonToast
         isOpen={showMassage}
         cssClass="custom-toast"

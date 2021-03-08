@@ -12,6 +12,7 @@ import Modal from './Modal';
 const Home = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [billNumber, setBillNumber] = useState('');
 
   const [calendarStartDate, setCalendarStartDate] = useState(null);
   const [calendarEndDate, setCalendarEndDate] = useState(null);
@@ -38,6 +39,7 @@ const Home = () => {
     const data = {
       startDate,
       endDate,
+      billNumber,
     };
 
     Axios.post('http://192.168.1.14:3000/bill/all', data)
@@ -187,6 +189,11 @@ const Home = () => {
 
           <DateSection>
             <DateInput>
+              <DateText>شماره بارنامه</DateText>
+              <BillNumberInput
+                onChange={(e) => setBillNumber(e.target.value)}
+              ></BillNumberInput>
+
               <DateText onClick={() => setStartDateCalendarOpen(true)}>
                 از تاریخ
               </DateText>
@@ -575,6 +582,30 @@ const DateInput = styled.form`
 `;
 
 const DateValue = styled.p`
+  border: 1px solid var(--dove-gray);
+  background-color: white;
+  border-radius: 20px;
+  height: 46px;
+  opacity: 0.5;
+  width: 210px;
+  margin: 0 0 0 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--dove-gray);
+  font-family: 'Dana-Regular', Helvetica, Arial, serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  opacity: 1;
+  margin: 0;
+`;
+
+const BillNumberInput = styled.input`
   border: 1px solid var(--dove-gray);
   background-color: white;
   border-radius: 20px;
