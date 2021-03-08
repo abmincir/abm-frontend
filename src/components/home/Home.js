@@ -32,6 +32,7 @@ const Home = () => {
   const [fetchLoading, setFetchLoading] = useState(false);
   const [checkLoading, setCheckLoading] = useState(false);
 
+  const [message, setMessage] = useState('');
   const [showMassage, setShowMassage] = useState(false);
 
   const searchHandler = () => {
@@ -43,6 +44,7 @@ const Home = () => {
     };
 
     Axios.post('http://192.168.1.14:3000/bill/all', data)
+      // Axios.post('http://localhost:3000/bill/all', data)
       .then((result) => {
         console.log(result.data);
         setBills(result.data.bill);
@@ -51,7 +53,7 @@ const Home = () => {
         console.log(error);
       })
       .finally(() => {
-        setFetchLoading(false);
+        setSearchLoading(false);
       });
   };
 
@@ -64,21 +66,50 @@ const Home = () => {
     };
 
     Axios.post('http://192.168.1.14:3000/bill/update-db', data)
+      // Axios.post('http://localhost:3000/bill/update-db', data)
       .then((result) => {
         console.log(result);
         setBills(result.data.bill);
       })
       .catch((error) => {
         console.log(error);
+        const errorMessage = JSON.parse(error.request.response);
+        console.log(errorMessage.message);
       })
       .finally(() => {
         setFetchLoading(false);
       });
   };
 
-  const onCheckClick = (e) => {
-    e.stopPropagation();
+  const onCheckClick = (bill) => {
     setCheckLoading(true);
+
+    const data = {
+      _id: bill._id,
+      purchaseId: bill.purchaseId,
+      weight: bill.bill.weight,
+      billNumber: bill.bill.number,
+    };
+
+    Axios.post('http://192.168.1.14:3000/bill/estelam', data)
+      // Axios.post('http://localhost:3000/bill/estelam', data)
+      .then((result) => {
+        console.log(result);
+
+        searchHandler();
+
+        setMessage('استعلام موفقیت آمیز بود');
+        setShowMassage(true);
+      })
+      .catch((error) => {
+        const errorMessage = JSON.parse(error.request.response);
+        console.log(errorMessage);
+        setMessage(errorMessage.err);
+        setShowMassage(true);
+      })
+      .finally(() => {
+        setFetchLoading(false);
+      });
   };
 
   const switchModal = (bill) => {
@@ -127,10 +158,9 @@ const Home = () => {
           isOpen={checkLoading}
           onDidDismiss={() => {
             setCheckLoading(false);
-            setShowMassage(true);
           }}
           message={'در حال استعلام'}
-          duration={8000}
+          duration={4000}
         />
 
         <SideMenuContainer visible={visible}>
@@ -281,7 +311,12 @@ const Home = () => {
                   <DataValue>{bill.customer.name}</DataValue>
                 </NameColumn>
 
-                <StatusColumn onClick={onCheckClick}>
+                <StatusColumn
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onCheckClick(bill);
+                  }}
+                >
                   {bill.status === -1
                     ? unknown
                     : bill.status === 1
@@ -314,7 +349,7 @@ const Home = () => {
         isOpen={showMassage}
         cssClass="custom-toast"
         onDidDismiss={() => setShowMassage(false)}
-        message="عدم ارتباط با سامانه"
+        message={message}
         duration={1000}
       />
     </>
@@ -713,6 +748,10 @@ const DataRow = styled.div`
 
   &:first-of-type {
     margin-top: 10px;
+  }
+
+  &:last-of-type {
+    margin-bottom: 10px;
   }
 
   &:hover {

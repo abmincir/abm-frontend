@@ -10,14 +10,7 @@ const SignIn = () => {
   const [user, setUser] = useState('');
 
   const [pass, setPass] = useState('');
-  const data = {
-    username: user,
-    password: pass,
-  };
 
-  const headers = {
-    'Content-Type': 'application/json',
-  };
   const [isAdmin, setAdmin] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showMassage, setShowMassage] = useState(false);
@@ -34,6 +27,11 @@ const SignIn = () => {
 
   const userLoginHandler = (event) => {
     setLoading(true);
+
+    const data = {
+      username: user,
+      password: pass,
+    };
 
     // Axios.post('http://localhost:3000/user/auth', data)
     Axios.post('http://192.168.1.14:3000/user/auth', data)
