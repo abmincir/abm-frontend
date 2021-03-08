@@ -1,11 +1,15 @@
 import { IonLoading, IonToast } from '@ionic/react';
 import Axios from 'axios';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled, { css } from 'styled-components';
+import authContext from '../authContext';
 
 const SignIn = () => {
   const history = useHistory();
+
+  const { setAuthenticated } = useContext(authContext);
+  const handleLogin = (state) => setAuthenticated(state);
 
   const [user, setUser] = useState('');
 
@@ -13,16 +17,25 @@ const SignIn = () => {
 
   const [isAdmin, setAdmin] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const [showMassage, setShowMassage] = useState(false);
+  const [message, setMessage] = useState('');
 
   const adminLoginHandler = (event) => {
     setLoading(true);
     if (user === 'exon' && pass === 'Exon@123') {
       localStorage.setItem('isAdmin', 'true');
       localStorage.removeItem('userId');
+
+      handleLogin(1);
+      setMessage('با موفقیت وارد شدید');
+      setShowMassage(true);
       history.push('/home');
+    } else {
+      setMessage('رمز عبور یا نام کاربری نامعتبر');
+      setShowMassage(true);
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const userLoginHandler = (event) => {
@@ -40,77 +53,83 @@ const SignIn = () => {
         localStorage.setItem('username', res.data.user.username);
         localStorage.setItem('isAdmin', 'false');
 
+        handleLogin(0);
+        setMessage('با موفقیت وارد شدید');
         setShowMassage(true);
         history.push('/home');
       })
       .catch((err) => console.log(err.response))
       .finally(() => {
         setLoading(false);
+        setMessage('رمز عبور یا نام کاربری نامعتبر');
+        setShowMassage(true);
       });
   };
 
   return (
-    <Wrapper>
-      <IonLoading
-        cssClass="custom-loading"
-        isOpen={loading}
-        onDidDismiss={() => setLoading(false)}
-        message={'در حال ورود'}
-        duration={5000}
-      />
-      <Header isAdmin={isAdmin} />
-      <Content>
-        <SignInBox>
-          <SelectionBox>
-            <User onClick={() => setAdmin(false)} isAdmin={isAdmin}>
-              ورود کاربر
-            </User>
-            <MidLine></MidLine>
-            <Admin onClick={() => setAdmin(true)} isAdmin={isAdmin}>
-              ورود مدیر
-            </Admin>
-          </SelectionBox>
-          <FlexWrapper>
-            <UserName
-              type="text"
-              name="user"
-              id="user"
-              placeholder="نام کاربری"
-              value={user}
-              onChange={(u) => {
-                setUser(u.target.value);
-                console.log(u.target.value);
-              }}
-            ></UserName>
+    <React.Fragment>
+      <Wrapper>
+        <IonLoading
+          cssClass="custom-loading"
+          isOpen={loading}
+          onDidDismiss={() => setLoading(false)}
+          message={'در حال ورود'}
+          duration={5000}
+        />
+        <Header isAdmin={isAdmin} />
+        <Content>
+          <SignInBox>
+            <SelectionBox>
+              <User onClick={() => setAdmin(false)} isAdmin={isAdmin}>
+                ورود کاربر
+              </User>
+              <MidLine></MidLine>
+              <Admin onClick={() => setAdmin(true)} isAdmin={isAdmin}>
+                ورود مدیر
+              </Admin>
+            </SelectionBox>
+            <FlexWrapper>
+              <UserName
+                type="text"
+                name="user"
+                id="user"
+                placeholder="نام کاربری"
+                value={user}
+                onChange={(u) => {
+                  setUser(u.target.value);
+                  console.log(u.target.value);
+                }}
+              ></UserName>
 
-            <Password
-              type="password"
-              name="pass"
-              placeholder="رمز عبور"
-              value={pass}
-              onChange={(p) => {
-                setPass(p.target.value);
-                console.log(p.target.value);
-              }}
-            ></Password>
-            <Enter
-              type="button"
-              isAdmin={isAdmin}
-              onClick={isAdmin ? adminLoginHandler : userLoginHandler}
-            >
-              ورود
-            </Enter>
-          </FlexWrapper>
-        </SignInBox>
-      </Content>
-      <IonToast
-        isOpen={showMassage}
-        cssClass="custom-toast"
-        onDidDismiss={() => setShowMassage(false)}
-        message="با موفقیت وارد شدید"
-        duration={1000}
-      />
-    </Wrapper>
+              <Password
+                type="password"
+                name="pass"
+                placeholder="رمز عبور"
+                value={pass}
+                onChange={(p) => {
+                  setPass(p.target.value);
+                  console.log(p.target.value);
+                }}
+              ></Password>
+              <Enter
+                type="button"
+                isAdmin={isAdmin}
+                onClick={isAdmin ? adminLoginHandler : userLoginHandler}
+              >
+                ورود
+              </Enter>
+            </FlexWrapper>
+          </SignInBox>
+        </Content>
+        <IonToast
+          isOpen={showMassage}
+          cssClass="custom-toast"
+          onDidDismiss={() => setShowMassage(false)}
+          message={message}
+          duration={1000}
+        />
+      </Wrapper>
+    </React.Fragment>
   );
 };
 
