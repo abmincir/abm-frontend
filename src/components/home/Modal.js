@@ -1,4 +1,5 @@
 import { IonLoading, IonToast } from '@ionic/react';
+import Axios from 'axios';
 import React, { useState } from 'react';
 
 function Modal(props) {
@@ -16,11 +17,63 @@ function Modal(props) {
   const [checkLoading, setCheckLoading] = useState(false);
 
   const [showMassage, setShowMassage] = useState(false);
+  const [message, setMessage] = useState('عدم ارتباط با سامانه');
+
+  const [weight, setWeight] = useState(
+    bill && bill.merchantWeight ? bill.merchantWeight : ''
+  );
 
   const onCheckClick = (e) => {
     e.stopPropagation();
     setCheckLoading(true);
+
+    const data = {
+      _id: bill._id,
+      weight,
+    };
+
+    // Axios.post('http://192.168.1.14:3000/bill/edit', data)
+    Axios.post('http://localhost:3000/bill/edit', data)
+      .then((result) => {
+        console.log(result);
+
+        bill.merchantWeight = weight;
+
+        setMessage('ثبت تغیرات موفقیت آمیز بود');
+        setShowMassage(true);
+      })
+      .catch((error) => {
+        const errorMessage = JSON.parse(error.request.response);
+        console.log(errorMessage);
+        setMessage(errorMessage.err);
+        setShowMassage(true);
+      })
+      .finally(() => {
+        setCheckLoading(false);
+      });
   };
+
+  const statusMessage =
+    !bill || !bill.status
+      ? ''
+      : bill.status === -1
+      ? 'استعلام نشده'
+      : bill.status === 0
+      ? 'عدم تطابق وزن'
+      : bill.status === 1
+      ? 'استعلام موفق'
+      : 'ناموجود';
+
+  const statusClassName =
+    !bill || !bill.status
+      ? 'status'
+      : bill.status === -1
+      ? 'status'
+      : bill.status === 0
+      ? 'status orange-status'
+      : bill.status === 1
+      ? 'status green-status'
+      : 'status red-status';
 
   return (
     <div className="modal" onClick={closeModal} style={divStyle}>
@@ -29,8 +82,8 @@ function Modal(props) {
       </div>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="status-section">
-          <div className="status">
-            <p>وضیعت استعلام</p>
+          <div className={statusClassName}>
+            <p>{statusMessage}</p>
           </div>
         </div>
 
@@ -121,12 +174,19 @@ function Modal(props) {
               <p className="address-value">{bill.receiver.telAddress}</p>
             </div>
 
-            <div className="weight-row">
-              <input className="weight-input" type="number" />
-              <button className="submit-button" onClick={onCheckClick}>
-                ثبت وزن
-              </button>
-            </div>
+            {bill.status !== -1 && bill.status !== 2 && (
+              <div className="weight-row">
+                <input
+                  className="weight-input"
+                  type="number"
+                  value={weight}
+                  onChange={(e) => setWeight(e.target.value)}
+                />
+                <button className="submit-button" onClick={onCheckClick}>
+                  ثبت وزن
+                </button>
+              </div>
+            )}
           </div>
         )}
 
@@ -134,7 +194,7 @@ function Modal(props) {
           isOpen={showMassage}
           cssClass="custom-toast"
           onDidDismiss={() => setShowMassage(false)}
-          message="عدم ارتباط با سامانه"
+          message={message}
           duration={1000}
         />
         <IonLoading
@@ -142,7 +202,6 @@ function Modal(props) {
           isOpen={checkLoading}
           onDidDismiss={() => {
             setCheckLoading(false);
-            setShowMassage(true);
           }}
           message={'در حال ثبت تغیرات'}
           duration={8000}
