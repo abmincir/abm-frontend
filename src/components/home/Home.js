@@ -43,8 +43,8 @@ const Home = () => {
       billNumber,
     };
 
-    Axios.post('http://192.168.1.14:3000/bill/all', data)
-      // Axios.post('http://localhost:3000/bill/all', data)
+    // Axios.post('http://192.168.1.14:3000/bill/all', data)
+    Axios.post('http://localhost:3000/bill/all', data)
       .then((result) => {
         console.log(result.data);
         setBills(result.data.bill);
@@ -65,8 +65,8 @@ const Home = () => {
       endDate,
     };
 
-    Axios.post('http://192.168.1.14:3000/bill/update-db', data)
-      // Axios.post('http://localhost:3000/bill/update-db', data)
+    // Axios.post('http://192.168.1.14:3000/bill/update-db', data)
+    Axios.post('http://localhost:3000/bill/update-db', data)
       .then((result) => {
         console.log(result);
         setBills(result.data.bill);
@@ -91,8 +91,8 @@ const Home = () => {
       billNumber: bill.bill.number,
     };
 
-    Axios.post('http://192.168.1.14:3000/bill/estelam', data)
-      // Axios.post('http://localhost:3000/bill/estelam', data)
+    // Axios.post('http://192.168.1.14:3000/bill/estelam', data)
+    Axios.post('http://localhost:3000/bill/estelam', data)
       .then((result) => {
         console.log(result);
 
@@ -102,7 +102,6 @@ const Home = () => {
         setShowMassage(true);
       })
       .catch((error) => {
-        searchHandler();
         const errorMessage = JSON.parse(error.request.response);
         console.log(errorMessage);
         setMessage(errorMessage.err);
@@ -244,7 +243,6 @@ const Home = () => {
         </ButtonsContainer>
 
         <ColumnsSection>
-          <CheckBoxColumn></CheckBoxColumn>
           <Column>
             <ColumnsTitle>شناسه بازارگاه</ColumnsTitle>
           </Column>
@@ -284,7 +282,6 @@ const Home = () => {
                 fail={bill.status === 2}
                 onClick={() => switchModal(bill)}
               >
-                <CheckBoxColumn></CheckBoxColumn>
                 <Column>
                   <DataValue>
                     {bill.purchaseId ? bill.purchaseId : 'نامشخص'}
@@ -673,15 +670,6 @@ const ColumnsSection = styled.div`
   padding: 14px 48px 10px 48px;
 `;
 
-const CheckBoxColumn = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-basis: 0;
-  flex-grow: 1;
-  max-width: 24px;
-`;
-
 const Column = styled.div`
   display: flex;
   align-items: center;
@@ -690,6 +678,7 @@ const Column = styled.div`
   flex-grow: 1;
 `;
 
+//todo Get BLUR EFFECT
 const NameColumn = styled.div`
   display: flex;
   align-items: center;
@@ -697,6 +686,12 @@ const NameColumn = styled.div`
   flex-basis: 0;
   flex-grow: 1;
   min-width: 280px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 280px;
+  direction: rtl;
 `;
 
 const StatusColumn = styled.div`
@@ -756,7 +751,6 @@ const DataRow = styled.div`
   }
 
   &:hover {
-    transform: scale(1.025);
     cursor: pointer;
   }
 
@@ -798,6 +792,11 @@ const DataValue = styled.p`
   text-align: center;
   white-space: nowrap;
   margin: 0;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  direction: rtl;
 `;
 
 export default Home;
