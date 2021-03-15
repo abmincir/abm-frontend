@@ -102,6 +102,7 @@ const Home = () => {
         setShowMassage(true);
       })
       .catch((error) => {
+        searchHandler();
         const errorMessage = JSON.parse(error.request.response);
         console.log(errorMessage);
         setMessage(errorMessage.err);
