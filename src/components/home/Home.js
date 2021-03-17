@@ -135,6 +135,13 @@ const Home = () => {
     return momentTime.format('jYYYY/jMM/jDD');
   };
 
+  const onKeyPress = (e) => {
+    if (e.charCode === 13) {
+      e.preventDefault();
+      searchHandler();
+    }
+  };
+
   return (
     <>
       <Container>
@@ -222,6 +229,7 @@ const Home = () => {
               <DateText>شماره بارنامه</DateText>
               <BillNumberInput
                 onChange={(e) => setBillNumber(e.target.value)}
+                onKeyPress={onKeyPress}
               ></BillNumberInput>
 
               <DateText onClick={() => setStartDateCalendarOpen(true)}>

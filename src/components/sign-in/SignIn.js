@@ -1,6 +1,6 @@
 import { IonLoading, IonToast } from '@ionic/react';
 import Axios from 'axios';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import authContext from '../authContext';
@@ -20,6 +20,21 @@ const SignIn = () => {
 
   const [showMassage, setShowMassage] = useState(false);
   const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+    const isUser = !!localStorage.getItem('userId');
+
+    if (isAdmin) {
+      setAdmin(true);
+      handleLogin(1);
+      history.push('/home');
+    } else if (isUser) {
+      setAdmin(false);
+      handleLogin(0);
+      history.push('/home');
+    }
+  }, []);
 
   const adminLoginHandler = (event) => {
     setLoading(true);
@@ -66,6 +81,16 @@ const SignIn = () => {
       });
   };
 
+  const onKeyPress = (e) => {
+    if (e.charCode === 13) {
+      if (isAdmin) {
+        adminLoginHandler();
+      } else {
+        userLoginHandler();
+      }
+    }
+  };
+
   return (
     <React.Fragment>
       <Wrapper>
@@ -99,6 +124,7 @@ const SignIn = () => {
                   setUser(u.target.value);
                   console.log(u.target.value);
                 }}
+                onKeyPress={onKeyPress}
               ></UserName>
 
               <Password
@@ -110,6 +136,7 @@ const SignIn = () => {
                   setPass(p.target.value);
                   console.log(p.target.value);
                 }}
+                onKeyPress={onKeyPress}
               ></Password>
               <Enter
                 type="button"
