@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import '../change-pass/style.css';
 
+const URI = process.env.REST_ENDPOINT;
+
 function ChangePass() {
   return (
     <Changepassword
@@ -33,8 +35,7 @@ function Changepassword(props) {
   const setNewPassword = () => {
     setLoading(true);
 
-    // Axios.post('http://localhost:3000/user/changePassword', data)
-    Axios.post('http://192.168.1.14:3000/user/changePassword', data)
+    Axios.post(`${URI}/user/changePassword`, data)
       .then((res) => {
         console.log(res);
         history.push('/sign-in');

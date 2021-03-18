@@ -9,6 +9,8 @@ import styled, { css } from 'styled-components';
 import SideMenu from '../SideMenu/SideMenu';
 import Modal from './Modal';
 
+const URI = process.env.REST_ENDPOINT;
+
 const Home = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -43,8 +45,7 @@ const Home = () => {
       billNumber,
     };
 
-    // Axios.post('http://192.168.1.14:3000/bill/all', data)
-    Axios.post('http://localhost:3000/bill/all', data)
+    Axios.post(`${URI}/bill/all`, data)
       .then((result) => {
         console.log(result.data);
         setBills(result.data.bill);
@@ -65,8 +66,7 @@ const Home = () => {
       endDate,
     };
 
-    // Axios.post('http://192.168.1.14:3000/bill/update-db', data)
-    Axios.post('http://localhost:3000/bill/update-db', data)
+    Axios.post(`${URI}/bill/update-db`, data)
       .then((result) => {
         console.log(result);
         setBills(result.data.bill);
@@ -91,8 +91,7 @@ const Home = () => {
       billNumber: bill.bill.number,
     };
 
-    // Axios.post('http://192.168.1.14:3000/bill/estelam', data)
-    Axios.post('http://localhost:3000/bill/estelam', data)
+    Axios.post(`${URI}/bill/estelam`, data)
       .then((result) => {
         console.log(result);
 
@@ -170,11 +169,11 @@ const Home = () => {
           duration={4000}
         />
 
-        <SideMenuContainer visible={visible}>
-          <SideMenu setVisible={(visible, setVisible)} />
-        </SideMenuContainer>
-
         <BlurContainer onClick={() => setVisible(false)} visible={visible} />
+
+        <SideMenuContainer visible={visible}>
+          <SideMenu />
+        </SideMenuContainer>
 
         <Header isAdmin={isAdmin}>
           <div onClick={() => setVisible(!visible)}>{menu}</div>

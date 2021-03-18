@@ -5,6 +5,8 @@ import { useHistory } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import authContext from '../authContext';
 
+const URI = process.env.REST_ENDPOINT;
+
 const SignIn = () => {
   const history = useHistory();
 
@@ -61,8 +63,7 @@ const SignIn = () => {
       password: pass,
     };
 
-    // Axios.post('http://localhost:3000/user/auth', data)
-    Axios.post('http://192.168.1.14:3000/user/auth', data)
+    Axios.post(`${URI}/user/auth`, data)
       .then((res) => {
         localStorage.setItem('userId', res.data.user._id);
         localStorage.setItem('username', res.data.user.username);

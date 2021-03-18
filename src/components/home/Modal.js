@@ -2,6 +2,8 @@ import { IonLoading, IonToast } from '@ionic/react';
 import Axios from 'axios';
 import React, { useState } from 'react';
 
+const URI = process.env.REST_ENDPOINT;
+
 function Modal(props) {
   const divStyle = {
     display: props.displayModal ? 'block' : 'none',
@@ -32,8 +34,7 @@ function Modal(props) {
       weight,
     };
 
-    // Axios.post('http://192.168.1.14:3000/bill/edit', data)
-    Axios.post('http://localhost:3000/bill/edit', data)
+    Axios.post(`${URI}/bill/edit`, data)
       .then((result) => {
         console.log(result);
 

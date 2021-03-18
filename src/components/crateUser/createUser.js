@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import './style.css';
 
+const URI = process.env.REST_ENDPOINT;
+
 function CreateUser() {
   return (
     <CreateNewUser
@@ -47,8 +49,7 @@ function CreateNewUser(props) {
       password: pass,
     };
 
-    // Axios.post('http://localhost:3000/user/create', data)
-    Axios.post('http://192.168.1.14:3000/user/create', data)
+    Axios.post(`${URI}/user/create`, data)
       .then((result) => {
         history.push('/home');
       })
