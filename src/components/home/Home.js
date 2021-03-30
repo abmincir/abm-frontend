@@ -427,6 +427,9 @@ const Home = () => {
             <ColumnsTitle>تاریخ بارنامه</ColumnsTitle>
           </Column>
           <Column>
+            <ColumnsTitle>سریال بارنامه</ColumnsTitle>
+          </Column>
+          <Column>
             <ColumnsTitle>شماره بارنامه</ColumnsTitle>
           </Column>
           <Column>
@@ -468,6 +471,9 @@ const Home = () => {
                 </Column>
                 <Column>
                   <DataValue>{bill.bill.date}</DataValue>
+                </Column>
+                <Column>
+                  <DataValue>{bill.bill.serial}</DataValue>
                 </Column>
                 <Column>
                   <DataValue>{bill.bill.number}</DataValue>
