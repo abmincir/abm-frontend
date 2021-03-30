@@ -62,11 +62,13 @@ const Home = () => {
 
   const [bill, setBill] = useState();
   const [bills, setBills] = useState([]);
+  const [selectedBills, setSelectedBills] = useState([]);
 
   const [searchLoading, setSearchLoading] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(false);
   const [checkLoading, setCheckLoading] = useState(false);
 
+  const [inquiryMessage, setInquiryMessage] = useState('در حال استعلام');
   const [message, setMessage] = useState('');
   const [showMassage, setShowMassage] = useState(false);
 
@@ -85,7 +87,11 @@ const Home = () => {
     Axios.post(`${URI}/bill/all`, data)
       .then((result) => {
         console.log(result.data);
-        setBills(result.data.bill);
+        const fetchedBills = result.data.bill.map((bill) => {
+          return { ...bill, selected: false };
+        });
+        setBills(fetchedBills);
+        setSelectedBills([]);
       })
       .catch((error) => {
         console.log(error);
@@ -144,8 +150,48 @@ const Home = () => {
         setShowMassage(true);
       })
       .finally(() => {
+        setCheckLoading(false);
         setFetchLoading(false);
       });
+  };
+
+  const selectedBillsInquiry = async () => {
+    if (!selectedBills.length) {
+      setMessage('هیچ موردی انتخاب نشده است');
+      setShowMassage(true);
+      return;
+    }
+    for (let i = 0; i < selectedBills.length; i++) {
+      let bill = selectedBills[i];
+      const data = {
+        _id: bill._id,
+        purchaseId: bill.purchaseId,
+        weight: bill.bill.weight,
+        billNumber: bill.bill.number,
+      };
+
+      try {
+        setInquiryMessage(`در حال استعلام ${i + 1} از ${selectedBills.length}`);
+        setCheckLoading(true);
+        const result = await Axios.post(`${URI}/bill/estelam`, data);
+        console.log(result);
+
+        setMessage('استعلام موفقیت آمیز بود');
+        setShowMassage(true);
+      } catch (error) {
+        const errorMessage = JSON.parse(error.request.response);
+        console.log(errorMessage);
+        setMessage(errorMessage.err);
+        setShowMassage(true);
+      } finally {
+        setCheckLoading(false);
+        setFetchLoading(false);
+      }
+
+      if (i + 1 === selectedBills.length) {
+        searchHandler();
+      }
+    }
   };
 
   const switchModal = (bill) => {
@@ -202,7 +248,7 @@ const Home = () => {
           onDidDismiss={() => {
             setCheckLoading(false);
           }}
-          message={'در حال استعلام'}
+          message={inquiryMessage}
           duration={4000}
         />
 
@@ -233,22 +279,14 @@ const Home = () => {
             </ButtonsRow>
 
             <ButtonsRow>
-              <IonItem lines="none">
-                <IonLabel>وضیعت استعلام</IonLabel>
-                <IonSelect
-                  mode="md"
-                  value={statusFilter}
-                  okText="تایید"
-                  cancelText="لغو"
-                  onIonChange={(e) => setStatusFilter(e.detail.value)}
-                >
-                  <IonSelectOption value="-2">همه</IonSelectOption>
-                  <IonSelectOption value="-1">نامشخص</IonSelectOption>
-                  <IonSelectOption value="1">موجود</IonSelectOption>
-                  <IonSelectOption value="2">ناموحود</IonSelectOption>
-                  <IonSelectOption value="0">عدم تطابق وزن</IonSelectOption>
-                </IonSelect>
-              </IonItem>
+              <Button
+                onClick={selectedBillsInquiry}
+                color={selectedBills.length ? 'green' : 'gray'}
+              >
+                <ButtonText>
+                  استعلام {'( ' + selectedBills.length + ' )'}
+                </ButtonText>
+              </Button>
             </ButtonsRow>
           </Buttons>
 
@@ -410,10 +448,30 @@ const Home = () => {
                 )}
               </DateInput>
             </DateSection>
+
+            <DateSection>
+              <IonItem lines="none">
+                <IonLabel>وضیعت استعلام</IonLabel>
+                <IonSelect
+                  mode="md"
+                  value={statusFilter}
+                  okText="تایید"
+                  cancelText="لغو"
+                  onIonChange={(e) => setStatusFilter(e.detail.value)}
+                >
+                  <IonSelectOption value="-2">همه</IonSelectOption>
+                  <IonSelectOption value="-1">نامشخص</IonSelectOption>
+                  <IonSelectOption value="1">موجود</IonSelectOption>
+                  <IonSelectOption value="2">ناموحود</IonSelectOption>
+                  <IonSelectOption value="0">عدم تطابق وزن</IonSelectOption>
+                </IonSelect>
+              </IonItem>
+            </DateSection>
           </DateSectionContainer>
         </FiltersContainer>
 
         <ColumnsSection>
+          <CheckBoxColumn />
           <Column>
             <ColumnsTitle>شناسه بازارگاه</ColumnsTitle>
           </Column>
@@ -446,7 +504,7 @@ const Home = () => {
         </ColumnsSection>
 
         <RowsContainer>
-          {bills.map((bill) => {
+          {bills.map((bill, billIndex) => {
             return (
               <DataRow
                 id={bill._id}
@@ -456,6 +514,29 @@ const Home = () => {
                 fail={bill.status === 2}
                 onClick={() => switchModal(bill)}
               >
+                <CheckBoxColumn
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                >
+                  <Checkbox
+                    checked={bills[billIndex].selected}
+                    onChange={(e) => {
+                      setBills([
+                        ...bills.map((bill, index) => {
+                          if (index === billIndex) {
+                            bill.selected = e.target.checked;
+                          }
+                          return bill;
+                        }),
+                      ]);
+
+                      setSelectedBills([
+                        ...bills.filter((bill) => bill.selected),
+                      ]);
+                    }}
+                  ></Checkbox>
+                </CheckBoxColumn>
                 <Column>
                   <DataValue>
                     {bill.purchaseId ? bill.purchaseId : 'نامشخص'}
@@ -710,8 +791,8 @@ const Header = styled.div`
 const Buttons = styled.div`
   display: flex;
   flex-direction: column;
-  height: 140px;
-  justify-content: space-around;
+  height: 200px;
+  justify-content: space-between;
 `;
 
 const ButtonsRow = styled.div`
@@ -728,7 +809,7 @@ const FiltersContainer = styled.div`
 
   background-color: white;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.161);
-  height: 160px;
+  height: 240px;
   width: 100vw;
 
   padding: 0 48px;
@@ -783,7 +864,7 @@ const DateSectionContainer = styled.div`
   justify-content: space-around;
 
   width: calc(100% - 330px);
-  min-height: 140px;
+  min-height: 240px;
 `;
 
 const DateSection = styled.div`
@@ -883,6 +964,23 @@ const ColumnsSection = styled.div`
   min-height: 70px;
   width: 100%;
   padding: 14px 48px 10px 48px;
+`;
+
+const CheckBoxColumn = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  padding: 4px;
+  margin-right: 6px;
+  margin-bottom: 6px;
+  margin-top: 6px;
+`;
+
+const Checkbox = styled.input.attrs({ type: 'checkbox' })`
+  width: 100%;
+  height: 100%;
 `;
 
 const Column = styled.div`
