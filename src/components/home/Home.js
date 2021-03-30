@@ -482,6 +482,9 @@ const Home = () => {
             <ColumnsTitle>وزن بارنامه</ColumnsTitle>
           </Column>
           <Column>
+            <ColumnsTitle>تاریخ ثبت</ColumnsTitle>
+          </Column>
+          <Column>
             <ColumnsTitle>تاریخ بارنامه</ColumnsTitle>
           </Column>
           <Column>
@@ -549,6 +552,9 @@ const Home = () => {
                 </Column>
                 <Column>
                   <DataValue>{bill.bill.weight}</DataValue>
+                </Column>
+                <Column>
+                  <DataValue>{bill.saveDate}</DataValue>
                 </Column>
                 <Column>
                   <DataValue>{bill.bill.date}</DataValue>
