@@ -56,6 +56,7 @@ const SignIn = (props) => {
       .then((res) => {
         localStorage.setItem('userId', res.data.user._id);
         localStorage.setItem('username', res.data.user.username);
+        localStorage.setItem('name', res.data.user.name);
         localStorage.setItem('isAdmin', 'false');
 
         handleLogin(0);

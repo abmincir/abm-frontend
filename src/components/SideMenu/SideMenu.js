@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import './style.css';
 
 function App(props) {
-  const user = localStorage.getItem('username');
+  const user = localStorage.getItem('name');
   return (
     <Usermenu
       username={user}

@@ -22,6 +22,7 @@ export default CreateUser;
 
 function CreateNewUser(props) {
   const [nUser, newUser] = useState('');
+  const [name, setName] = useState('');
   const [pass, password] = useState('');
   const [rPass, repeatPass] = useState('');
   const [loading, setLoading] = useState(false);
@@ -46,6 +47,7 @@ function CreateNewUser(props) {
 
     const data = {
       username: nUser,
+      name: nUser,
       password: pass,
     };
 
@@ -84,6 +86,17 @@ function CreateNewUser(props) {
           onChange={(u) => {
             newUser(u.target.value);
             console.log(u.target.value);
+          }}
+        ></input>
+
+        <input
+          type="text"
+          placeholder={'نام'}
+          style={{ marginTop: '8px' }}
+          className="current-pass-txt dana-regular-normal-dove-gray-16px"
+          value={name}
+          onChange={(u) => {
+            setName(u.target.value);
           }}
         ></input>
 
