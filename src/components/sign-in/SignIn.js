@@ -1,13 +1,17 @@
 import { IonLoading, IonToast } from '@ionic/react';
 import Axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import authContext from '../authContext';
 
 const URI = process.env.REST_ENDPOINT;
 
-const SignIn = () => {
+const SignIn = (props) => {
+  const isAdmin = props.isAdmin;
+  const setToAdmin = props.setToAdmin;
+  const setToUser = props.setToUser;
+
   const history = useHistory();
 
   const { setAuthenticated } = useContext(authContext);
@@ -17,26 +21,10 @@ const SignIn = () => {
 
   const [pass, setPass] = useState('');
 
-  const [isAdmin, setAdmin] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const [showMassage, setShowMassage] = useState(false);
   const [message, setMessage] = useState('');
-
-  useEffect(() => {
-    const isAdmin = localStorage.getItem('isAdmin') === 'true';
-    const isUser = !!localStorage.getItem('userId');
-
-    if (isAdmin) {
-      setAdmin(true);
-      handleLogin(1);
-      history.push('/home');
-    } else if (isUser) {
-      setAdmin(false);
-      handleLogin(0);
-      history.push('/home');
-    }
-  }, []);
 
   const adminLoginHandler = (event) => {
     setLoading(true);
@@ -56,6 +44,7 @@ const SignIn = () => {
   };
 
   const userLoginHandler = (event) => {
+    console.log(props);
     setLoading(true);
 
     const data = {
@@ -93,62 +82,59 @@ const SignIn = () => {
   };
 
   return (
-    <React.Fragment>
+    <>
+      <IonLoading
+        cssClass="custom-loading"
+        isOpen={loading}
+        onDidDismiss={() => setLoading(false)}
+        message={'در حال ورود'}
+        duration={5000}
+      />
       <Wrapper>
-        <IonLoading
-          cssClass="custom-loading"
-          isOpen={loading}
-          onDidDismiss={() => setLoading(false)}
-          message={'در حال ورود'}
-          duration={5000}
-        />
-        <Header isAdmin={isAdmin} />
-        <Content>
-          <SignInBox>
-            <SelectionBox>
-              <User onClick={() => setAdmin(false)} isAdmin={isAdmin}>
-                ورود کاربر
-              </User>
-              <MidLine></MidLine>
-              <Admin onClick={() => setAdmin(true)} isAdmin={isAdmin}>
-                ورود مدیر
-              </Admin>
-            </SelectionBox>
-            <FlexWrapper>
-              <UserName
-                type="text"
-                name="user"
-                id="user"
-                placeholder="نام کاربری"
-                value={user}
-                onChange={(u) => {
-                  setUser(u.target.value);
-                  console.log(u.target.value);
-                }}
-                onKeyPress={onKeyPress}
-              ></UserName>
+        <SignInBox>
+          <SelectionBox>
+            <User onClick={setToUser} isAdmin={isAdmin}>
+              ورود کاربر
+            </User>
+            <MidLine></MidLine>
+            <Admin onClick={setToAdmin} isAdmin={isAdmin}>
+              ورود مدیر
+            </Admin>
+          </SelectionBox>
+          <FlexWrapper>
+            <UserName
+              type="text"
+              name="user"
+              id="user"
+              placeholder="نام کاربری"
+              value={user}
+              onChange={(u) => {
+                setUser(u.target.value);
+                console.log(u.target.value);
+              }}
+              onKeyPress={onKeyPress}
+            ></UserName>
 
-              <Password
-                type="password"
-                name="pass"
-                placeholder="رمز عبور"
-                value={pass}
-                onChange={(p) => {
-                  setPass(p.target.value);
-                  console.log(p.target.value);
-                }}
-                onKeyPress={onKeyPress}
-              ></Password>
-              <Enter
-                type="button"
-                isAdmin={isAdmin}
-                onClick={isAdmin ? adminLoginHandler : userLoginHandler}
-              >
-                ورود
-              </Enter>
-            </FlexWrapper>
-          </SignInBox>
-        </Content>
+            <Password
+              type="password"
+              name="pass"
+              placeholder="رمز عبور"
+              value={pass}
+              onChange={(p) => {
+                setPass(p.target.value);
+                console.log(p.target.value);
+              }}
+              onKeyPress={onKeyPress}
+            ></Password>
+            <Enter
+              type="button"
+              isAdmin={isAdmin}
+              onClick={isAdmin ? adminLoginHandler : userLoginHandler}
+            >
+              ورود
+            </Enter>
+          </FlexWrapper>
+        </SignInBox>
         <IonToast
           isOpen={showMassage}
           cssClass="custom-toast"
@@ -157,7 +143,7 @@ const SignIn = () => {
           duration={1000}
         />
       </Wrapper>
-    </React.Fragment>
+    </>
   );
 };
 
@@ -165,37 +151,14 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  justify-content: center;
 
   background-color: white;
 
   overflow: hidden;
 
-  height: 100%;
-  width: 100%;
-`;
-const Header = styled.div`
-  height: 66px;
-  width: 100%;
-  ${(props) =>
-    props.isAdmin
-      ? css`
-          background-color: rgba(112, 112, 112, 1) !important;
-        `
-      : css`
-          background-color: var(--caribbean-green);
-        `}
-`;
-
-const Content = styled.div`
-  display: flex;
   width: 100%;
   height: 100%;
-  flex-direction: row-reverse;
-  align-items: center;
-  justify-content: center;
-  align-content: center;
-  justify-items: center;
-  overflow: hidden;
 `;
 
 const SelectionBox = styled.div`
@@ -210,30 +173,26 @@ const SelectionBox = styled.div`
 `;
 
 const SignInBox = styled.div`
-  background-color: white;
-
   display: flex;
   flex-direction: column;
-
-  justify-content: flex-start;
   align-items: center;
 
-  margin-left: 0.96px;
-  margin-top: 159px;
-
-  min-width: 384px;
-
-  border-radius: 40px;
-  border: 1px solid var(--dove-gray);
   background-color: white;
+  border-radius: 40px;
+  background-color: white;
+  border: 1px solid var(--dove-gray);
+
+  margin-bottom: 70px;
 
   height: 316px;
   width: 384px;
+  min-width: 384px;
 
   font-family: 'Dana-Light';
   font-style: normal;
   font-weight: 300;
 `;
+
 const Admin = styled.div`
   pointer-events: auto;
   transition: all 0.5s ease;

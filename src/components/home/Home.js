@@ -9,18 +9,28 @@ import styled, { css } from 'styled-components';
 import SideMenu from '../SideMenu/SideMenu';
 import Modal from './Modal';
 
-const URI = process.env.REST_ENDPOINT;
+const URI = process.env.REACT_APP_REST_ENDPOINT;
 
 const Home = () => {
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [billNumber, setBillNumber] = useState('');
+  const today = moment().format('jYYYY/jMM/jDD');
 
-  const [calendarStartDate, setCalendarStartDate] = useState(null);
-  const [calendarEndDate, setCalendarEndDate] = useState(null);
+  const dateInfo = today.split('/');
+  const todayDate = {
+    day: +dateInfo[2],
+    month: +dateInfo[1],
+    year: +dateInfo[0],
+  };
+
+  const [startDate, setStartDate] = useState(today);
+  const [endDate, setEndDate] = useState(today);
+
+  const [calendarStartDate, setCalendarStartDate] = useState(todayDate);
+  const [calendarEndDate, setCalendarEndDate] = useState(todayDate);
 
   const [startDateCalendarOpen, setStartDateCalendarOpen] = useState(false);
   const [endDateCalendarOpen, setEndDateCalendarOpen] = useState(false);
+
+  const [billNumber, setBillNumber] = useState('');
 
   const [isShowingModal, setIsShowingModal] = useState(false);
 
@@ -197,6 +207,7 @@ const Home = () => {
               calendarClassName="custom-calendar"
               value={calendarStartDate}
               onChange={(value) => {
+                console.log({ raw: value, calc: calculateTime(value) });
                 setCalendarStartDate(value);
                 setStartDate(calculateTime(value));
                 setStartDateCalendarOpen(false);

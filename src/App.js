@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import './App.css';
+import authContext from './components/authContext';
 import ChangePass from './components/change-pass/ChangePass';
 import CreateUser from './components/crateUser/createUser';
 import Home from './components/home/Home';
@@ -9,76 +10,16 @@ import SideMenu from './components/SideMenu/SideMenu';
 import SignIn from './components/sign-in/SignIn';
 
 const App = () => {
-  const [authenticated, setAuthenticated] = useState(-1);
+  const { authenticated } = useContext(authContext);
 
   const [visible, setVisible] = useState(false);
   const [isAdmin, setAdmin] = useState(false);
 
+  const setToUser = () => setAdmin(false);
+  const setToAdmin = () => setAdmin(true);
+
   const AdminPages = (
-    <Switch>
-      <Route exact path="/">
-        <Redirect to="/home" />
-      </Route>
-
-      <Route path="/home">
-        <Home />
-      </Route>
-
-      <Route path="/sign-In">
-        <SignIn />
-      </Route>
-
-      <Route path="/create-user">
-        <Wrapper>
-          <AdminHeader />
-          <Content>
-            <CreateUser />
-          </Content>
-        </Wrapper>
-      </Route>
-
-      <Route path="/">
-        <Redirect to="/home" />
-      </Route>
-    </Switch>
-  );
-
-  const UserPages = (
-    <Switch>
-      <Route exact path="/">
-        <Redirect to="/home" />
-      </Route>
-
-      <Route path="/home">
-        <Home />
-      </Route>
-
-      <Route path="/sign-In">
-        <SignIn />
-      </Route>
-
-      <Route path="/change-password">
-        <Wrapper>
-          <Header />
-          <Content>
-            <ChangePass />
-          </Content>
-        </Wrapper>
-      </Route>
-
-      <Route path="/">
-        <Redirect to="/home" />
-      </Route>
-    </Switch>
-  );
-
-  const pages = (
     <BrowserRouter>
-      {/* {authenticated === 1 ? (
-          AdminPages
-        ) : authenticated === 0 ? (
-          UserPages
-        ) : ( */}
       <SideMenuContainer visible={visible}>
         <SideMenu />
       </SideMenuContainer>
@@ -88,19 +29,116 @@ const App = () => {
         <p>کشت و صنعت اکسون</p>
       </Header>
 
-      <Switch>
-        <Route path="/sign-In">
-          <SignIn />
-        </Route>
-        <Route path="/">
-          <Redirect to="/sign-in" />
-        </Route>
-      </Switch>
-      {/* )} */}
+      <Content>
+        <Switch>
+          <Route exact path="/">
+            <Redirect to="/home" />
+          </Route>
+
+          <Route path="/home">
+            <Home />
+          </Route>
+
+          <Route path="/create-user">
+            <Wrapper>
+              <CreateUser />
+            </Wrapper>
+          </Route>
+
+          <Route path="/sign-In">
+            <SignIn
+              isAdmin={isAdmin}
+              setToAdmin={setToAdmin}
+              setToUser={setToUser}
+            />
+          </Route>
+
+          <Route path="/">
+            <Redirect to="/home" />
+          </Route>
+        </Switch>
+      </Content>
     </BrowserRouter>
   );
 
-  return pages;
+  const UserPages = (
+    <BrowserRouter>
+      <SideMenuContainer visible={visible}>
+        <SideMenu />
+      </SideMenuContainer>
+
+      <Header isAdmin={isAdmin}>
+        <div onClick={() => setVisible(!visible)}>{menu}</div>
+        <p>کشت و صنعت اکسون</p>
+      </Header>
+
+      <Content>
+        <Switch>
+          <Route exact path="/">
+            <Redirect to="/home" />
+          </Route>
+
+          <Route path="/home">
+            <Home />
+          </Route>
+
+          <Route path="/change-password">
+            <Wrapper>
+              <Header />
+              <Content>
+                <ChangePass />
+              </Content>
+            </Wrapper>
+          </Route>
+
+          <Route path="/sign-In">
+            <SignIn
+              isAdmin={isAdmin}
+              setToAdmin={setToAdmin}
+              setToUser={setToUser}
+            />
+          </Route>
+
+          <Route path="/">
+            <Redirect to="/home" />
+          </Route>
+        </Switch>
+      </Content>
+    </BrowserRouter>
+  );
+
+  const LoginPages = (
+    <BrowserRouter>
+      <SideMenuContainer visible={visible}>
+        <SideMenu />
+      </SideMenuContainer>
+
+      <Header isAdmin={isAdmin}>
+        <p>کشت و صنعت اکسون</p>
+      </Header>
+
+      <Content>
+        <Switch>
+          <Route path="/sign-In">
+            <SignIn
+              isAdmin={isAdmin}
+              setToAdmin={setToAdmin}
+              setToUser={setToUser}
+            />
+          </Route>
+          <Route path="/">
+            <Redirect to="/sign-in" />
+          </Route>
+        </Switch>
+      </Content>
+    </BrowserRouter>
+  );
+
+  return authenticated === 1
+    ? AdminPages
+    : authenticated === 0
+    ? UserPages
+    : LoginPages;
 };
 
 export default App;
@@ -164,6 +202,7 @@ const Header = styled.div`
   width: 100vw;
   height: 70px;
   min-height: 70px;
+  max-height: 70px;
   padding-right: 48px;
 
   p {
@@ -180,6 +219,7 @@ const Header = styled.div`
 
     margin-right: 16px;
   }
+
   ${(props) =>
     props.isAdmin
       ? css`
@@ -190,15 +230,10 @@ const Header = styled.div`
         `}
 `;
 
-const AdminHeader = styled.div`
-  background-color: rgba(112, 112, 112, 1);
-  height: 66px;
-  width: 100%;
-`;
 const Content = styled.div`
   display: flex;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 70px);
   flex-direction: row-reverse;
   align-items: center;
   justify-content: center;
