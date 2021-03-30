@@ -1,4 +1,11 @@
-﻿import { IonLoading, IonToast } from '@ionic/react';
+﻿import {
+  IonItem,
+  IonLabel,
+  IonLoading,
+  IonSelect,
+  IonSelectOption,
+  IonToast,
+} from '@ionic/react';
 import { Dialog } from '@material-ui/core';
 import Axios from 'axios';
 import moment from 'moment-jalaali';
@@ -12,25 +19,41 @@ import Modal from './Modal';
 const URI = process.env.REACT_APP_REST_ENDPOINT;
 
 const Home = () => {
-  const today = moment().format('jYYYY/jMM/jDD');
+  // const today = moment().format('jYYYY/jMM/jDD');
 
-  const dateInfo = today.split('/');
-  const todayDate = {
-    day: +dateInfo[2],
-    month: +dateInfo[1],
-    year: +dateInfo[0],
-  };
+  // const dateInfo = today.split('/');
+  // const todayDate = {
+  //   day: +dateInfo[2],
+  //   month: +dateInfo[1],
+  //   year: +dateInfo[0],
+  // };
 
-  const [startDate, setStartDate] = useState(today);
-  const [endDate, setEndDate] = useState(today);
+  const [startDateBill, setStartDateBill] = useState('');
+  const [endDateBill, setEndDateBill] = useState('');
 
-  const [calendarStartDate, setCalendarStartDate] = useState(todayDate);
-  const [calendarEndDate, setCalendarEndDate] = useState(todayDate);
+  const [calendarStartDateBill, setCalendarStartDateBill] = useState(null);
+  const [calendarEndDateBill, setCalendarEndDateBill] = useState(null);
 
-  const [startDateCalendarOpen, setStartDateCalendarOpen] = useState(false);
-  const [endDateCalendarOpen, setEndDateCalendarOpen] = useState(false);
+  const [startDateCalendarOpenBill, setStartDateCalendarOpenBill] = useState(
+    false
+  );
+  const [endDateCalendarOpenBill, setEndDateCalendarOpenBill] = useState(false);
+
+  const [startDateSave, setStartDateSave] = useState('');
+  const [endDateSave, setEndDateSave] = useState('');
+
+  const [calendarStartDateSave, setCalendarStartDateSave] = useState(null);
+  const [calendarEndDateSave, setCalendarEndDateSave] = useState(null);
+
+  const [startDateCalendarOpenSave, setStartDateCalendarOpenSave] = useState(
+    false
+  );
+  const [endDateCalendarOpenSave, setEndDateCalendarOpenSave] = useState(false);
 
   const [billNumber, setBillNumber] = useState('');
+  const [purchaseNumber, setPurchaseNumber] = useState('');
+
+  const [statusFilter, setStatusFilter] = useState(-2);
 
   const [isShowingModal, setIsShowingModal] = useState(false);
 
@@ -50,9 +73,13 @@ const Home = () => {
   const searchHandler = () => {
     setSearchLoading(true);
     const data = {
-      startDate,
-      endDate,
+      startDateBill,
+      endDateBill,
+      startDateSave,
+      endDateSave,
       billNumber,
+      purchaseNumber,
+      status: statusFilter,
     };
 
     Axios.post(`${URI}/bill/all`, data)
@@ -72,8 +99,8 @@ const Home = () => {
     setFetchLoading(true);
 
     const data = {
-      startDate,
-      endDate,
+      startDate: startDateBill,
+      endDate: endDateBill,
     };
 
     Axios.post(`${URI}/bill/update-db`, data)
@@ -190,27 +217,52 @@ const Home = () => {
           <p>کشت و صنعت اکسون</p>
         </Header>
 
-        <ButtonsContainer>
-          <Button onClick={searchHandler} color={isAdmin ? 'gray' : 'green'}>
-            <ButtonText>جست و جو</ButtonText>
-          </Button>
+        <FiltersContainer>
+          <Buttons>
+            <ButtonsRow>
+              <Button
+                onClick={searchHandler}
+                color={isAdmin ? 'gray' : 'green'}
+              >
+                <ButtonText>جست و جو</ButtonText>
+              </Button>
 
-          <Button onClick={fetchHandler} color={isAdmin ? 'black' : 'gray'}>
-            <ButtonText>بروزرسانی</ButtonText>
-          </Button>
+              <Button onClick={fetchHandler} color={isAdmin ? 'black' : 'gray'}>
+                <ButtonText>بروزرسانی</ButtonText>
+              </Button>
+            </ButtonsRow>
+
+            <ButtonsRow>
+              <IonItem lines="none">
+                <IonLabel>وضیعت استعلام</IonLabel>
+                <IonSelect
+                  mode="md"
+                  value={statusFilter}
+                  okText="تایید"
+                  cancelText="لغو"
+                  onIonChange={(e) => setStatusFilter(e.detail.value)}
+                >
+                  <IonSelectOption value="-2">همه</IonSelectOption>
+                  <IonSelectOption value="-1">نامشخص</IonSelectOption>
+                  <IonSelectOption value="1">موجود</IonSelectOption>
+                  <IonSelectOption value="2">ناموحود</IonSelectOption>
+                  <IonSelectOption value="0">عدم تطابق وزن</IonSelectOption>
+                </IonSelect>
+              </IonItem>
+            </ButtonsRow>
+          </Buttons>
 
           <Dialog
-            open={startDateCalendarOpen}
-            onClose={() => setStartDateCalendarOpen(false)}
+            open={startDateCalendarOpenBill}
+            onClose={() => setStartDateCalendarOpenBill(false)}
           >
             <Calendar
               calendarClassName="custom-calendar"
-              value={calendarStartDate}
+              value={calendarStartDateBill}
               onChange={(value) => {
-                console.log({ raw: value, calc: calculateTime(value) });
-                setCalendarStartDate(value);
-                setStartDate(calculateTime(value));
-                setStartDateCalendarOpen(false);
+                setCalendarStartDateBill(value);
+                setStartDateBill(calculateTime(value));
+                setStartDateCalendarOpenBill(false);
               }}
               locale="fa"
               shouldHighlightWeekends
@@ -218,47 +270,148 @@ const Home = () => {
           </Dialog>
 
           <Dialog
-            open={endDateCalendarOpen}
-            onClose={() => setEndDateCalendarOpen(false)}
+            open={endDateCalendarOpenBill}
+            onClose={() => setEndDateCalendarOpenBill(false)}
           >
             <Calendar
               calendarClassName="custom-calendar"
-              value={calendarEndDate}
+              value={calendarEndDateBill}
               onChange={(value) => {
-                setCalendarEndDate(value);
-                setEndDate(calculateTime(value));
-                setEndDateCalendarOpen(false);
+                setCalendarEndDateBill(value);
+                setEndDateBill(calculateTime(value));
+                setEndDateCalendarOpenBill(false);
               }}
               locale="fa"
               shouldHighlightWeekends
             />
           </Dialog>
 
-          <DateSection>
-            <DateInput>
-              <DateText>شماره بارنامه</DateText>
-              <BillNumberInput
-                onChange={(e) => setBillNumber(e.target.value)}
-                onKeyPress={onKeyPress}
-              ></BillNumberInput>
+          <Dialog
+            open={startDateCalendarOpenSave}
+            onClose={() => setStartDateCalendarOpenSave(false)}
+          >
+            <Calendar
+              calendarClassName="custom-calendar"
+              value={calendarStartDateSave}
+              onChange={(value) => {
+                setCalendarStartDateSave(value);
+                setStartDateSave(calculateTime(value));
+                setStartDateCalendarOpenSave(false);
+              }}
+              locale="fa"
+              shouldHighlightWeekends
+            />
+          </Dialog>
 
-              <DateText onClick={() => setStartDateCalendarOpen(true)}>
-                از تاریخ
-              </DateText>
-              <DateValue onClick={() => setStartDateCalendarOpen(true)}>
-                {startDate || 'امروز'}
-              </DateValue>
+          <Dialog
+            open={endDateCalendarOpenSave}
+            onClose={() => setEndDateCalendarOpenSave(false)}
+          >
+            <Calendar
+              calendarClassName="custom-calendar"
+              value={calendarEndDateSave}
+              onChange={(value) => {
+                setCalendarEndDateSave(value);
+                setEndDateSave(calculateTime(value));
+                setEndDateCalendarOpenSave(false);
+              }}
+              locale="fa"
+              shouldHighlightWeekends
+            />
+          </Dialog>
 
-              <DateText onClick={() => setEndDateCalendarOpen(true)}>
-                تا تاریخ
-              </DateText>
+          <DateSectionContainer>
+            <DateSection>
+              <DateInput>
+                <DateText>شماره خرید</DateText>
+                <BillNumberInput
+                  onChange={(e) => setPurchaseNumber(e.target.value)}
+                  onKeyPress={onKeyPress}
+                ></BillNumberInput>
 
-              <DateValue onClick={() => setEndDateCalendarOpen(true)}>
-                {endDate || 'امروز'}
-              </DateValue>
-            </DateInput>
-          </DateSection>
-        </ButtonsContainer>
+                <DateText onClick={() => setStartDateCalendarOpenSave(true)}>
+                  تاریخ ثبت از
+                </DateText>
+                <DateValue onClick={() => setStartDateCalendarOpenSave(true)}>
+                  {startDateSave}
+                </DateValue>
+                {startDateSave && (
+                  <CloseButton
+                    onClick={() => {
+                      setStartDateSave('');
+                      setCalendarStartDateSave(null);
+                    }}
+                  >
+                    X
+                  </CloseButton>
+                )}
+
+                <DateText onClick={() => setEndDateCalendarOpenSave(true)}>
+                  تاریخ ثبت تا
+                </DateText>
+
+                <DateValue onClick={() => setEndDateCalendarOpenSave(true)}>
+                  {endDateSave}
+                </DateValue>
+                {endDateSave && (
+                  <CloseButton
+                    onClick={() => {
+                      setEndDateSave('');
+                      setCalendarEndDateSave(null);
+                    }}
+                  >
+                    X
+                  </CloseButton>
+                )}
+              </DateInput>
+            </DateSection>
+
+            <DateSection>
+              <DateInput>
+                <DateText>شماره بارنامه</DateText>
+                <BillNumberInput
+                  onChange={(e) => setBillNumber(e.target.value)}
+                  onKeyPress={onKeyPress}
+                ></BillNumberInput>
+
+                <DateText onClick={() => setStartDateCalendarOpenBill(true)}>
+                  تاریخ بارنامه از
+                </DateText>
+                <DateValue onClick={() => setStartDateCalendarOpenBill(true)}>
+                  {startDateBill}
+                </DateValue>
+                {startDateBill && (
+                  <CloseButton
+                    onClick={() => {
+                      setStartDateBill('');
+                      setCalendarStartDateBill(null);
+                    }}
+                  >
+                    X
+                  </CloseButton>
+                )}
+
+                <DateText onClick={() => setEndDateCalendarOpenBill(true)}>
+                  تاریخ بارنامه تا
+                </DateText>
+
+                <DateValue onClick={() => setEndDateCalendarOpenBill(true)}>
+                  {endDateBill}
+                </DateValue>
+                {endDateBill && (
+                  <CloseButton
+                    onClick={() => {
+                      setEndDateBill('');
+                      setCalendarEndDateBill(null);
+                    }}
+                  >
+                    X
+                  </CloseButton>
+                )}
+              </DateInput>
+            </DateSection>
+          </DateSectionContainer>
+        </FiltersContainer>
 
         <ColumnsSection>
           <Column>
@@ -548,14 +701,28 @@ const Header = styled.div`
         `}
 `;
 
-const ButtonsContainer = styled.div`
+const Buttons = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 140px;
+  justify-content: space-around;
+`;
+
+const ButtonsRow = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: center;
+`;
+
+const FiltersContainer = styled.div`
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
 
   background-color: white;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.161);
-  height: 80px;
+  height: 160px;
   width: 100vw;
 
   padding: 0 48px;
@@ -603,13 +770,23 @@ const ButtonText = styled.p`
   margin: 0;
 `;
 
+const DateSectionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+
+  width: calc(100% - 330px);
+  min-height: 140px;
+`;
+
 const DateSection = styled.div`
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
   justify-content: center;
 
-  width: calc(100% - 330px);
+  width: 100%;
   min-height: 70px;
 `;
 
@@ -638,7 +815,9 @@ const DateValue = styled.p`
   border-radius: 20px;
   height: 46px;
   opacity: 0.5;
-  width: 210px;
+  max-width: 155px;
+  min-width: 150px;
+  width: 155px;
   margin: 0 0 0 24px;
 
   display: flex;
@@ -656,13 +835,25 @@ const DateValue = styled.p`
   margin: 0;
 `;
 
+const CloseButton = styled.p`
+  border: 2px solid var(--dove-gray);
+  border-radius: 14px;
+  padding: 10px;
+  padding-right: 12px;
+  padding-left: 12px;
+  font-weight: bold;
+  margin-right: 10px;
+`;
+
 const BillNumberInput = styled.input`
   border: 1px solid var(--dove-gray);
   background-color: white;
   border-radius: 20px;
   height: 46px;
   opacity: 0.5;
-  width: 210px;
+  width: 135px;
+  max-width: 135px;
+  min-width: 133px;
   margin: 0 0 0 24px;
 
   display: flex;

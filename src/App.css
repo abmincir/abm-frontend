@@ -45,6 +45,39 @@
   font-family: 'Dana-Regular';
 }
 
+ion-item {
+  font-family: 'Dana-Regular';
+  direction: rtl;
+
+  border: 1px solid var(--dove-gray);
+  border-radius: 12px;
+
+  width: 270px;
+}
+
+* {
+  font-family: 'Dana-Regular' !important;
+}
+
+.alert-radio-group.sc-ion-alert-md,
+.alert-checkbox-group.sc-ion-alert-md {
+  max-height: 265px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.alert-head.sc-ion-alert-md {
+  direction: rtl !important;
+}
+
+.alert-radio-icon.sc-ion-alert-md {
+  left: -28px;
+}
+
+.alert-button-inner.sc-ion-alert-md {
+  direction: rtl;
+}
+
 .modal {
   font-family: 'Dana-Regular';
   background-color: rgb(0, 0, 0); /* Fallback color */
