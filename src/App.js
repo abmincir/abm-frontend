@@ -73,6 +73,9 @@ const App = () => {
 
           <AdminRoute path="/create-user" component={CreateUser} />
           <AdminRoute path="/all-user" component={AllUsers} />
+          <Route path="/">
+            <Redirect to={{ pathname: '/home' }} />
+          </Route>
         </Switch>
       </Content>
     </BrowserRouter>
