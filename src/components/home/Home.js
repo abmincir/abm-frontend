@@ -108,6 +108,13 @@ const Home = () => {
       endDate: endDateSave,
     };
 
+    console.log({
+      startDateBill,
+      endDateBill,
+      startDateSave,
+      endDateSave,
+    });
+
     Axios.post(`${URI}/bill/update-db`, data)
       .then((result) => {
         console.log(result);
