@@ -29,10 +29,10 @@
   display: flex;
   flex-direction: column;
 
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
 
-  margin-top: 159px;
+  margin: 0;
 }
 .change-password .current-pass-txt {
   border: 1px solid var(--dove-gray);

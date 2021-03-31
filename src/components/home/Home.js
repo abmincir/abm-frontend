@@ -13,7 +13,7 @@ import React, { useEffect, useState } from 'react';
 import { Calendar } from 'react-modern-calendar-datepicker';
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import styled, { css } from 'styled-components';
-import SideMenu from '../SideMenu/SideMenu';
+import SideMenu from '../side-menu/SideMenu';
 import Modal from './Modal';
 
 const URI = process.env.REACT_APP_REST_ENDPOINT;
@@ -27,7 +27,6 @@ const Home = () => {
   //   month: +dateInfo[1],
   //   year: +dateInfo[0],
   // };
-
   const [startDateBill, setStartDateBill] = useState('');
   const [endDateBill, setEndDateBill] = useState('');
 
@@ -200,7 +199,6 @@ const Home = () => {
   };
 
   useEffect(() => {
-    console.log('checked', localStorage.getItem('isAdmin'));
     setAdmin(localStorage.getItem('isAdmin') === 'true');
 
     searchHandler();
@@ -226,43 +224,42 @@ const Home = () => {
 
   return (
     <>
+      <IonLoading
+        cssClass="custom-loading"
+        isOpen={fetchLoading}
+        onDidDismiss={() => setFetchLoading(false)}
+        message={'در حال به روز رسانی'}
+        duration={5000}
+      />
+      <IonLoading
+        cssClass="custom-loading"
+        isOpen={searchLoading}
+        onDidDismiss={() => setSearchLoading(false)}
+        message={'در حال جستجو'}
+        duration={5000}
+      />
+
+      <IonLoading
+        cssClass="custom-loading"
+        isOpen={checkLoading}
+        onDidDismiss={() => {
+          setCheckLoading(false);
+        }}
+        message={inquiryMessage}
+        duration={4000}
+      />
+
+      <SideMenuContainer visible={visible}>
+        <SideMenu />
+      </SideMenuContainer>
+      <BlurContainer onClick={() => setVisible(false)} visible={visible} />
+
+      <Header isAdmin={isAdmin}>
+        <div onClick={() => setVisible(!visible)}>{menu}</div>
+        <p>کشت و صنعت اکسون</p>
+      </Header>
+
       <Container>
-        <IonLoading
-          cssClass="custom-loading"
-          isOpen={fetchLoading}
-          onDidDismiss={() => setFetchLoading(false)}
-          message={'در حال به روز رسانی'}
-          duration={5000}
-        />
-        <IonLoading
-          cssClass="custom-loading"
-          isOpen={searchLoading}
-          onDidDismiss={() => setSearchLoading(false)}
-          message={'در حال جستجو'}
-          duration={5000}
-        />
-
-        <IonLoading
-          cssClass="custom-loading"
-          isOpen={checkLoading}
-          onDidDismiss={() => {
-            setCheckLoading(false);
-          }}
-          message={inquiryMessage}
-          duration={4000}
-        />
-
-        <BlurContainer onClick={() => setVisible(false)} visible={visible} />
-
-        <SideMenuContainer visible={visible}>
-          <SideMenu />
-        </SideMenuContainer>
-
-        <Header isAdmin={isAdmin}>
-          <div onClick={() => setVisible(!visible)}>{menu}</div>
-          <p>کشت و صنعت اکسون</p>
-        </Header>
-
         <FiltersContainer>
           <Buttons>
             <ButtonsRow>
@@ -618,25 +615,6 @@ const Home = () => {
   );
 };
 
-const menu = (
-  <svg
-    xmlns="http://www.w4.org/2000/svg"
-    viewBox="0 0 24 24"
-    width="30"
-    height="30"
-    fill="none"
-    stroke="#FFF"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    class="feather feather-menu menu-animation menu-button"
-  >
-    <line x1="3" y1="12" x2="21" y2="12"></line>
-    <line x1="3" y1="6" x2="21" y2="6"></line>
-    <line x1="3" y1="18" x2="21" y2="18"></line>
-  </svg>
-);
-
 const success = (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
     <circle cx="25" cy="25" r="25" fill="#25e1a1" />
@@ -697,6 +675,43 @@ const fail = (
   </svg>
 );
 
+const SideMenuContainer = styled.div`
+  top: 0px;
+  right: -333px;
+  width: 333px;
+  height: 100%;
+  position: fixed;
+  z-index: 11;
+  transition: all 0.8s ease;
+  ${(props) =>
+    props.visible
+      ? css`
+          transform: translate(-333px, 0);
+        `
+      : css`
+          transform: translate(333px, 0);
+        `}
+`;
+
+const menu = (
+  <svg
+    xmlns="http://www.w4.org/2000/svg"
+    viewBox="0 0 24 24"
+    width="30"
+    height="30"
+    fill="none"
+    stroke="#FFF"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="feather feather-menu menu-animation menu-button"
+  >
+    <line x1="3" y1="12" x2="21" y2="12"></line>
+    <line x1="3" y1="6" x2="21" y2="6"></line>
+    <line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+);
+
 const BlurContainer = styled.div`
   with: 100%;
   height: 100%;
@@ -713,7 +728,7 @@ const BlurContainer = styled.div`
   overflow: auto; /* Enable scroll if needed */
   backdrop-filter: blur(3px);
   transition: all 0.8s ease;
-  z-index: 1;
+  z-index: 9;
 
   ${(props) =>
     props.visible
@@ -727,39 +742,11 @@ const BlurContainer = styled.div`
         `}
 `;
 
-const Container = styled.div`
-  align-items: center;
-  background-color: white;
+const Header = styled.div`
   position: fixed;
   top: 0;
-  right: 0;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  width: 100vw;
-  max-width: 100%;
-  overflow: hidden;
-`;
+  z-index: 10;
 
-const SideMenuContainer = styled.div`
-  top: 0px;
-  right: -333px;
-  width: 333px;
-  height: 100%;
-  position: fixed;
-  z-index: 2;
-  transition: all 0.8s ease;
-  ${(props) =>
-    props.visible
-      ? css`
-          transform: translate(-333px, 0);
-        `
-      : css`
-          transform: translate(333px, 0);
-        `}
-`;
-
-const Header = styled.div`
   display: flex;
   flex-direction: row-reverse;
   justify-content: flex-start;
@@ -768,6 +755,7 @@ const Header = styled.div`
   width: 100vw;
   height: 70px;
   min-height: 70px;
+  max-height: 70px;
   padding-right: 48px;
 
   p {
@@ -784,6 +772,7 @@ const Header = styled.div`
 
     margin-right: 16px;
   }
+
   ${(props) =>
     props.isAdmin
       ? css`
@@ -792,6 +781,20 @@ const Header = styled.div`
       : css`
           background-color: var(--caribbean-green);
         `}
+`;
+
+const Container = styled.div`
+  align-items: center;
+  background-color: white;
+  position: fixed;
+  top: 70px;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh -70px);
+  width: 100vw;
+  max-width: 100%;
+  overflow-y: hidden;
 `;
 
 const Buttons = styled.div`
@@ -1041,6 +1044,7 @@ const ColumnsTitle = styled.p`
 
 const RowsContainer = styled.div`
   width: 100%;
+  height: calc(100vh - 380px);
   overflow-y: scroll;
   overflow-x: hidden;
 `;

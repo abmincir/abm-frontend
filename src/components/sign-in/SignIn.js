@@ -1,22 +1,15 @@
 import { IonLoading, IonToast } from '@ionic/react';
 import Axios from 'axios';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import authContext from '../authContext';
 
-const URI = process.env.REST_ENDPOINT;
+const URI = process.env.REACT_APP_REST_ENDPOINT;
 
-const SignIn = (props) => {
-  const isAdmin = props.isAdmin;
-  const setToAdmin = props.setToAdmin;
-  const setToUser = props.setToUser;
-
+const SignIn = ({ setToAdmin, setToUser }) => {
   const history = useHistory();
 
-  const { setAuthenticated } = useContext(authContext);
-  const handleLogin = (state) => setAuthenticated(state);
-
+  const [isAdmin, setIsAdmin] = useState(false);
   const [user, setUser] = useState('');
 
   const [pass, setPass] = useState('');
@@ -30,9 +23,11 @@ const SignIn = (props) => {
     setLoading(true);
     if (user === 'exon' && pass === 'Exon@123') {
       localStorage.setItem('isAdmin', 'true');
-      localStorage.removeItem('userId');
 
-      handleLogin(1);
+      localStorage.removeItem('userId');
+      localStorage.removeItem('username');
+      localStorage.removeItem('name');
+
       setMessage('با موفقیت وارد شدید');
       setShowMassage(true);
       history.push('/home');
@@ -44,7 +39,6 @@ const SignIn = (props) => {
   };
 
   const userLoginHandler = (event) => {
-    console.log(props);
     setLoading(true);
 
     const data = {
@@ -59,7 +53,6 @@ const SignIn = (props) => {
         localStorage.setItem('name', res.data.user.name);
         localStorage.setItem('isAdmin', 'false');
 
-        handleLogin(0);
         setMessage('با موفقیت وارد شدید');
         setShowMassage(true);
         history.push('/home');
@@ -91,14 +84,29 @@ const SignIn = (props) => {
         message={'در حال ورود'}
         duration={5000}
       />
+
+      <Header isAdmin={isAdmin}>
+        <p>کشت و صنعت اکسون</p>
+      </Header>
+
       <Wrapper>
         <SignInBox>
           <SelectionBox>
-            <User onClick={setToUser} isAdmin={isAdmin}>
+            <User
+              onClick={() => {
+                setIsAdmin(false);
+              }}
+              isAdmin={isAdmin}
+            >
               ورود کاربر
             </User>
             <MidLine></MidLine>
-            <Admin onClick={setToAdmin} isAdmin={isAdmin}>
+            <Admin
+              onClick={() => {
+                setIsAdmin(true);
+              }}
+              isAdmin={isAdmin}
+            >
               ورود مدیر
             </Admin>
           </SelectionBox>
@@ -147,6 +155,43 @@ const SignIn = (props) => {
     </>
   );
 };
+
+const Header = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  align-items: center;
+
+  width: 100vw;
+  height: 70px;
+  min-height: 70px;
+  max-height: 70px;
+  padding-right: 48px;
+
+  p {
+    color: white;
+
+    letter-spacing: 0px;
+    text-align: center;
+    white-space: nowrap;
+
+    font-family: 'Dana-Bold', Helvetica, Arial, serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+
+    margin-right: 16px;
+  }
+
+  ${(props) =>
+    props.isAdmin
+      ? css`
+          background-color: rgba(112, 112, 112, 1) !important ;
+        `
+      : css`
+          background-color: var(--caribbean-green);
+        `}
+`;
 
 const Wrapper = styled.div`
   display: flex;

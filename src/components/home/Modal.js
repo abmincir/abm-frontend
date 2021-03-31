@@ -2,7 +2,7 @@ import { IonLoading, IonToast } from '@ionic/react';
 import Axios from 'axios';
 import React, { useState } from 'react';
 
-const URI = process.env.REST_ENDPOINT;
+const URI = process.env.REACT_APP_REST_ENDPOINT;
 
 function Modal(props) {
   const divStyle = {
