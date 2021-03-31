@@ -104,8 +104,8 @@ const Home = () => {
     setFetchLoading(true);
 
     const data = {
-      startDate: startDateBill,
-      endDate: endDateBill,
+      startDate: startDateSave,
+      endDate: endDateSave,
     };
 
     Axios.post(`${URI}/bill/update-db`, data)
