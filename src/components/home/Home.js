@@ -558,13 +558,13 @@ const Home = () => {
                   <DataValue>{bill.bill.weight}</DataValue>
                 </Column>
                 <Column>
-                  <DataValue>{bill.saveDate}</DataValue>
+                  <DataValue>{bill.saveDate ?? 'ناموجود'}</DataValue>
                 </Column>
                 <Column>
                   <DataValue>{bill.bill.date}</DataValue>
                 </Column>
                 <Column>
-                  <DataValue>{bill.bill.serial}</DataValue>
+                  <DataValue>{bill.bill.serial ?? 'ناموجود'}</DataValue>
                 </Column>
                 <Column>
                   <DataValue>{bill.bill.number}</DataValue>
