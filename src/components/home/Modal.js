@@ -86,7 +86,9 @@ function Modal(props) {
           </div>
 
           <div className={statusClassName}>
-            <p>{`آخرین پیام :‌ ${bill.lastMessage ?? 'بررسی نشده'}`}</p>
+            <p>{`آخرین پیام :‌ ${
+              bill ? bill.lastMessage ?? 'بررسی نشده' : 'ناموجود'
+            }`}</p>
           </div>
         </div>
 
