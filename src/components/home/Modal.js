@@ -25,7 +25,7 @@ function Modal(props) {
     bill && bill.merchantWeight ? bill.merchantWeight : ''
   );
 
-  const onCheckClick = (e) => {
+  const onCheckClick = async (e) => {
     e.stopPropagation();
     setCheckLoading(true);
 
@@ -34,24 +34,22 @@ function Modal(props) {
       weight,
     };
 
-    Axios.post(`${URI}/bill/edit`, data)
-      .then((result) => {
-        console.log(result);
+    try {
+      const result = await Axios.post(`${URI}/bill/edit`, data);
+      console.log(result);
 
-        bill.merchantWeight = weight;
+      bill.merchantWeight = weight;
 
-        setMessage('ثبت تغیرات موفقیت آمیز بود');
-        setShowMassage(true);
-      })
-      .catch((error) => {
-        const errorMessage = JSON.parse(error.request.response);
-        console.log(errorMessage);
-        setMessage(errorMessage.err);
-        setShowMassage(true);
-      })
-      .finally(() => {
-        setCheckLoading(false);
-      });
+      setMessage('ثبت تغیرات موفقیت آمیز بود');
+    } catch (error) {
+      const errorMessage = JSON.parse(error.request.response);
+      console.warn(errorMessage);
+
+      setMessage(errorMessage.err);
+    } finally {
+      setShowMassage(true);
+      setCheckLoading(false);
+    }
   };
 
   const statusMessage =
@@ -84,7 +82,11 @@ function Modal(props) {
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="status-section">
           <div className={statusClassName}>
-            <p>{statusMessage}</p>
+            <p>{`وضیعت استعلام : ${statusMessage}`}</p>
+          </div>
+
+          <div className={statusClassName}>
+            <p>{`آخرین پیام :‌ ${bill.lastMessage ?? 'بررسی نشده'}`}</p>
           </div>
         </div>
 
@@ -211,7 +213,5 @@ function Modal(props) {
     </div>
   );
 }
-
-Modal.propTypes = {};
 
 export default Modal;
