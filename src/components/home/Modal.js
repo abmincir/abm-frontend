@@ -125,11 +125,19 @@ function Modal(props) {
             </div>
 
             <div className="row">
+              <p className="field-title">سریال بارنامه</p>
+              <p className="field-value">{bill.bill.serial}</p>
+
+              <p className="field-title">شماره بارنامه</p>
+              <p className="field-value">{bill.bill.number ?? 'ناموجود'}</p>
+            </div>
+
+            <div className="row">
               <p className="field-title">تاریخ بارنامه</p>
               <p className="field-value">{bill.bill.date}</p>
 
-              <p className="field-title">شماره بارنامه</p>
-              <p className="field-value">{bill.bill.number}</p>
+              <p className="field-title">تاریخ ثبت</p>
+              <p className="field-value">{bill.saveDate ?? 'ناموجود'}</p>
             </div>
 
             <div className="row">
