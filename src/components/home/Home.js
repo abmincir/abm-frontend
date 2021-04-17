@@ -144,8 +144,6 @@ const Home = () => {
       .then((result) => {
         console.log(result);
 
-        searchHandler();
-
         setMessage('استعلام موفقیت آمیز بود');
         setShowMassage(true);
       })
@@ -163,6 +161,8 @@ const Home = () => {
         setShowMassage(true);
       })
       .finally(() => {
+        searchHandler();
+
         setCheckLoading(false);
         setFetchLoading(false);
       });
