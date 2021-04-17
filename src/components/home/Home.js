@@ -150,8 +150,15 @@ const Home = () => {
         setShowMassage(true);
       })
       .catch((error) => {
-        const errorMessage = JSON.parse(error.request.response);
+        let errorMessage = JSON.parse(error.request.response);
         console.log(errorMessage);
+
+        errorMessage = errorMessage ?? 'خطا در اتصال به بازارگاه';
+
+        if (errorMessage.insertError) {
+          setMessage(errorMessage.insertError);
+        }
+
         setMessage(errorMessage.err);
         setShowMassage(true);
       })
