@@ -1,7 +1,10 @@
 import Axios from 'axios';
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import SideMenu from '../side-menu/SideMenu';
+
+const URI = process.env.REACT_APP_REST_ENDPOINT;
 
 const AllUsers = () => {
   const [isAdmin, setIsAdmin] = useState(true);
@@ -10,27 +13,82 @@ const AllUsers = () => {
     { username: 'user1', userId: 'user1', pass: '123', key: 1 },
     { username: 'user2', userId: 'user2', pass: '123', key: 2 },
     { username: 'user3', userId: 'user3', pass: '123', key: 3 },
+    { username: 'user1', userId: 'user1', pass: '123', key: 1 },
+    { username: 'user2', userId: 'user2', pass: '123', key: 2 },
+    { username: 'user3', userId: 'user3', pass: '123', key: 3 },
+    { username: 'user1', userId: 'user1', pass: '123', key: 1 },
+    { username: 'user2', userId: 'user2', pass: '123', key: 2 },
+    { username: 'user3', userId: 'user3', pass: '123', key: 3 },
+    { username: 'user1', userId: 'user1', pass: '123', key: 1 },
+    { username: 'user2', userId: 'user2', pass: '123', key: 2 },
+    { username: 'user3', userId: 'user3', pass: '123', key: 3 },
+    { username: 'user1', userId: 'user1', pass: '123', key: 1 },
+    { username: 'user2', userId: 'user2', pass: '123', key: 2 },
+    { username: 'user3', userId: 'user3', pass: '123', key: 3 },
+    { username: 'user1', userId: 'user1', pass: '123', key: 1 },
+    { username: 'user2', userId: 'user2', pass: '123', key: 2 },
+    { username: 'user3', userId: 'user3', pass: '123', key: 3 },
+    { username: 'user1', userId: 'user1', pass: '123', key: 1 },
+    { username: 'user2', userId: 'user2', pass: '123', key: 2 },
+    { username: 'user3', userId: 'user3', pass: '123', key: 3 },
+    { username: 'user1', userId: 'user1', pass: '123', key: 1 },
+    { username: 'user2', userId: 'user2', pass: '123', key: 2 },
+    { username: 'user3', userId: 'user3', pass: '123', key: 3 },
+    { username: 'user1', userId: 'user1', pass: '123', key: 1 },
+    { username: 'user2', userId: 'user2', pass: '123', key: 2 },
+    { username: 'user3', userId: 'user3', pass: '123', key: 3 },
+    { username: 'user1', userId: 'user1', pass: '123', key: 1 },
+    { username: 'user2', userId: 'user2', pass: '123', key: 2 },
+    { username: 'user3', userId: 'user3', pass: '123', key: 3 },
+    { username: 'user1', userId: 'user1', pass: '123', key: 1 },
+    { username: 'user2', userId: 'user2', pass: '123', key: 2 },
+    { username: 'user3', userId: 'user3', pass: '123', key: 3 },
   ]);
-  const changeHandler = async () => {
+
+  const [isEditing, setIsEditing] = useState([false, false, false, false]);
+
+  const history = useHistory();
+
+  // const getAllUsers = async ()
+
+  const changeHandler = async (index) => {
+    if (isEditing[index]) {
+      setIsEditing(
+        [...isEditing].map((isE, indx) => {
+          if (indx === index) {
+            return !isE;
+          }
+
+          return isE;
+        })
+      );
+
+      return;
+    }
+
+    const { _id, username, name, password } = users[index];
+    const data = { _id, username, name, password };
+
     try {
-      const result = await Axios.post();
+      const result = await Axios.post(`${URI}/user/changeUser`, data);
+      console.log(result);
     } catch (error) {
     } finally {
     }
   };
-  const deleteUserHandler = async () => {
+
+  const deleteUserHandler = async (index) => {
+    const data = { _id: users[index]._id };
+
     try {
-      const result = await Axios.post();
+      await Axios.post(`${URI}/user/delete`, data);
     } catch (error) {
     } finally {
     }
   };
+
   const addUserHandler = async () => {
-    try {
-      const result = await Axios.post();
-    } catch (error) {
-    } finally {
-    }
+    history.push('/create-user');
   };
 
   return (
@@ -44,10 +102,11 @@ const AllUsers = () => {
         <div onClick={() => setVisible(!visible)}>{menu}</div>
         <p>کشت و صنعت اکسون</p>
       </Header>
+
       <Wrapper>
         <ColumnsSection>
           <Column>
-            <ColumnsTitle>نام </ColumnsTitle>
+            <ColumnsTitle>نام</ColumnsTitle>
           </Column>
           <Column>
             <ColumnsTitle>کد کاربری</ColumnsTitle>
@@ -63,28 +122,42 @@ const AllUsers = () => {
         </ColumnsSection>
 
         <RowsContainer>
-          {users.map((user) => (
+          {!users.length ? (
             <DataRow>
               <Column>
-                <DataValue>{user.username}</DataValue>
-              </Column>
-              <Column>
-                <DataValue>{user.userId}</DataValue>
-              </Column>
-
-              <Column>
-                <DataValue>{user.pass}</DataValue>
-              </Column>
-              <Column>
-                <Button onClick={deleteUserHandler} color="black">
-                  <ButtonText>حذف</ButtonText>
-                </Button>
-                <Button onClick={changeHandler} color="gray">
-                  <ButtonText>به روز رسانی</ButtonText>
-                </Button>
+                <DataValue>موردی یافت نشد</DataValue>
               </Column>
             </DataRow>
-          ))}
+          ) : (
+            users.map((user, index) => (
+              <DataRow>
+                <Column>
+                  <DataValue
+                    disabled={isEditing[index]}
+                    value={user.username}
+                  />
+                </Column>
+                <Column>
+                  <DataValue disabled={isEditing[index]} value={user.userId} />
+                </Column>
+
+                <Column>
+                  <DataValue disabled={isEditing[index]} value={user.pass} />
+                </Column>
+                <Column>
+                  <Button
+                    onClick={() => deleteUserHandler(index)}
+                    color="black"
+                  >
+                    <ButtonText>حذف</ButtonText>
+                  </Button>
+                  <Button onClick={() => changeHandler(index)} color="gray">
+                    <ButtonText>به روز رسانی</ButtonText>
+                  </Button>
+                </Column>
+              </DataRow>
+            ))
+          )}
         </RowsContainer>
       </Wrapper>
     </>
@@ -200,27 +273,34 @@ const Header = styled.div`
 `;
 
 const Wrapper = styled.div`
-  display: flex;
+  position: fixed;
+  top: 70px;
+
+  display: ;
   align-items: center;
   flex-direction: column;
 
   background-color: white;
 
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: scroll;
 
   height: 100%;
   width: 100%;
 `;
+
 const RowsContainer = styled.div`
   width: 100%;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  height: 100%;
+
+  overflow: hidden;
 `;
+
 const DataRow = styled.div`
   display: flex;
   flex-direction: row-reverse;
 
-  min-height: 47px;
+  min-height: 57px;
   width: calc(100% - 81px);
   padding: 0;
   margin-top: 18px;
@@ -247,7 +327,7 @@ const DataRow = styled.div`
   box-shadow: -2px 2px 8px 2px rgba(0, 0, 0, 0.1);
 `;
 
-const DataValue = styled.p`
+const DataValue = styled.input`
   color: inherit;
   font-family: 'Dana-Regular', Helvetica, Arial, serif;
   font-size: 20px;
@@ -257,11 +337,14 @@ const DataValue = styled.p`
   white-space: nowrap;
   margin: 0;
 
+  border-radius: 14px;
+
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
   direction: rtl;
 `;
+
 const Column = styled.div`
   display: flex;
   align-items: center;
@@ -269,16 +352,19 @@ const Column = styled.div`
   flex-basis: 0;
   flex-grow: 1;
 `;
+
 const ColumnsSection = styled.div`
   display: flex;
   flex-direction: row-reverse;
   min-height: 70px;
   width: 100%;
-  padding: 14px 48px 10px 48px;
+  padding: 14px 30px 10px 48px;
 `;
+
 const Button = styled.div`
   pointer-events: auto;
   transition: all 0.2s ease;
+
   &:hover {
     transform: scale(1.1);
     cursor: pointer;
@@ -298,7 +384,7 @@ const Button = styled.div`
         `}
 
   border-radius: 12px;
-  height: 30px;
+  height: 34px;
   width: 110px;
   display: flex;
   align-items: center;

@@ -72,7 +72,7 @@ const App = () => {
           <UserRoute exact path="/change-password" component={ChangePass} />
 
           <AdminRoute path="/create-user" component={CreateUser} />
-          <AdminRoute path="/all-user" component={AllUsers} />
+          <AdminRoute path="/all-users" component={AllUsers} />
           <Route path="/">
             <Redirect to={{ pathname: '/home' }} />
           </Route>

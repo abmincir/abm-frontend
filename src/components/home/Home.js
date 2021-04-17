@@ -243,14 +243,14 @@ const Home = () => {
         isOpen={fetchLoading}
         onDidDismiss={() => setFetchLoading(false)}
         message={'در حال به روز رسانی'}
-        duration={5000}
+        duration={10000}
       />
       <IonLoading
         cssClass="custom-loading"
         isOpen={searchLoading}
         onDidDismiss={() => setSearchLoading(false)}
         message={'در حال جستجو'}
-        duration={5000}
+        duration={10000}
       />
 
       <IonLoading
@@ -260,7 +260,7 @@ const Home = () => {
           setCheckLoading(false);
         }}
         message={inquiryMessage}
-        duration={4000}
+        duration={10000}
       />
 
       <SideMenuContainer visible={visible}>
@@ -623,7 +623,7 @@ const Home = () => {
         cssClass="custom-toast"
         onDidDismiss={() => setShowMassage(false)}
         message={message}
-        duration={1000}
+        duration={6000}
       />
     </>
   );
