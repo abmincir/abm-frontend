@@ -17,7 +17,7 @@ import SideMenu from '../side-menu/SideMenu';
 import Modal from './Modal';
 
 const URI = process.env.REACT_APP_REST_ENDPOINT;
-
+let billsCheckAllVari = false;
 const Home = () => {
   // const today = moment().format('jYYYY/jMM/jDD');
 
@@ -236,6 +236,28 @@ const Home = () => {
     }
   };
 
+  const checkAllHandler = () => {
+    setBills([
+      ...bills.map((bill) => {
+        bill.selected = !billsCheckAllVari;
+        return bill;
+      }),
+    ]);
+    if (!billsCheckAllVari) {
+      setSelectedBills([bills]);
+    } else {
+      setSelectedBills([]);
+    }
+
+    billsCheckAllVari = !billsCheckAllVari;
+  };
+  let totalWeight = 0;
+  if (bills.length) {
+    totalWeight = bills
+      .map((bill) => +bill.weight)
+      .reduce((totalWeight, billWeight) => totalWeight + billWeight);
+  }
+
   return (
     <>
       <IonLoading
@@ -290,6 +312,12 @@ const Home = () => {
             </ButtonsRow>
 
             <ButtonsRow>
+              <CheckAllBox
+                onClick={checkAllHandler}
+                color={isAdmin ? 'black' : 'gray'}
+              >
+                <CheckAllTxt>انتخاب همه</CheckAllTxt>
+              </CheckAllBox>
               <Button
                 onClick={selectedBillsInquiry}
                 color={selectedBills.length ? 'green' : 'gray'}
@@ -299,6 +327,21 @@ const Home = () => {
                 </ButtonText>
               </Button>
             </ButtonsRow>
+
+            <ShowTotalRow>
+              <ShowTotal>
+                <ShowTotalText>
+                  بارنامه های پیدا شده : {'( ' + bills.length + ' )'}
+                </ShowTotalText>
+              </ShowTotal>
+            </ShowTotalRow>
+            <ShowTotalRow>
+              <ShowTotal>
+                <ShowTotalText>
+                  مجموع وزن بارنامه ها : {'( ' + totalWeight + ' )'}
+                </ShowTotalText>
+              </ShowTotal>
+            </ShowTotalRow>
           </Buttons>
 
           <Dialog
@@ -1136,4 +1179,78 @@ const DataValue = styled.p`
   direction: rtl;
 `;
 
+// updated
+const CheckAllBox = styled.div`
+  pointer-events: auto;
+  transition: all 0.2s ease;
+  &:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+  }
+
+  ${(props) =>
+    props.color === 'gray'
+      ? css`
+          background: var(--dove-gray);
+        `
+      : props.color === 'green'
+      ? css`
+          background: var(--caribbean-green);
+        `
+      : css`
+          background: black;
+        `}
+
+  border-radius: 12px;
+  height: 44px;
+  width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-left: 16px;
+`;
+
+const CheckAllTxt = styled.p`
+  color: white;
+  font-family: 'Dana-Regular', Helvetica, Arial, serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  margin: 0;
+`;
+
+const ShowTotal = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+  justify-content: space-between;
+  cursor: default;
+  border-radius: 12px;
+  height: 44px;
+  width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 16px;
+`;
+
+const ShowTotalRow = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: center;
+`;
+const ShowTotalText = styled.p`
+  color: black;
+  font-family: 'Dana-Regular', Helvetica, Arial, serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  margin: 0;
+`;
 export default Home;
