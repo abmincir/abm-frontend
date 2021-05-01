@@ -516,7 +516,7 @@ const Home = () => {
                   <IonSelectOption value="-2">همه</IonSelectOption>
                   <IonSelectOption value="-1">نامشخص</IonSelectOption>
                   <IonSelectOption value="1">موجود</IonSelectOption>
-                  <IonSelectOption value="2">ناموحود</IonSelectOption>
+                  <IonSelectOption value="2">ناموجود</IonSelectOption>
                   <IonSelectOption value="0">عدم تطابق وزن</IonSelectOption>
                 </IonSelect>
               </IonItem>
