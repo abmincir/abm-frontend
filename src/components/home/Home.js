@@ -17,7 +17,6 @@ import SideMenu from '../side-menu/SideMenu';
 import Modal from './Modal';
 
 const URI = process.env.REACT_APP_REST_ENDPOINT;
-let billsCheckAllVari = false;
 const Home = () => {
   // const today = moment().format('jYYYY/jMM/jDD');
 
@@ -33,9 +32,7 @@ const Home = () => {
   const [calendarStartDateBill, setCalendarStartDateBill] = useState(null);
   const [calendarEndDateBill, setCalendarEndDateBill] = useState(null);
 
-  const [startDateCalendarOpenBill, setStartDateCalendarOpenBill] = useState(
-    false
-  );
+  const [startDateCalendarOpenBill, setStartDateCalendarOpenBill] = useState(false);
   const [endDateCalendarOpenBill, setEndDateCalendarOpenBill] = useState(false);
 
   const [startDateSave, setStartDateSave] = useState('');
@@ -44,9 +41,7 @@ const Home = () => {
   const [calendarStartDateSave, setCalendarStartDateSave] = useState(null);
   const [calendarEndDateSave, setCalendarEndDateSave] = useState(null);
 
-  const [startDateCalendarOpenSave, setStartDateCalendarOpenSave] = useState(
-    false
-  );
+  const [startDateCalendarOpenSave, setStartDateCalendarOpenSave] = useState(false);
   const [endDateCalendarOpenSave, setEndDateCalendarOpenSave] = useState(false);
 
   const [billNumber, setBillNumber] = useState('');
@@ -60,8 +55,11 @@ const Home = () => {
   const [isAdmin, setAdmin] = useState(false);
 
   const [bill, setBill] = useState();
+  const [isAllSelected, setAllSelected] = useState(false);
   const [bills, setBills] = useState([]);
   const [selectedBills, setSelectedBills] = useState([]);
+
+  const [totalWeight, setTotalWeight] = useState(0);
 
   const [searchLoading, setSearchLoading] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(false);
@@ -90,6 +88,15 @@ const Home = () => {
           return { ...bill, selected: false };
         });
         setBills(fetchedBills);
+
+        if (bills.length) {
+          setTotalWeight(
+            bills
+              .map((bill) => +bill.weight)
+              .reduce((totalWeight, billWeight) => totalWeight + billWeight),
+          );
+        }
+
         setSelectedBills([]);
       })
       .catch((error) => {
@@ -237,26 +244,17 @@ const Home = () => {
   };
 
   const checkAllHandler = () => {
+    setAllSelected(!isAllSelected);
+
     setBills([
       ...bills.map((bill) => {
-        bill.selected = !billsCheckAllVari;
+        bill.selected = isAllSelected;
         return bill;
       }),
     ]);
-    if (!billsCheckAllVari) {
-      setSelectedBills([bills]);
-    } else {
-      setSelectedBills([]);
-    }
 
-    billsCheckAllVari = !billsCheckAllVari;
+    setSelectedBills([...bills.filter((bill) => bill.selected)]);
   };
-  let totalWeight = 0;
-  if (bills.length) {
-    totalWeight = bills
-      .map((bill) => +bill.weight)
-      .reduce((totalWeight, billWeight) => totalWeight + billWeight);
-  }
 
   return (
     <>
@@ -299,10 +297,7 @@ const Home = () => {
         <FiltersContainer>
           <Buttons>
             <ButtonsRow>
-              <Button
-                onClick={searchHandler}
-                color={isAdmin ? 'gray' : 'green'}
-              >
+              <Button onClick={searchHandler} color={isAdmin ? 'gray' : 'green'}>
                 <ButtonText>جست و جو</ButtonText>
               </Button>
 
@@ -312,19 +307,14 @@ const Home = () => {
             </ButtonsRow>
 
             <ButtonsRow>
-              <CheckAllBox
-                onClick={checkAllHandler}
-                color={isAdmin ? 'black' : 'gray'}
-              >
+              <CheckAllBox onClick={checkAllHandler} color={isAdmin ? 'black' : 'gray'}>
                 <CheckAllTxt>انتخاب همه</CheckAllTxt>
               </CheckAllBox>
               <Button
                 onClick={selectedBillsInquiry}
                 color={selectedBills.length ? 'green' : 'gray'}
               >
-                <ButtonText>
-                  استعلام {'( ' + selectedBills.length + ' )'}
-                </ButtonText>
+                <ButtonText>استعلام {'( ' + selectedBills.length + ' )'}</ButtonText>
               </Button>
             </ButtonsRow>
 
@@ -588,21 +578,15 @@ const Home = () => {
                         }),
                       ]);
 
-                      setSelectedBills([
-                        ...bills.filter((bill) => bill.selected),
-                      ]);
+                      setSelectedBills([...bills.filter((bill) => bill.selected)]);
                     }}
                   ></Checkbox>
                 </CheckBoxColumn>
                 <Column>
-                  <DataValue>
-                    {bill.purchaseId ? bill.purchaseId : 'نامشخص'}
-                  </DataValue>
+                  <DataValue>{bill.purchaseId ? bill.purchaseId : 'نامشخص'}</DataValue>
                 </Column>
                 <Column>
-                  <DataValue>
-                    {bill.spsWeight ? bill.spsWeight : 'نامشخص'}
-                  </DataValue>
+                  <DataValue>{bill.spsWeight ? bill.spsWeight : 'نامشخص'}</DataValue>
                 </Column>
                 <Column>
                   <DataValue>{bill.bill.weight}</DataValue>
@@ -655,11 +639,7 @@ const Home = () => {
         </RowsContainer>
       </Container>
 
-      <Modal
-        bill={bill}
-        displayModal={isShowingModal}
-        closeModal={switchModal}
-      />
+      <Modal bill={bill} displayModal={isShowingModal} closeModal={switchModal} />
 
       <IonToast
         isOpen={showMassage}
