@@ -32,7 +32,8 @@ const Home = () => {
   const [calendarStartDateBill, setCalendarStartDateBill] = useState(null);
   const [calendarEndDateBill, setCalendarEndDateBill] = useState(null);
 
-  const [startDateCalendarOpenBill, setStartDateCalendarOpenBill] = useState(false);
+  const [startDateCalendarOpenBill, setStartDateCalendarOpenBill] =
+    useState(false);
   const [endDateCalendarOpenBill, setEndDateCalendarOpenBill] = useState(false);
 
   const [startDateSave, setStartDateSave] = useState('');
@@ -41,9 +42,11 @@ const Home = () => {
   const [calendarStartDateSave, setCalendarStartDateSave] = useState(null);
   const [calendarEndDateSave, setCalendarEndDateSave] = useState(null);
 
-  const [startDateCalendarOpenSave, setStartDateCalendarOpenSave] = useState(false);
+  const [startDateCalendarOpenSave, setStartDateCalendarOpenSave] =
+    useState(false);
   const [endDateCalendarOpenSave, setEndDateCalendarOpenSave] = useState(false);
 
+  const [productName, setProductName] = useState('');
   const [billNumber, setBillNumber] = useState('');
   const [purchaseNumber, setPurchaseNumber] = useState('');
 
@@ -79,6 +82,7 @@ const Home = () => {
       billNumber,
       purchaseNumber,
       status: statusFilter,
+      productName,
     };
 
     Axios.post(`${URI}/bill/all`, data)
@@ -93,7 +97,7 @@ const Home = () => {
           setTotalWeight(
             bills
               .map((bill) => +bill.weight)
-              .reduce((totalWeight, billWeight) => totalWeight + billWeight),
+              .reduce((totalWeight, billWeight) => totalWeight + billWeight)
           );
         }
 
@@ -297,7 +301,10 @@ const Home = () => {
         <FiltersContainer>
           <Buttons>
             <ButtonsRow>
-              <Button onClick={searchHandler} color={isAdmin ? 'gray' : 'green'}>
+              <Button
+                onClick={searchHandler}
+                color={isAdmin ? 'gray' : 'green'}
+              >
                 <ButtonText>جست و جو</ButtonText>
               </Button>
 
@@ -307,14 +314,19 @@ const Home = () => {
             </ButtonsRow>
 
             <ButtonsRow>
-              <CheckAllBox onClick={checkAllHandler} color={isAdmin ? 'black' : 'gray'}>
+              <CheckAllBox
+                onClick={checkAllHandler}
+                color={isAdmin ? 'black' : 'gray'}
+              >
                 <CheckAllTxt>انتخاب همه</CheckAllTxt>
               </CheckAllBox>
               <Button
                 onClick={selectedBillsInquiry}
                 color={selectedBills.length ? 'green' : 'gray'}
               >
-                <ButtonText>استعلام {'( ' + selectedBills.length + ' )'}</ButtonText>
+                <ButtonText>
+                  استعلام {'( ' + selectedBills.length + ' )'}
+                </ButtonText>
               </Button>
             </ButtonsRow>
 
@@ -450,6 +462,13 @@ const Home = () => {
 
             <DateSection>
               <DateInput>
+                <DateText>نام کالا</DateText>
+                <BillNumberInput
+                  style={{ 'font-size': '16px' }}
+                  onChange={(e) => setProductName(e.target.value)}
+                  onKeyPress={onKeyPress}
+                ></BillNumberInput>
+
                 <DateText>شماره بارنامه</DateText>
                 <BillNumberInput
                   onChange={(e) => setBillNumber(e.target.value)}
@@ -578,15 +597,21 @@ const Home = () => {
                         }),
                       ]);
 
-                      setSelectedBills([...bills.filter((bill) => bill.selected)]);
+                      setSelectedBills([
+                        ...bills.filter((bill) => bill.selected),
+                      ]);
                     }}
                   ></Checkbox>
                 </CheckBoxColumn>
                 <Column>
-                  <DataValue>{bill.purchaseId ? bill.purchaseId : 'نامشخص'}</DataValue>
+                  <DataValue>
+                    {bill.purchaseId ? bill.purchaseId : 'نامشخص'}
+                  </DataValue>
                 </Column>
                 <Column>
-                  <DataValue>{bill.spsWeight ? bill.spsWeight : 'نامشخص'}</DataValue>
+                  <DataValue>
+                    {bill.spsWeight ? bill.spsWeight : 'نامشخص'}
+                  </DataValue>
                 </Column>
                 <Column>
                   <DataValue>{bill.bill.weight}</DataValue>
@@ -639,7 +664,11 @@ const Home = () => {
         </RowsContainer>
       </Container>
 
-      <Modal bill={bill} displayModal={isShowingModal} closeModal={switchModal} />
+      <Modal
+        bill={bill}
+        displayModal={isShowingModal}
+        closeModal={switchModal}
+      />
 
       <IonToast
         isOpen={showMassage}
