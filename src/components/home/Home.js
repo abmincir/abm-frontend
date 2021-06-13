@@ -1130,11 +1130,11 @@ const DataRow = styled.div`
   display: flex;
   flex-direction: row-reverse;
 
-  min-height: 66px;
-  width: calc(100% - 81px);
+  min-height: 50px;
+  width: calc(100% - 73px);
   padding: 0;
   margin-top: 9px;
-  margin-left: 48px;
+  margin-left: 40px;
 
   background-color: white;
   border-radius: 12px;
@@ -1146,9 +1146,11 @@ const DataRow = styled.div`
     margin-top: 10px;
   }
 
+  // to make last one standout
   &:last-of-type {
+    width: calc(100% - 33px);
+    margin-left: 22px;
     margin-bottom: 10px;
-    border: 1px solid #696969;
   }
 
   &:hover {
@@ -1159,28 +1161,28 @@ const DataRow = styled.div`
     props.success &&
     css`
       color: var(--green);
-      box-shadow: -2px 2px 8px 2px rgba(37, 255, 161, 0.2);
+      box-shadow: -1px 1px 5px 1px rgba(37, 255, 161, 0.2);
     `}
 
   ${(props) =>
     props.warning &&
     css`
       color: var(--pizazz);
-      box-shadow: -2px 2px 8px 2px rgba(255, 145, 0, 0.2);
+      box-shadow: -1px 1px 5px 1px rgba(255, 145, 0, 0.2);
     `}
 
   ${(props) =>
     props.fail &&
     css`
       color: var(--bittersweet);
-      box-shadow: -2px 2px 8px 2px rgba(255, 107, 107, 0.2);
+      box-shadow: -1px 1px 5px 1px rgba(255, 107, 107, 0.2);
     `}
 
   ${(props) =>
     props.unknown &&
     css`
       color: var(--dove-gray);
-      box-shadow: -2px 2px 8px 2px rgba(0, 0, 0, 0.1);
+      box-shadow: -1px 1px 5px 1px rgba(0, 0, 0, 0.1);
     `}
 `;
 
