@@ -96,7 +96,10 @@ const Home = () => {
         if (bills.length) {
           setTotalWeight(
             bills
-              .map((bill) => +bill.weight)
+              .map((bill) => {
+                console.log(+bill.bill.weight, bill.bill.weight, bill);
+                return +bill.bill.weight;
+              })
               .reduce((totalWeight, billWeight) => totalWeight + billWeight)
           );
         }
@@ -340,7 +343,8 @@ const Home = () => {
             <ShowTotalRow>
               <ShowTotal>
                 <ShowTotalText>
-                  مجموع وزن بارنامه ها : {'( ' + totalWeight + ' )'}
+                  مجموع وزن بارنامه ها :{' '}
+                  {'( ' + totalWeight.toLocaleString() + ' )'}
                 </ShowTotalText>
               </ShowTotal>
             </ShowTotalRow>
@@ -861,7 +865,9 @@ const Container = styled.div`
   width: 100vw;
   max-width: 100%;
   overflow-y: hidden;
+  border-bottom: 1px solid #6b6b6b;
 `;
+// box-shadow: 0px 5px 10px 2px rgb(0 0 0 / 30%);
 
 const Buttons = styled.div`
   display: flex;
@@ -1110,7 +1116,12 @@ const ColumnsTitle = styled.p`
 
 const RowsContainer = styled.div`
   width: 100%;
-  height: calc(100vh - 380px);
+  height: calc(100vh - 392px);
+
+  padding: 5px 0;
+
+  margin-top: 4px;
+  border-top: 1px solid #696969;
   overflow-y: scroll;
   overflow-x: hidden;
 `;
@@ -1122,7 +1133,7 @@ const DataRow = styled.div`
   min-height: 66px;
   width: calc(100% - 81px);
   padding: 0;
-  margin-top: 24px;
+  margin-top: 9px;
   margin-left: 48px;
 
   background-color: white;
@@ -1137,6 +1148,7 @@ const DataRow = styled.div`
 
   &:last-of-type {
     margin-bottom: 10px;
+    border: 1px solid #696969;
   }
 
   &:hover {
