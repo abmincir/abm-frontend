@@ -19,7 +19,11 @@ const SideMenu = ({ changePassBtn__Txt, exportBtn__Txt, exitBtn__Txt }) => {
   }, []);
 
   const handleClick = () => {
-    history.push(isAdmin ? '/create-user' : '/change-password');
+    history.push(isAdmin ? '/all-users' : '/change-password');
+  };
+
+  const handleHomeClick = () => {
+    history.push('/home');
   };
 
   const logout = () => {
@@ -47,14 +51,25 @@ const SideMenu = ({ changePassBtn__Txt, exportBtn__Txt, exitBtn__Txt }) => {
           <h1 className="username dana-bold-white-26px">
             {isAdmin ? 'ادمین' : name}
           </h1>
+
           <div
             className="overlap-group2 border-class-1 side-menu-btn"
             onClick={handleClick}
           >
             <div className="change-pass-btntxt dana-regular-normal-white-20px">
-              {isAdmin ? 'ساخت کاربر جدید' : 'ویرایش رمز عبور'}
+              {isAdmin ? 'مدیریت کاربران' : 'ویرایش رمز عبور'}
             </div>
           </div>
+          <div
+            style={{ top: '450px' }}
+            className="overlap-group2 border-class-1 side-menu-btn"
+            onClick={handleHomeClick}
+          >
+            <div className="change-pass-btntxt dana-regular-normal-white-20px">
+              خانه
+            </div>
+          </div>
+
           <div className="overlap-group1 side-menu-btn">
             <div className="export-btntxt dana-regular-normal-black-18px">
               دریافت فایل خروجی

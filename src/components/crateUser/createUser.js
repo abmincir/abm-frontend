@@ -50,13 +50,13 @@ function CreateNewUser(props) {
 
     const data = {
       username: nUser,
-      name: nUser,
+      name,
       password: pass,
     };
 
     Axios.post(`${URI}/user/create`, data)
       .then((result) => {
-        history.push('/home');
+        history.push('/all-users');
       })
       .catch((error) => {
         setErrorMessage(true);

@@ -1,5 +1,6 @@
 import Axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { IonToast } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import SideMenu from '../side-menu/SideMenu';
@@ -7,82 +8,97 @@ import SideMenu from '../side-menu/SideMenu';
 const URI = process.env.REACT_APP_REST_ENDPOINT;
 
 const AllUsers = () => {
-  const [isAdmin, setIsAdmin] = useState(true);
-  const [visible, setVisible] = useState(false);
-  const [users, setUsers] = useState([
-    { username: 'user1', userId: 'user1', pass: '123', key: 1 },
-    { username: 'user2', userId: 'user2', pass: '123', key: 2 },
-    { username: 'user3', userId: 'user3', pass: '123', key: 3 },
-    { username: 'user1', userId: 'user1', pass: '123', key: 1 },
-    { username: 'user2', userId: 'user2', pass: '123', key: 2 },
-    { username: 'user3', userId: 'user3', pass: '123', key: 3 },
-    { username: 'user1', userId: 'user1', pass: '123', key: 1 },
-    { username: 'user2', userId: 'user2', pass: '123', key: 2 },
-    { username: 'user3', userId: 'user3', pass: '123', key: 3 },
-    { username: 'user1', userId: 'user1', pass: '123', key: 1 },
-    { username: 'user2', userId: 'user2', pass: '123', key: 2 },
-    { username: 'user3', userId: 'user3', pass: '123', key: 3 },
-    { username: 'user1', userId: 'user1', pass: '123', key: 1 },
-    { username: 'user2', userId: 'user2', pass: '123', key: 2 },
-    { username: 'user3', userId: 'user3', pass: '123', key: 3 },
-    { username: 'user1', userId: 'user1', pass: '123', key: 1 },
-    { username: 'user2', userId: 'user2', pass: '123', key: 2 },
-    { username: 'user3', userId: 'user3', pass: '123', key: 3 },
-    { username: 'user1', userId: 'user1', pass: '123', key: 1 },
-    { username: 'user2', userId: 'user2', pass: '123', key: 2 },
-    { username: 'user3', userId: 'user3', pass: '123', key: 3 },
-    { username: 'user1', userId: 'user1', pass: '123', key: 1 },
-    { username: 'user2', userId: 'user2', pass: '123', key: 2 },
-    { username: 'user3', userId: 'user3', pass: '123', key: 3 },
-    { username: 'user1', userId: 'user1', pass: '123', key: 1 },
-    { username: 'user2', userId: 'user2', pass: '123', key: 2 },
-    { username: 'user3', userId: 'user3', pass: '123', key: 3 },
-    { username: 'user1', userId: 'user1', pass: '123', key: 1 },
-    { username: 'user2', userId: 'user2', pass: '123', key: 2 },
-    { username: 'user3', userId: 'user3', pass: '123', key: 3 },
-    { username: 'user1', userId: 'user1', pass: '123', key: 1 },
-    { username: 'user2', userId: 'user2', pass: '123', key: 2 },
-    { username: 'user3', userId: 'user3', pass: '123', key: 3 },
-  ]);
+  const [showMessage, setShowMessage] = useState(false);
+  const [message, setMessage] = useState('');
 
-  const [isEditing, setIsEditing] = useState([false, false, false, false]);
+  const [isAdmin] = useState(true);
+  const [visible, setVisible] = useState(false);
+  const [users, setUsers] = useState([]);
 
   const history = useHistory();
 
-  // const getAllUsers = async ()
+  useEffect(() => {
+    Axios.get(`${URI}/user/all`)
+      .then((result) => {
+        console.log(result);
+
+        setUsers(
+          result.data.users.map(({ username, password, name, _id }) => {
+            return {
+              username,
+              password,
+              name,
+              _id,
+            };
+          })
+        );
+      })
+      .catch((e) => console.error(e));
+  }, []);
 
   const changeHandler = async (index) => {
-    if (isEditing[index]) {
-      setIsEditing(
-        [...isEditing].map((isE, indx) => {
-          if (indx === index) {
-            return !isE;
-          }
-
-          return isE;
-        })
-      );
-
-      return;
-    }
-
     const { _id, username, name, password } = users[index];
     const data = { _id, username, name, password };
 
     try {
       const result = await Axios.post(`${URI}/user/changeUser`, data);
       console.log(result);
+
+      setMessage('تغیرات مورد نظر اعمال شد');
+      setShowMessage(true);
     } catch (error) {
+      console.error(error);
+      setMessage('عدم ارتباط با سرور');
+      setShowMessage(true);
     } finally {
     }
   };
 
+  const editNameHandler = (index, name) => {
+    setUsers(
+      users.map((u, indx) => {
+        if (index !== indx) return u;
+        console.log(u, name, { ...u, name });
+        return { ...u, name };
+      })
+    );
+  };
+
+  const editPasswordHandler = (index, password) => {
+    setUsers(
+      users.map((u, indx) => {
+        if (index !== indx) return u;
+
+        return { ...u, password };
+      })
+    );
+  };
+
+  const editUsernameHandler = (index, username) => {
+    setUsers(
+      users.map((u, indx) => {
+        if (index !== indx) return u;
+
+        return { ...u, username };
+      })
+    );
+  };
+
   const deleteUserHandler = async (index) => {
     const data = { _id: users[index]._id };
+    console.log(data);
 
     try {
-      await Axios.post(`${URI}/user/delete`, data);
+      const result = await Axios.post(`${URI}/user/delete`, data);
+      console.log(result);
+      setUsers([...users].filter((user) => user._id !== users[index]._id));
+
+      setMessage('کاربرد مورد نظر حذف شد');
+      setShowMessage(true);
     } catch (error) {
+      console.error(error);
+      setMessage('عدم ارتباط با سرور');
+      setShowMessage(true);
     } finally {
     }
   };
@@ -93,6 +109,14 @@ const AllUsers = () => {
 
   return (
     <>
+      <IonToast
+        isOpen={showMessage}
+        cssClass="custom-toast"
+        onDidDismiss={() => setShowMessage(false)}
+        message={message}
+        duration={6000}
+      />
+
       <SideMenuContainer visible={visible}>
         <SideMenu />
       </SideMenuContainer>
@@ -106,10 +130,10 @@ const AllUsers = () => {
       <Wrapper>
         <ColumnsSection>
           <Column>
-            <ColumnsTitle>نام</ColumnsTitle>
+            <ColumnsTitle>کد کاربری</ColumnsTitle>
           </Column>
           <Column>
-            <ColumnsTitle>کد کاربری</ColumnsTitle>
+            <ColumnsTitle>نام</ColumnsTitle>
           </Column>
           <Column>
             <ColumnsTitle>رمز عبور</ColumnsTitle>
@@ -125,24 +149,31 @@ const AllUsers = () => {
           {!users.length ? (
             <DataRow>
               <Column>
-                <DataValue>موردی یافت نشد</DataValue>
+                <p>موردی یافت نشد</p>
               </Column>
             </DataRow>
           ) : (
             users.map((user, index) => (
-              <DataRow>
+              <DataRow key={user._id}>
                 <Column>
                   <DataValue
-                    disabled={isEditing[index]}
+                    onChange={(e) => editUsernameHandler(index, e.target.value)}
                     value={user.username}
                   />
                 </Column>
                 <Column>
-                  <DataValue disabled={isEditing[index]} value={user.userId} />
+                  <DataValue
+                    onChange={(e) => editNameHandler(index, e.target.value)}
+                    value={user.name}
+                    placeholder="نام را وارد کنید"
+                  />
                 </Column>
 
                 <Column>
-                  <DataValue disabled={isEditing[index]} value={user.pass} />
+                  <DataValue
+                    onChange={(e) => editPasswordHandler(index, e.target.value)}
+                    value={user.password}
+                  />
                 </Column>
                 <Column>
                   <Button
@@ -152,7 +183,7 @@ const AllUsers = () => {
                     <ButtonText>حذف</ButtonText>
                   </Button>
                   <Button onClick={() => changeHandler(index)} color="gray">
-                    <ButtonText>به روز رسانی</ButtonText>
+                    <ButtonText>تغیر</ButtonText>
                   </Button>
                 </Column>
               </DataRow>
