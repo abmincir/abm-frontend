@@ -19,6 +19,42 @@ const SignIn = ({ setToAdmin, setToUser }) => {
   const [showMassage, setShowMassage] = useState(false);
   const [message, setMessage] = useState('');
 
+  const [dataBases, setDataBases] = useState([
+    { name: 'تدبیر', ID: 1 },
+    { name: 'MIS', ID: 2 },
+  ]);
+
+  const [accounts, setAccounts] = useState([
+    { name: 'اکانت 1', ID: 1 },
+    { name: 'اکانت 2', ID: 2 },
+    { name: 'اکانت 3', ID: 3 },
+    { name: 'اکانت 4', ID: 4 },
+  ]);
+
+  const [dataBaseSelected, setDataBaseSelected] = useState(0);
+
+  const [accountSelected, setAccountSelected] = useState(0);
+
+  const [activeDataBase, setActiveDataBase] = useState(false);
+  const [activeAccount, setActiveAccount] = useState(false);
+
+  const toggleActiveDataBase = () => {
+    setActiveDataBase(!activeDataBase);
+  };
+  const toggleActiveAccount = () => {
+    setActiveAccount(!activeAccount);
+  };
+
+  const toggleSelectedDataBase = (e) => {
+    setActiveDataBase(false);
+    setDataBaseSelected(e);
+  };
+
+  const toggleSelectedAccount = (e) => {
+    setAccountSelected(e);
+    setActiveAccount(false);
+  };
+
   const adminLoginHandler = (event) => {
     setLoading(true);
     if (user === 'exon' && pass === 'Exon@123') {
@@ -90,7 +126,10 @@ const SignIn = ({ setToAdmin, setToUser }) => {
       </Header>
 
       <Wrapper>
-        <SignInBox>
+        <SignInBox
+          activeAccount={activeAccount}
+          activeDataBase={activeDataBase}
+        >
           <SelectionBox>
             <User
               onClick={() => {
@@ -111,6 +150,47 @@ const SignIn = ({ setToAdmin, setToUser }) => {
             </Admin>
           </SelectionBox>
           <FlexWrapper>
+            <SelectBox>
+              <OptionContainer active={activeDataBase}>
+                {dataBases.map((d) => {
+                  return (
+                    <Option onClick={(e) => toggleSelectedDataBase(d.ID)}>
+                      {d.name}
+                    </Option>
+                  );
+                })}
+              </OptionContainer>
+
+              <SelectedOption onClick={toggleActiveDataBase}>
+                {dataBaseSelected === 0
+                  ? 'انتخاب پایگاه داده'
+                  : dataBaseSelected === 1
+                  ? 'تدبیر'
+                  : 'MIS'}
+              </SelectedOption>
+            </SelectBox>
+
+            <SelectBox>
+              <OptionContainer active={activeAccount}>
+                {accounts.map((d) => {
+                  return (
+                    <Option onClick={(e) => toggleSelectedAccount(d.ID)}>
+                      {d.name}
+                    </Option>
+                  );
+                })}
+              </OptionContainer>
+
+              <SelectedOption
+                onClick={toggleActiveAccount}
+                active={activeAccount}
+              >
+                {accountSelected === 0
+                  ? 'انتخاب اکانت'
+                  : accounts.find((e) => e.ID === accountSelected).name}
+              </SelectedOption>
+            </SelectBox>
+
             <UserName
               type="text"
               name="user"
@@ -230,9 +310,27 @@ const SignInBox = styled.div`
 
   margin-bottom: 70px;
 
-  height: 316px;
+  height: 900px;
+  max-height: 416px;
   width: 384px;
   min-width: 384px;
+
+  transition: max-height 0.4s ease-in;
+
+  ${(props) =>
+    props.activeDataBase
+      ? props.activeAccount
+        ? css`
+            max-height: 676px;
+          `
+        : css`
+            max-height: 516px;
+          `
+      : props.activeAccount
+      ? css`
+          max-height: 586px;
+        `
+      : css``}
 
   font-family: 'Dana-Light';
   font-style: normal;
@@ -318,6 +416,106 @@ const User = styled.div`
           white-space: nowrap;
         `}
 `;
+
+const SelectBox = styled.div`
+  // height: 40px;
+  width: 280px;
+
+  margin-bottom: 8px;
+
+  display: flex;
+  flex-direction: column;
+
+  direction: rtl;
+`;
+
+const OptionContainer = styled.div`
+  background: #2f3640;
+  color: #f5f6fa;
+  height: 0px;
+  max-height: 0px;
+  width: 280px;
+  transition: visibility 0.3s ease-in, opacity 0.5s ease-out,
+    max-height 0.4s ease-in;
+  border-radius: 8px;
+  overflow: hidden;
+  visibility: hidden;
+  opacity: 0;
+
+  position: relative;
+
+  margin-bottom: 0px;
+
+  top: 3px;
+
+  ${(props) =>
+    props.active
+      ? css`
+          opacity: 1;
+          visibility: visible;
+          height: auto;
+          max-height: auto;
+          margin-bottom: 8px;
+        `
+      : css``}
+
+  order: 1;
+  max-height: 240px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 0px;
+    background: #0d141f;
+    border-radius: 0 8px 8px 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #525861;
+    border-radius: 0 8px 8px 0;
+  }
+`;
+
+const SelectedOption = styled.div`
+  background: #2f3640;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  color: #f5f6fa;
+  position: relative;
+
+  order: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::after {
+    content: '';
+    background: url('img/arrow-down.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+
+    position: absolute;
+    height: 100%;
+    width: 32px;
+    right: 10px;
+    top: 5px;
+
+    transition: all 0.4s;
+  }
+
+  padding: 12px 24px;
+  cursor: pointer;
+`;
+
+const Option = styled.div`
+  padding: 12px 24px;
+  cursor: pointer;
+
+  &:hover {
+    background: #414b57;
+  }
+`;
+
 const UserName = styled.input`
   border: 1px solid var(--dove-gray);
   background-color: white;
