@@ -19,42 +19,6 @@ const SignIn = ({ setToAdmin, setToUser }) => {
   const [showMassage, setShowMassage] = useState(false);
   const [message, setMessage] = useState('');
 
-  const [dataBases, setDataBases] = useState([
-    { name: 'تدبیر', ID: 1 },
-    { name: 'MIS', ID: 2 },
-  ]);
-
-  const [accounts, setAccounts] = useState([
-    { name: 'اکانت 1', ID: 1 },
-    { name: 'اکانت 2', ID: 2 },
-    { name: 'اکانت 3', ID: 3 },
-    { name: 'اکانت 4', ID: 4 },
-  ]);
-
-  const [dataBaseSelected, setDataBaseSelected] = useState(0);
-
-  const [accountSelected, setAccountSelected] = useState(0);
-
-  const [activeDataBase, setActiveDataBase] = useState(false);
-  const [activeAccount, setActiveAccount] = useState(false);
-
-  const toggleActiveDataBase = () => {
-    setActiveDataBase(!activeDataBase);
-  };
-  const toggleActiveAccount = () => {
-    setActiveAccount(!activeAccount);
-  };
-
-  const toggleSelectedDataBase = (e) => {
-    setActiveDataBase(false);
-    setDataBaseSelected(e);
-  };
-
-  const toggleSelectedAccount = (e) => {
-    setAccountSelected(e);
-    setActiveAccount(false);
-  };
-
   const adminLoginHandler = (event) => {
     setLoading(true);
     if (user === 'exon' && pass === 'Exon@123') {
@@ -109,6 +73,44 @@ const SignIn = ({ setToAdmin, setToUser }) => {
         userLoginHandler();
       }
     }
+  };
+
+  // select box
+
+  const [dataBases, setDataBases] = useState([
+    { name: 'تدبیر', ID: 1 },
+    { name: 'MIS', ID: 2 },
+  ]);
+
+  const [accounts, setAccounts] = useState([
+    { name: 'حساب کاربری 1', ID: 1 },
+    { name: 'حساب کاربری 2', ID: 2 },
+    { name: 'حساب کاربری 3', ID: 3 },
+    { name: 'حساب کاربری 4', ID: 4 },
+  ]);
+
+  const [dataBaseSelected, setDataBaseSelected] = useState(0);
+
+  const [accountSelected, setAccountSelected] = useState(0);
+
+  const [activeDataBase, setActiveDataBase] = useState(false);
+  const [activeAccount, setActiveAccount] = useState(false);
+
+  const toggleActiveDataBase = () => {
+    setActiveDataBase(!activeDataBase);
+  };
+  const toggleActiveAccount = () => {
+    setActiveAccount(!activeAccount);
+  };
+
+  const toggleSelectedDataBase = (e) => {
+    setActiveDataBase(false);
+    setDataBaseSelected(e);
+  };
+
+  const toggleSelectedAccount = (e) => {
+    setAccountSelected(e);
+    setActiveAccount(false);
   };
 
   return (
@@ -186,7 +188,7 @@ const SignIn = ({ setToAdmin, setToUser }) => {
                 active={activeAccount}
               >
                 {accountSelected === 0
-                  ? 'انتخاب اکانت'
+                  ? 'انتخاب حساب کاربری'
                   : accounts.find((e) => e.ID === accountSelected).name}
               </SelectedOption>
             </SelectBox>
@@ -199,7 +201,6 @@ const SignIn = ({ setToAdmin, setToUser }) => {
               value={user}
               onChange={(u) => {
                 setUser(u.target.value);
-                console.log(u.target.value);
               }}
               onKeyPress={onKeyPress}
             ></UserName>
@@ -211,7 +212,6 @@ const SignIn = ({ setToAdmin, setToUser }) => {
               value={pass}
               onChange={(p) => {
                 setPass(p.target.value);
-                console.log(p.target.value);
               }}
               onKeyPress={onKeyPress}
             ></Password>

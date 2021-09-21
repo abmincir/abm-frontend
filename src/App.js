@@ -7,6 +7,8 @@ import ChangePass from './components/change-pass/ChangePass';
 import CreateUser from './components/crateUser/createUser';
 import Home from './components/home/Home';
 import SignIn from './components/sign-in/SignIn';
+import AllAccounts from './components/all-accounts/allAccounts';
+import CreateAccount from './components/create-account/CreateAccount';
 
 const App = () => {
   const checkAuth = () => {
@@ -72,7 +74,9 @@ const App = () => {
           <UserRoute exact path="/change-password" component={ChangePass} />
 
           <AdminRoute path="/create-user" component={CreateUser} />
+          <AdminRoute path="/create-account" component={CreateAccount} />
           <AdminRoute path="/all-users" component={AllUsers} />
+          <AdminRoute path="/all-accounts" component={AllAccounts} />
           <Route path="/">
             <Redirect to={{ pathname: '/home' }} />
           </Route>

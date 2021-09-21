@@ -33,6 +33,20 @@
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dana-regular-normal-white-18px {
+  color: white;
+  font-family: 'Dana-Regular', Helvetica, Arial, serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .user-menu {
   background-color: white;
@@ -154,4 +168,8 @@
 }
 .wrapper {
   height: 100%;
+}
+
+.btn-accounts {
+  top: 400px;
 }

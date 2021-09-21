@@ -22,6 +22,10 @@ const SideMenu = ({ changePassBtn__Txt, exportBtn__Txt, exitBtn__Txt }) => {
     history.push(isAdmin ? '/all-users' : '/change-password');
   };
 
+  const handleAccountClick = () => {
+    history.push('/all-accounts');
+  };
+
   const handleHomeClick = () => {
     history.push('/home');
   };
@@ -52,14 +56,41 @@ const SideMenu = ({ changePassBtn__Txt, exportBtn__Txt, exitBtn__Txt }) => {
             {isAdmin ? 'ادمین' : name}
           </h1>
 
-          <div
-            className="overlap-group2 border-class-1 side-menu-btn"
-            onClick={handleClick}
-          >
-            <div className="change-pass-btntxt dana-regular-normal-white-20px">
-              {isAdmin ? 'مدیریت کاربران' : 'ویرایش رمز عبور'}
+          {isAdmin ? (
+            <div
+              style={{ top: '300px' }}
+              className="overlap-group2 border-class-1 side-menu-btn"
+              onClick={handleClick}
+            >
+              <div className="change-pass-btntxt dana-regular-normal-white-20px">
+                مدیریت کاربران
+              </div>
             </div>
-          </div>
+          ) : (
+            <div
+              className="overlap-group2 border-class-1 side-menu-btn"
+              onClick={handleClick}
+            >
+              <div className="change-pass-btntxt dana-regular-normal-white-20px">
+                ویرایش رمز عبور
+              </div>
+            </div>
+          )}
+
+          {isAdmin ? (
+            <div
+              style={{ top: '365px' }}
+              className="overlap-group2 border-class-1 side-menu-btn"
+              onClick={handleAccountClick}
+            >
+              <div className="change-pass-btntxt dana-regular-normal-white-18px">
+                حساب های کاربری
+              </div>
+            </div>
+          ) : (
+            <></>
+          )}
+
           <div
             style={{ top: '450px' }}
             className="overlap-group2 border-class-1 side-menu-btn"
