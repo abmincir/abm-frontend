@@ -2,6 +2,7 @@ import { IonToast } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import './style.css';
+import * as actions from '../../actions';
 
 const SideMenu = ({ changePassBtn__Txt, exportBtn__Txt, exitBtn__Txt }) => {
   const history = useHistory();
@@ -37,6 +38,8 @@ const SideMenu = ({ changePassBtn__Txt, exportBtn__Txt, exitBtn__Txt }) => {
     localStorage.removeItem('userId');
     localStorage.removeItem('username');
     localStorage.removeItem('name');
+
+    actions.clearState();
 
     history.push('/sign-in');
   };

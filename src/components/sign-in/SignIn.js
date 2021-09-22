@@ -3,6 +3,8 @@ import Axios from 'axios';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled, { css } from 'styled-components';
+import * as actions from '../../actions';
+import store from '../../store';
 
 const URI = process.env.REACT_APP_REST_ENDPOINT;
 
@@ -89,9 +91,13 @@ const SignIn = ({ setToAdmin, setToUser }) => {
     { name: 'حساب کاربری 4', ID: 4 },
   ]);
 
-  const [dataBaseSelected, setDataBaseSelected] = useState(0);
+  const [dataBaseSelected, setDataBaseSelected] = useState(
+    store.getState().dataBase ? store.getState().dataBase.ID : 0
+  );
 
-  const [accountSelected, setAccountSelected] = useState(0);
+  const [accountSelected, setAccountSelected] = useState(
+    store.getState().account ? store.getState().account.ID : 0
+  );
 
   const [activeDataBase, setActiveDataBase] = useState(false);
   const [activeAccount, setActiveAccount] = useState(false);
@@ -103,14 +109,16 @@ const SignIn = ({ setToAdmin, setToUser }) => {
     setActiveAccount(!activeAccount);
   };
 
-  const toggleSelectedDataBase = (e) => {
+  const toggleSelectedDataBase = (id, name) => {
     setActiveDataBase(false);
-    setDataBaseSelected(e);
+    setDataBaseSelected(id);
+    actions.dataBaseChange(id, name);
   };
 
-  const toggleSelectedAccount = (e) => {
-    setAccountSelected(e);
+  const toggleSelectedAccount = (id, name) => {
+    setAccountSelected(id);
     setActiveAccount(false);
+    actions.accountChange(id, name);
   };
 
   return (
@@ -156,7 +164,9 @@ const SignIn = ({ setToAdmin, setToUser }) => {
               <OptionContainer active={activeDataBase}>
                 {dataBases.map((d) => {
                   return (
-                    <Option onClick={(e) => toggleSelectedDataBase(d.ID)}>
+                    <Option
+                      onClick={(e) => toggleSelectedDataBase(d.ID, d.name)}
+                    >
                       {d.name}
                     </Option>
                   );
