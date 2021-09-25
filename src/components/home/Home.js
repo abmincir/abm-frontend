@@ -228,10 +228,44 @@ const Home = () => {
     setIsShowingModal(!isShowingModal);
   };
 
+  const [dataBases, setDataBases] = useState([]);
+  const [accounts, setAccounts] = useState([]);
+
   useEffect(() => {
     setAdmin(localStorage.getItem('isAdmin') === 'true');
-
     searchHandler();
+    Axios.get(`${URI}/databases/all`)
+      .then((result) => {
+        setDataBases(
+          result.data.dbs.map(
+            ({ name, address, username, password, proc, _id }) => {
+              return {
+                name,
+                address,
+                username,
+                password,
+                proc,
+                _id,
+              };
+            }
+          )
+        );
+      })
+      .catch((e) => console.error(e));
+
+    Axios.get(`${URI}/accounts/all`)
+      .then((result) => {
+        setAccounts(
+          result.data.accounts.map(({ username, password, _id }) => {
+            return {
+              username,
+              password,
+              _id,
+            };
+          })
+        );
+      })
+      .catch((e) => console.error(e));
   }, []);
 
   const calculateTime = (v) => {
@@ -267,24 +301,12 @@ const Home = () => {
 
   // select box
 
-  const [dataBases, setDataBases] = useState([
-    { name: 'تدبیر', ID: 1 },
-    { name: 'MIS', ID: 2 },
-  ]);
-
-  const [accounts, setAccounts] = useState([
-    { name: 'حساب کاربری 1', ID: 1 },
-    { name: 'حساب کاربری 2', ID: 2 },
-    { name: 'حساب کاربری 3', ID: 3 },
-    { name: 'حساب کاربری 4', ID: 4 },
-  ]);
-
   const [dataBaseSelected, setDataBaseSelected] = useState(
-    store.getState().dataBase ? store.getState().dataBase.ID : 0
+    store.getState().dataBase ? store.getState().dataBase : 0
   );
 
   const [accountSelected, setAccountSelected] = useState(
-    store.getState().account ? store.getState().account.ID : 0
+    store.getState().account ? store.getState().account : 0
   );
 
   const [activeDataBase, setActiveDataBase] = useState(false);
@@ -297,16 +319,24 @@ const Home = () => {
     setActiveAccount(!activeAccount);
   };
 
-  const toggleSelectedDataBase = (id, name) => {
+  const toggleSelectedDataBase = (
+    _id,
+    name,
+    address,
+    username,
+    password,
+    proc,
+    data
+  ) => {
     setActiveDataBase(false);
-    setDataBaseSelected(id);
-    actions.dataBaseChange(id, name);
+    setDataBaseSelected(data);
+    actions.dataBaseChange(_id, name, address, username, password, proc);
   };
 
-  const toggleSelectedAccount = (id, name) => {
-    setAccountSelected(id);
+  const toggleSelectedAccount = (_id, username, password, acc) => {
+    setAccountSelected(acc);
     setActiveAccount(false);
-    actions.accountChange(id, name);
+    actions.accountChange(_id, username, password);
   };
 
   return (
@@ -585,7 +615,17 @@ const Home = () => {
                   {dataBases.map((d) => {
                     return (
                       <Option
-                        onClick={(e) => toggleSelectedDataBase(d.ID, d.name)}
+                        onClick={(e) =>
+                          toggleSelectedDataBase(
+                            d._id,
+                            d.name,
+                            d.address,
+                            d.username,
+                            d.password,
+                            d.proc,
+                            d
+                          )
+                        }
                       >
                         {d.name}
                       </Option>
@@ -596,9 +636,7 @@ const Home = () => {
                 <SelectedOption onClick={toggleActiveDataBase}>
                   {dataBaseSelected === 0
                     ? 'انتخاب پایگاه داده'
-                    : dataBaseSelected === 1
-                    ? 'تدبیر'
-                    : 'MIS'}
+                    : dataBaseSelected.name}
                 </SelectedOption>
               </SelectBox>
 
@@ -607,9 +645,16 @@ const Home = () => {
                   {accounts.map((d) => {
                     return (
                       <Option
-                        onClick={(e) => toggleSelectedAccount(d.ID, d.name)}
+                        onClick={(e) =>
+                          toggleSelectedAccount(
+                            d._id,
+                            d.username,
+                            d.password,
+                            d
+                          )
+                        }
                       >
-                        {d.name}
+                        {d.username}
                       </Option>
                     );
                   })}
@@ -621,7 +666,7 @@ const Home = () => {
                 >
                   {accountSelected === 0
                     ? 'انتخاب حساب کاربری'
-                    : accounts.find((e) => e.ID === accountSelected).name}
+                    : accountSelected.username}
                 </SelectedOption>
               </SelectBox>
             </DateSection>

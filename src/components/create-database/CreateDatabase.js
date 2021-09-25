@@ -59,7 +59,7 @@ function CreateNewDatabase(props) {
     setDatabase({
       name: databaseName,
       address: databaseAdress,
-      userName: userName,
+      username: userName,
       password: password,
       proc: proc,
     });

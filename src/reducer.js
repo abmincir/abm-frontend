@@ -4,16 +4,21 @@ const reducer = (state = {}, action) => {
       return {
         ...state,
         dataBase: {
-          ID: action.payload.ID,
+          _id: action.payload._id,
           name: action.payload.name,
+          address: action.payload.address,
+          username: action.payload.username,
+          password: action.payload.password,
+          proc: action.payload.proc,
         },
       };
     case 'changeAccount':
       return {
         ...state,
         account: {
-          ID: action.payload.ID,
-          name: action.payload.name,
+          _id: action.payload._id,
+          username: action.payload.username,
+          password: action.payload.password,
         },
       };
 

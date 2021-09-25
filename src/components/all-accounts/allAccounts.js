@@ -13,7 +13,7 @@ const AllAccounts = () => {
 
   const [isAdmin] = useState(true);
   const [visible, setVisible] = useState(false);
-  const [accounts, setAccounts] = useState([])
+  const [accounts, setAccounts] = useState([]);
 
   const history = useHistory();
 
@@ -38,8 +38,14 @@ const AllAccounts = () => {
     const data = { _id, username, password };
 
     try {
-      const result = await Axios.post(`${URI}/accounts/changeUser`, data);
-
+      const result = await Axios.post(`${URI}/accounts/change-user`, data);
+      setAccounts(
+        [...accounts].map((account) =>
+          account._id === accounts[index]._id
+            ? result.data.account._id
+            : account
+        )
+      );
       setMessage('تغییرات مورد نظر اعمال شد');
       setShowMessage(true);
     } catch (error) {
@@ -49,7 +55,6 @@ const AllAccounts = () => {
     } finally {
     }
   };
-
 
   const editPasswordHandler = (index, password) => {
     setAccounts(
@@ -74,8 +79,10 @@ const AllAccounts = () => {
   const deleteAccountHandler = async (index) => {
     const data = { _id: accounts[index]._id };
     try {
-      const result = await Axios.post(`${URI}/account/delete`, data);
-      setAccounts([...accounts].filter((account) => account._id !== accounts[index]._id));
+      const result = await Axios.post(`${URI}/accounts/delete`, data);
+      setAccounts(
+        [...accounts].filter((account) => account._id !== accounts[index]._id)
+      );
 
       setMessage('حساب کاربری مورد نظر حذف شد');
       setShowMessage(true);

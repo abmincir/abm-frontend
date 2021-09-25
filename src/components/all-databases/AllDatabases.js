@@ -21,7 +21,7 @@ const AllDatabases = () => {
     Axios.get(`${URI}/databases/all`)
       .then((result) => {
         setDatabases(
-          result.data.databases.map(
+          result.data.dbs.map(
             ({ name, address, username, password, proc, _id }) => {
               return {
                 name,
@@ -43,8 +43,12 @@ const AllDatabases = () => {
     const data = { _id, name, address, username, password, proc };
 
     try {
-      const result = await Axios.post(`${URI}/databases/changeDatabase`, data);
-
+      const result = await Axios.post(`${URI}/databases/change-database`, data);
+      setDatabases(
+        [...databases].map((d) =>
+          d.id === result.data.db._id ? result.data.db : d
+        )
+      );
       setMessage('تغییرات مورد نظر اعمال شد');
       setShowMessage(true);
     } catch (error) {
