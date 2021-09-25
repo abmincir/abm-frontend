@@ -7,43 +7,66 @@ import SideMenu from '../side-menu/SideMenu';
 import './style.css';
 const URI = process.env.REACT_APP_REST_ENDPOINT;
 
-function CreateAccount() {
+function CreateDatabase() {
   return (
-    <CreateNewAccount
-      createAccountTitle="ساخت حساب کاربری جدید"
-      newAccountTxt="نام کاربری"
-      passTxt="رمز عبور"
-      createAccountConfirm="تأیید"
+    <CreateNewDatabase
+      createDatabaseName="ساخت پایگاه داده جدید"
+      newDatabaseName="نام پایگاه داده"
+      serverAddress="(Server Address/IP) آدرس پایگاه"
+      databaseUserName="نام کاربری"
+      databasePassword="رمز عبور"
+      dataBaseProcName="نام عملکرد"
+      createDatabaseConfirm="تأیید"
     />
   );
 }
 
-export default CreateAccount;
+export default CreateDatabase;
 
-function CreateNewAccount(props) {
+function CreateNewDatabase(props) {
   const [isAdmin, setIsAdmin] = useState(true);
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showMassage, setShowMassage] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
+  const [database, setDatabase] = useState({
+    name: '',
+    address: '',
+    userName: '',
+    password: '',
+    proc: '',
+  });
+  const [databaseName, setDatabaseName] = useState('');
+  const [databaseAdress, setDatabaseAdress] = useState('');
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [proc, setProc] = useState('');
   const history = useHistory();
 
-  const { createAccountTitle, newAccountTxt, passTxt, createAccountConfirm } =
-    props;
+  const {
+    createDatabaseName,
+    newDatabaseName,
+    serverAddress,
+    databaseUserName,
+    databasePassword,
+    dataBaseProcName,
+    createDatabaseConfirm,
+  } = props;
 
-  const createAccountHandler = () => {
+  const createDatabaseHandler = () => {
     setLoading(true);
 
-    const data = {
-      username: userName,
+    setDatabase({
+      name: databaseName,
+      address: databaseAdress,
+      userName: userName,
       password: password,
-    };
+      proc: proc,
+    });
 
-    Axios.post(`${URI}/accounts/create`, data)
+    Axios.post(`${URI}/databases/create`, database)
       .then((result) => {
-        history.push('/all-accounts');
+        history.push('/all-databases');
       })
       .catch((error) => {
         setErrorMessage(true);
@@ -75,13 +98,32 @@ function CreateNewAccount(props) {
         />
 
         <div className="pass-change-title dana-regular-normal-black-20px">
-          {createAccountTitle}
+          {createDatabaseName}
         </div>
         <form className="change-pass-form">
           <input
             type="text"
-            placeholder={newAccountTxt}
-            className="current-pass-txt dana-regular-normal-dove-gray-16px"
+            placeholder={newDatabaseName}
+            className="current-pass-txt dana-regular-normal-dove-gray-16px form-input"
+            value={databaseName}
+            onChange={(u) => {
+              setDatabaseName(u.target.value);
+            }}
+          ></input>
+
+          <input
+            type="text"
+            placeholder={serverAddress}
+            className="current-pass-txt dana-regular-normal-dove-gray-16px form-input"
+            value={databaseAdress}
+            onChange={(u) => {
+              setDatabaseAdress(u.target.value);
+            }}
+          ></input>
+          <input
+            type="text"
+            placeholder={databaseUserName}
+            className="current-pass-txt dana-regular-normal-dove-gray-16px form-input"
             value={userName}
             onChange={(u) => {
               setUserName(u.target.value);
@@ -90,19 +132,28 @@ function CreateNewAccount(props) {
 
           <input
             type="password"
-            placeholder={passTxt}
-            className="new-pass-txt dana-regular-normal-dove-gray-16px"
+            placeholder={databasePassword}
+            className="new-pass-txt dana-regular-normal-dove-gray-16px form-input"
             value={password}
             onChange={(p) => {
               setPassword(p.target.value);
             }}
           ></input>
+          <input
+            type="text"
+            placeholder={dataBaseProcName}
+            className="current-pass-txt dana-regular-normal-dove-gray-16px form-input"
+            value={proc}
+            onChange={(u) => {
+              setProc(u.target.value);
+            }}
+          ></input>
           <button
             type="button"
             className="pass-change-confirm dana-regular-normal-white-16px create-user-btn"
-            onClick={createAccountHandler}
+            onClick={createDatabaseHandler}
           >
-            {createAccountConfirm}
+            {createDatabaseConfirm}
           </button>
         </form>
 

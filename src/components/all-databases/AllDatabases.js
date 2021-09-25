@@ -7,42 +7,44 @@ import SideMenu from '../side-menu/SideMenu';
 
 const URI = process.env.REACT_APP_REST_ENDPOINT;
 
-const AllAccounts = () => {
+const AllDatabases = () => {
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState('');
 
   const [isAdmin] = useState(true);
   const [visible, setVisible] = useState(false);
+  const [databases, setDatabases] = useState([]);
   const [users, setUsers] = useState([]);
 
   const history = useHistory();
 
   useEffect(() => {
-    Axios.get(`${URI}/user/all`)
+    Axios.get(`${URI}/databases/all`)
       .then((result) => {
-        console.log(result);
-
-        setUsers(
-          result.data.users.map(({ username, password, name, _id }) => {
-            return {
-              username,
-              password,
-              name,
-              _id,
-            };
-          })
+        setDatabases(
+          result.data.databases.map(
+            ({ name, address, username, password, proc, _id }) => {
+              return {
+                name,
+                address,
+                username,
+                password,
+                proc,
+                _id,
+              };
+            }
+          )
         );
       })
       .catch((e) => console.error(e));
   }, []);
 
   const changeHandler = async (index) => {
-    const { _id, username, name, password } = users[index];
-    const data = { _id, username, name, password };
+    const { _id, name, address, username, password, proc } = databases[index];
+    const data = { _id, name, address, username, password, proc };
 
     try {
-      const result = await Axios.post(`${URI}/user/changeUser`, data);
-      console.log(result);
+      const result = await Axios.post(`${URI}/databases/changeDatabase`, data);
 
       setMessage('تغییرات مورد نظر اعمال شد');
       setShowMessage(true);
@@ -63,9 +65,27 @@ const AllAccounts = () => {
       })
     );
   };
+  const editAddressHandler = (index, name) => {
+    setUsers(
+      users.map((u, indx) => {
+        if (index !== indx) return u;
+        console.log(u, name, { ...u, name });
+        return { ...u, name };
+      })
+    );
+  };
+  const editProcHandler = (index, name) => {
+    setUsers(
+      users.map((u, indx) => {
+        if (index !== indx) return u;
+        console.log(u, name, { ...u, name });
+        return { ...u, name };
+      })
+    );
+  };
 
   const editPasswordHandler = (index, password) => {
-    setUsers(
+    setDatabases(
       users.map((u, indx) => {
         if (index !== indx) return u;
 
@@ -75,7 +95,7 @@ const AllAccounts = () => {
   };
 
   const editUsernameHandler = (index, username) => {
-    setUsers(
+    setDatabases(
       users.map((u, indx) => {
         if (index !== indx) return u;
 
@@ -84,7 +104,7 @@ const AllAccounts = () => {
     );
   };
 
-  const deleteUserHandler = async (index) => {
+  const deleteAccountHandler = async (index) => {
     const data = { _id: users[index]._id };
     console.log(data);
 
@@ -103,7 +123,7 @@ const AllAccounts = () => {
     }
   };
 
-  const addUserHandler = async () => {
+  const addAccountsHandler = async () => {
     history.push('/create-account');
   };
 
@@ -126,47 +146,73 @@ const AllAccounts = () => {
         <div onClick={() => setVisible(!visible)}>{menu}</div>
         <p>کشت و صنعت اکسون</p>
       </Header>
-
       <Wrapper>
         <ColumnsSection>
           <Column>
-            <ColumnsTitle>کد کاربری</ColumnsTitle>
+            <ColumnsTitle>نام پایگاه</ColumnsTitle>
+          </Column>
+          <Column>
+            <ColumnsTitle>آدرس پایگاه</ColumnsTitle>
+          </Column>
+          <Column>
+            <ColumnsTitle>نام کاربری</ColumnsTitle>
           </Column>
           <Column>
             <ColumnsTitle>رمز عبور</ColumnsTitle>
           </Column>
           <Column>
-            <Button onClick={addUserHandler} color="green">
-              <ButtonText>افزودن حساب کاربری</ButtonText>
+            <ColumnsTitle>نام عملکرد</ColumnsTitle>
+          </Column>
+          <Column>
+            <Button onClick={addAccountsHandler} color="green">
+              <ButtonText>افزودن پایگاه داده</ButtonText>
             </Button>
           </Column>
         </ColumnsSection>
 
         <RowsContainer>
-          {!users.length ? (
+          {!databases.length ? (
             <DataRow>
               <Column>
-                <p>حساب کاربری یافت نشد</p>
+                <p>پایگاه داده یافت نشد</p>
               </Column>
             </DataRow>
           ) : (
-            users.map((user, index) => (
-              <DataRow key={user._id}>
+            databases.map((database, index) => (
+              <DataRow key={database._id}>
                 <Column>
                   <DataValue
                     onChange={(e) => editUsernameHandler(index, e.target.value)}
-                    value={user.username}
+                    value={database.name}
                   />
                 </Column>
                 <Column>
                   <DataValue
                     onChange={(e) => editPasswordHandler(index, e.target.value)}
-                    value={user.password}
+                    value={database.address}
+                  />
+                </Column>
+                <Column>
+                  <DataValue
+                    onChange={(e) => editPasswordHandler(index, e.target.value)}
+                    value={database.userName}
+                  />
+                </Column>
+                <Column>
+                  <DataValue
+                    onChange={(e) => editPasswordHandler(index, e.target.value)}
+                    value={database.password}
+                  />
+                </Column>
+                <Column>
+                  <DataValue
+                    onChange={(e) => editPasswordHandler(index, e.target.value)}
+                    value={database.proc}
                   />
                 </Column>
                 <Column>
                   <Button
-                    onClick={() => deleteUserHandler(index)}
+                    onClick={() => deleteAccountHandler(index)}
                     color="black"
                   >
                     <ButtonText>حذف</ButtonText>
@@ -435,4 +481,4 @@ const ColumnsTitle = styled.p`
   margin: 0;
 `;
 
-export default AllAccounts;
+export default AllDatabases;

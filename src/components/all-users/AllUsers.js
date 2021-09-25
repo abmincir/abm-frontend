@@ -44,7 +44,7 @@ const AllUsers = () => {
       const result = await Axios.post(`${URI}/user/changeUser`, data);
       console.log(result);
 
-      setMessage('تغیرات مورد نظر اعمال شد');
+      setMessage('تغییرات مورد نظر اعمال شد');
       setShowMessage(true);
     } catch (error) {
       console.error(error);
@@ -183,7 +183,7 @@ const AllUsers = () => {
                     <ButtonText>حذف</ButtonText>
                   </Button>
                   <Button onClick={() => changeHandler(index)} color="gray">
-                    <ButtonText>تغیر</ButtonText>
+                    <ButtonText>تغییر</ButtonText>
                   </Button>
                 </Column>
               </DataRow>

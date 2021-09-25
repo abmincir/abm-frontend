@@ -9,6 +9,8 @@ import Home from './components/home/Home';
 import SignIn from './components/sign-in/SignIn';
 import AllAccounts from './components/all-accounts/allAccounts';
 import CreateAccount from './components/create-account/CreateAccount';
+import AllDatabases from './components/all-databases/AllDatabases';
+import CreateDatabase from './components/create-database/CreateDatabase';
 
 const App = () => {
   const checkAuth = () => {
@@ -73,6 +75,8 @@ const App = () => {
 
           <UserRoute exact path="/change-password" component={ChangePass} />
 
+          <AdminRoute path="/create-database" component={CreateDatabase} />
+          <AdminRoute path="/all-databases" component={AllDatabases} />
           <AdminRoute path="/create-user" component={CreateUser} />
           <AdminRoute path="/create-account" component={CreateAccount} />
           <AdminRoute path="/all-users" component={AllUsers} />

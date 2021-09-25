@@ -40,7 +40,7 @@ function Modal(props) {
 
       bill.merchantWeight = weight;
 
-      setMessage('ثبت تغیرات موفقیت آمیز بود');
+      setMessage('ثبت تغییرات موفقیت آمیز بود');
     } catch (error) {
       const errorMessage = JSON.parse(error.request.response);
       console.warn(errorMessage);
@@ -216,7 +216,7 @@ function Modal(props) {
           onDidDismiss={() => {
             setCheckLoading(false);
           }}
-          message={'در حال ثبت تغیرات'}
+          message={'در حال ثبت تغییرات'}
           duration={8000}
         />
       </div>
