@@ -20,8 +20,6 @@ const AllUsers = () => {
   useEffect(() => {
     Axios.get(`${URI}/user/all`)
       .then((result) => {
-        console.log(result);
-
         setUsers(
           result.data.users.map(({ username, password, name, _id }) => {
             return {
@@ -42,8 +40,6 @@ const AllUsers = () => {
 
     try {
       const result = await Axios.post(`${URI}/user/changeUser`, data);
-      console.log(result);
-
       setMessage('تغییرات مورد نظر اعمال شد');
       setShowMessage(true);
     } catch (error) {
@@ -58,7 +54,6 @@ const AllUsers = () => {
     setUsers(
       users.map((u, indx) => {
         if (index !== indx) return u;
-        console.log(u, name, { ...u, name });
         return { ...u, name };
       })
     );
@@ -86,11 +81,8 @@ const AllUsers = () => {
 
   const deleteUserHandler = async (index) => {
     const data = { _id: users[index]._id };
-    console.log(data);
-
     try {
       const result = await Axios.post(`${URI}/user/delete`, data);
-      console.log(result);
       setUsers([...users].filter((user) => user._id !== users[index]._id));
 
       setMessage('کاربرد مورد نظر حذف شد');

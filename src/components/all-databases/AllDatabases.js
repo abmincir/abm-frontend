@@ -14,7 +14,6 @@ const AllDatabases = () => {
   const [isAdmin] = useState(true);
   const [visible, setVisible] = useState(false);
   const [databases, setDatabases] = useState([]);
-  const [users, setUsers] = useState([]);
 
   const history = useHistory();
 
@@ -57,38 +56,34 @@ const AllDatabases = () => {
   };
 
   const editNameHandler = (index, name) => {
-    setUsers(
-      users.map((u, indx) => {
+    setDatabases(
+      databases.map((u, indx) => {
         if (index !== indx) return u;
-        console.log(u, name, { ...u, name });
         return { ...u, name };
       })
     );
   };
-  const editAddressHandler = (index, name) => {
-    setUsers(
-      users.map((u, indx) => {
+  const editAddressHandler = (index, address) => {
+    setDatabases(
+      databases.map((u, indx) => {
         if (index !== indx) return u;
-        console.log(u, name, { ...u, name });
-        return { ...u, name };
+        return { ...u, address };
       })
     );
   };
-  const editProcHandler = (index, name) => {
-    setUsers(
-      users.map((u, indx) => {
+  const editProcHandler = (index, proc) => {
+    setDatabases(
+      databases.map((u, indx) => {
         if (index !== indx) return u;
-        console.log(u, name, { ...u, name });
-        return { ...u, name };
+        return { ...u, proc };
       })
     );
   };
 
   const editPasswordHandler = (index, password) => {
     setDatabases(
-      users.map((u, indx) => {
+      databases.map((u, indx) => {
         if (index !== indx) return u;
-
         return { ...u, password };
       })
     );
@@ -96,22 +91,23 @@ const AllDatabases = () => {
 
   const editUsernameHandler = (index, username) => {
     setDatabases(
-      users.map((u, indx) => {
+      databases.map((u, indx) => {
         if (index !== indx) return u;
-
         return { ...u, username };
       })
     );
   };
 
-  const deleteAccountHandler = async (index) => {
-    const data = { _id: users[index]._id };
-    console.log(data);
+  const deleteDatabaseHandler = async (index) => {
+    const data = { _id: databases[index]._id };
 
     try {
-      const result = await Axios.post(`${URI}/user/delete`, data);
-      console.log(result);
-      setUsers([...users].filter((user) => user._id !== users[index]._id));
+      const result = await Axios.post(`${URI}/databases/delete`, data);
+      setDatabases(
+        [...databases].filter(
+          (database) => database._id !== databases[index]._id
+        )
+      );
 
       setMessage('حساب کاربری مورد نظر حذف شد');
       setShowMessage(true);
@@ -123,7 +119,7 @@ const AllDatabases = () => {
     }
   };
 
-  const addAccountsHandler = async () => {
+  const addDatabaseHandler = async () => {
     history.push('/create-account');
   };
 
@@ -164,7 +160,7 @@ const AllDatabases = () => {
             <ColumnsTitle>نام عملکرد</ColumnsTitle>
           </Column>
           <Column>
-            <Button onClick={addAccountsHandler} color="green">
+            <Button onClick={addDatabaseHandler} color="green">
               <ButtonText>افزودن پایگاه داده</ButtonText>
             </Button>
           </Column>
@@ -182,19 +178,19 @@ const AllDatabases = () => {
               <DataRow key={database._id}>
                 <Column>
                   <DataValue
-                    onChange={(e) => editUsernameHandler(index, e.target.value)}
+                    onChange={(e) => editNameHandler(index, e.target.value)}
                     value={database.name}
                   />
                 </Column>
                 <Column>
                   <DataValue
-                    onChange={(e) => editPasswordHandler(index, e.target.value)}
+                    onChange={(e) => editAddressHandler(index, e.target.value)}
                     value={database.address}
                   />
                 </Column>
                 <Column>
                   <DataValue
-                    onChange={(e) => editPasswordHandler(index, e.target.value)}
+                    onChange={(e) => editUsernameHandler(index, e.target.value)}
                     value={database.userName}
                   />
                 </Column>
@@ -206,13 +202,13 @@ const AllDatabases = () => {
                 </Column>
                 <Column>
                   <DataValue
-                    onChange={(e) => editPasswordHandler(index, e.target.value)}
+                    onChange={(e) => editProcHandler(index, e.target.value)}
                     value={database.proc}
                   />
                 </Column>
                 <Column>
                   <Button
-                    onClick={() => deleteAccountHandler(index)}
+                    onClick={() => deleteDatabaseHandler(index)}
                     color="black"
                   >
                     <ButtonText>حذف</ButtonText>

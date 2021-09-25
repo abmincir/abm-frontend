@@ -13,21 +13,18 @@ const AllAccounts = () => {
 
   const [isAdmin] = useState(true);
   const [visible, setVisible] = useState(false);
-  const [users, setUsers] = useState([]);
+  const [accounts, setAccounts] = useState([])
 
   const history = useHistory();
 
   useEffect(() => {
-    Axios.get(`${URI}/user/all`)
+    Axios.get(`${URI}/accounts/all`)
       .then((result) => {
-        console.log(result);
-
-        setUsers(
-          result.data.users.map(({ username, password, name, _id }) => {
+        setAccounts(
+          result.data.accounts.map(({ username, password, _id }) => {
             return {
               username,
               password,
-              name,
               _id,
             };
           })
@@ -37,12 +34,11 @@ const AllAccounts = () => {
   }, []);
 
   const changeHandler = async (index) => {
-    const { _id, username, name, password } = users[index];
-    const data = { _id, username, name, password };
+    const { _id, username, password } = accounts[index];
+    const data = { _id, username, password };
 
     try {
-      const result = await Axios.post(`${URI}/user/changeUser`, data);
-      console.log(result);
+      const result = await Axios.post(`${URI}/accounts/changeUser`, data);
 
       setMessage('تغییرات مورد نظر اعمال شد');
       setShowMessage(true);
@@ -54,19 +50,10 @@ const AllAccounts = () => {
     }
   };
 
-  const editNameHandler = (index, name) => {
-    setUsers(
-      users.map((u, indx) => {
-        if (index !== indx) return u;
-        console.log(u, name, { ...u, name });
-        return { ...u, name };
-      })
-    );
-  };
 
   const editPasswordHandler = (index, password) => {
-    setUsers(
-      users.map((u, indx) => {
+    setAccounts(
+      accounts.map((u, indx) => {
         if (index !== indx) return u;
 
         return { ...u, password };
@@ -75,8 +62,8 @@ const AllAccounts = () => {
   };
 
   const editUsernameHandler = (index, username) => {
-    setUsers(
-      users.map((u, indx) => {
+    setAccounts(
+      accounts.map((u, indx) => {
         if (index !== indx) return u;
 
         return { ...u, username };
@@ -84,14 +71,11 @@ const AllAccounts = () => {
     );
   };
 
-  const deleteUserHandler = async (index) => {
-    const data = { _id: users[index]._id };
-    console.log(data);
-
+  const deleteAccountHandler = async (index) => {
+    const data = { _id: accounts[index]._id };
     try {
-      const result = await Axios.post(`${URI}/user/delete`, data);
-      console.log(result);
-      setUsers([...users].filter((user) => user._id !== users[index]._id));
+      const result = await Axios.post(`${URI}/account/delete`, data);
+      setAccounts([...accounts].filter((account) => account._id !== accounts[index]._id));
 
       setMessage('حساب کاربری مورد نظر حذف شد');
       setShowMessage(true);
@@ -103,7 +87,7 @@ const AllAccounts = () => {
     }
   };
 
-  const addUserHandler = async () => {
+  const addAccountHandler = async () => {
     history.push('/create-account');
   };
 
@@ -136,37 +120,37 @@ const AllAccounts = () => {
             <ColumnsTitle>رمز عبور</ColumnsTitle>
           </Column>
           <Column>
-            <Button onClick={addUserHandler} color="green">
+            <Button onClick={addAccountHandler} color="green">
               <ButtonText>افزودن حساب کاربری</ButtonText>
             </Button>
           </Column>
         </ColumnsSection>
 
         <RowsContainer>
-          {!users.length ? (
+          {!accounts.length ? (
             <DataRow>
               <Column>
                 <p>حساب کاربری یافت نشد</p>
               </Column>
             </DataRow>
           ) : (
-            users.map((user, index) => (
-              <DataRow key={user._id}>
+            accounts.map((account, index) => (
+              <DataRow key={account._id}>
                 <Column>
                   <DataValue
                     onChange={(e) => editUsernameHandler(index, e.target.value)}
-                    value={user.username}
+                    value={account.username}
                   />
                 </Column>
                 <Column>
                   <DataValue
                     onChange={(e) => editPasswordHandler(index, e.target.value)}
-                    value={user.password}
+                    value={account.password}
                   />
                 </Column>
                 <Column>
                   <Button
-                    onClick={() => deleteUserHandler(index)}
+                    onClick={() => deleteAccountHandler(index)}
                     color="black"
                   >
                     <ButtonText>حذف</ButtonText>

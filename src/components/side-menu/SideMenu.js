@@ -27,6 +27,9 @@ const SideMenu = ({ changePassBtn__Txt, exportBtn__Txt, exitBtn__Txt }) => {
     history.push('/all-accounts');
   };
 
+  const handleDatabaseClick = () => {
+    history.push('/all-databases');
+  };
   const handleHomeClick = () => {
     history.push('/home');
   };
@@ -61,12 +64,12 @@ const SideMenu = ({ changePassBtn__Txt, exportBtn__Txt, exitBtn__Txt }) => {
 
           {isAdmin ? (
             <div
-              style={{ top: '300px' }}
+              style={{ top: '250px' }}
               className="overlap-group2 border-class-1 side-menu-btn"
               onClick={handleClick}
             >
               <div className="change-pass-btntxt dana-regular-normal-white-20px">
-                مدیریت کاربران
+                کاربران
               </div>
             </div>
           ) : (
@@ -82,12 +85,26 @@ const SideMenu = ({ changePassBtn__Txt, exportBtn__Txt, exitBtn__Txt }) => {
 
           {isAdmin ? (
             <div
-              style={{ top: '365px' }}
+              style={{ top: '315px' }}
               className="overlap-group2 border-class-1 side-menu-btn"
               onClick={handleAccountClick}
             >
               <div className="change-pass-btntxt dana-regular-normal-white-18px">
-                حساب های کاربری
+                حساب کاربری
+              </div>
+            </div>
+          ) : (
+            <></>
+          )}
+
+          {isAdmin ? (
+            <div
+              style={{ top: '380px' }}
+              className="overlap-group2 border-class-1 side-menu-btn"
+              onClick={handleDatabaseClick}
+            >
+              <div className="change-pass-btntxt dana-regular-normal-white-18px">
+                پایگاه داده
               </div>
             </div>
           ) : (

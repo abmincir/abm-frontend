@@ -98,7 +98,6 @@ function CreateNewUser(props) {
             value={nUser}
             onChange={(u) => {
               newUser(u.target.value);
-              console.log(u.target.value);
             }}
           ></input>
 
@@ -120,7 +119,6 @@ function CreateNewUser(props) {
             value={pass}
             onChange={(p) => {
               password(p.target.value);
-              console.log(p.target.value);
             }}
           ></input>
 
@@ -131,7 +129,6 @@ function CreateNewUser(props) {
             value={rPass}
             onChange={(rp) => {
               repeatPass(rp.target.value);
-              console.log(rp.target.value);
             }}
           ></input>
           <button
