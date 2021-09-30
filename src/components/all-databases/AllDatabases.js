@@ -124,7 +124,7 @@ const AllDatabases = () => {
   };
 
   const addDatabaseHandler = async () => {
-    history.push('/create-account');
+    history.push('/create-database');
   };
 
   return (

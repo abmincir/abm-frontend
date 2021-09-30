@@ -17,6 +17,7 @@ import SideMenu from '../side-menu/SideMenu';
 import Modal from './Modal';
 import * as actions from '../../actions';
 import store from '../../store';
+import arrowDown from '../../fonts/down_arrow_icon.svg'
 
 const URI = process.env.REACT_APP_REST_ENDPOINT;
 const Home = () => {
@@ -228,6 +229,17 @@ const Home = () => {
     setIsShowingModal(!isShowingModal);
   };
 
+  // const [dataBases, setDataBases] = useState([
+  //   { name: 'تدبیر' },
+  //   { name: 'MIS' },
+  // ]);
+  // const [accounts, setAccounts] = useState([
+  //   { username: 'exon test1' },
+  //   { username: 'exon test2' },
+  //   { username: 'exon test3' },
+  //   { username: 'exon test4' },
+  // ]);
+
   const [dataBases, setDataBases] = useState([]);
   const [accounts, setAccounts] = useState([]);
 
@@ -337,6 +349,121 @@ const Home = () => {
     setAccountSelected(acc);
     setActiveAccount(false);
     actions.accountChange(_id, username, password);
+  };
+
+  const [sortObj, setSortObj] = useState({
+    purchaseId: 0,
+    spsWeight: 0,
+    billWeight: 0,
+    saveDate: 0,
+    billDate: 0,
+    billSerial: 0,
+    billNumber: 0,
+    productName: 0,
+    customerName: 0,
+    billStatus: 0,
+  });
+
+  const sortByPurchaseId = () => {
+    if (sortObj.purchaseId === 0) {
+      setSortObj({ ...sortObj, purchaseId: 1 });
+    } else if (sortObj.purchaseId === 1) {
+      setSortObj({ ...sortObj, purchaseId: -1 });
+    } else {
+      setSortObj({ ...sortObj, purchaseId: 0 });
+    }
+  };
+
+  const sortBySpsWeight = () => {
+    if (sortObj.spsWeight === 0) {
+      setSortObj({ ...sortObj, spsWeight: 1 });
+    } else if (sortObj.spsWeight === 1) {
+      setSortObj({ ...sortObj, spsWeight: -1 });
+    } else {
+      setSortObj({ ...sortObj, spsWeight: 0 });
+    }
+  };
+
+  const sortByBillWeight = () => {
+    if (sortObj.billWeight === 0) {
+      setSortObj({ ...sortObj, billWeight: 1 });
+    } else if (sortObj.billWeight === 1) {
+      setSortObj({ ...sortObj, billWeight: -1 });
+    } else {
+      setSortObj({ ...sortObj, billWeight: 0 });
+    }
+  };
+
+  const sortBySaveDate = () => {
+    if (sortObj.saveDate === 0) {
+      setSortObj({ ...sortObj, saveDate: 1 });
+    } else if (sortObj.saveDate === 1) {
+      setSortObj({ ...sortObj, saveDate: -1 });
+    } else {
+      setSortObj({ ...sortObj, saveDate: 0 });
+    }
+  };
+
+  const sortByBillDate = () => {
+    if (sortObj.billDate === 0) {
+      setSortObj({ ...sortObj, billDate: 1 });
+    } else if (sortObj.billDate === 1) {
+      setSortObj({ ...sortObj, billDate: -1 });
+    } else {
+      setSortObj({ ...sortObj, billDate: 0 });
+    }
+  };
+
+  const sortByBillSerial = () => {
+    if (sortObj.billSerial === 0) {
+      setSortObj({ ...sortObj, billSerial: 1 });
+    } else if (sortObj.billSerial === 1) {
+      setSortObj({ ...sortObj, billSerial: -1 });
+    } else {
+      setSortObj({ ...sortObj, billSerial: 0 });
+    }
+  };
+
+  const sortByProductName = () => {
+    if (sortObj.productName === 0) {
+      setSortObj({ ...sortObj, productName: 1 });
+    } else if (sortObj.productName === 1) {
+      setSortObj({ ...sortObj, productName: -1 });
+    } else {
+      setSortObj({ ...sortObj, productName: 0 });
+    }
+  };
+
+  const sortByBillNumber = () => {
+    if (sortObj.billNumber === 0) {
+      setSortObj({ ...sortObj, billNumber: 1 });
+    } else if (sortObj.billNumber === 1) {
+      setSortObj({ ...sortObj, billNumber: -1 });
+    } else {
+      setSortObj({ ...sortObj, billNumber: 0 });
+    }
+  };
+
+  const sortByCustomerName = () => {
+    if (sortObj.customerName === 0) {
+      setSortObj({ ...sortObj, customerName: 1 });
+    } else if (sortObj.customerName === 1) {
+      setSortObj({ ...sortObj, customerName: -1 });
+    } else {
+      setSortObj({ ...sortObj, customerName: 0 });
+    }
+
+    console.log('sortObj :>> ', sortObj);
+  };
+
+  const sortByBillStatus = () => {
+    if (sortObj.billStatus === 0) {
+      setSortObj({ ...sortObj, billStatus: 1 });
+    } else if (sortObj.billStatus === 1) {
+      setSortObj({ ...sortObj, billStatus: -1 });
+    } else {
+      setSortObj({ ...sortObj, billStatus: 0 });
+    }
   };
 
   return (
@@ -675,37 +802,37 @@ const Home = () => {
 
         <ColumnsSection>
           <CheckBoxColumn />
-          <Column>
-            <ColumnsTitle>شناسه بازارگاه</ColumnsTitle>
+          <Column onClick={sortByPurchaseId}>
+            <ColumnsTitle><Arrow status={sortObj.purchaseId} src={arrowDown}></Arrow> شناسه بازارگاه</ColumnsTitle>
           </Column>
-          <Column>
-            <ColumnsTitle>وزن بازارگاه</ColumnsTitle>
+          <Column onClick={sortBySpsWeight}>
+            <ColumnsTitle><Arrow status={sortObj.spsWeight} src={arrowDown}></Arrow>وزن بازارگاه</ColumnsTitle>
           </Column>
-          <Column>
-            <ColumnsTitle>وزن بارنامه</ColumnsTitle>
+          <Column onClick={sortByBillWeight}>
+            <ColumnsTitle><Arrow status={sortObj.billWeight} src={arrowDown}></Arrow>وزن بارنامه</ColumnsTitle>
           </Column>
-          <Column>
-            <ColumnsTitle>تاریخ ثبت</ColumnsTitle>
+          <Column onClick={sortBySaveDate}>
+            <ColumnsTitle><Arrow status={sortObj.saveDate} src={arrowDown}></Arrow>تاریخ ثبت</ColumnsTitle>
           </Column>
-          <Column>
-            <ColumnsTitle>تاریخ بارنامه</ColumnsTitle>
+          <Column onClick={sortByBillDate}>
+            <ColumnsTitle><Arrow status={sortObj.billDate} src={arrowDown}></Arrow>تاریخ بارنامه</ColumnsTitle>
           </Column>
-          <Column>
-            <ColumnsTitle>سریال بارنامه</ColumnsTitle>
+          <Column onClick={sortByBillSerial}>
+            <ColumnsTitle><Arrow status={sortObj.billSerial} src={arrowDown}></Arrow>سریال بارنامه</ColumnsTitle>
           </Column>
-          <Column>
-            <ColumnsTitle>شماره بارنامه</ColumnsTitle>
+          <Column onClick={sortByBillNumber}>
+            <ColumnsTitle><Arrow status={sortObj.billNumber} src={arrowDown}></Arrow>شماره بارنامه</ColumnsTitle>
           </Column>
-          <Column>
-            <ColumnsTitle>نام کالا</ColumnsTitle>
+          <Column onClick={sortByProductName}>
+            <ColumnsTitle><Arrow status={sortObj.productName} src={arrowDown}></Arrow>نام کالا</ColumnsTitle>
           </Column>
 
-          <NameColumn>
-            <ColumnsTitle>نام خریدار</ColumnsTitle>
+          <NameColumn onClick={sortByCustomerName}>
+            <ColumnsTitle><Arrow status={sortObj.customerName} src={arrowDown}></Arrow>نام خریدار</ColumnsTitle>
           </NameColumn>
 
-          <StatusColumn>
-            <ColumnsTitle>وضعیت استعلام</ColumnsTitle>
+          <StatusColumn onClick={sortByBillStatus}>
+            <ColumnsTitle><Arrow status={sortObj.billStatus} src={arrowDown}></Arrow>وضعیت استعلام</ColumnsTitle>
           </StatusColumn>
         </ColumnsSection>
 
@@ -1248,6 +1375,13 @@ const ColumnsTitle = styled.p`
   text-align: center;
   white-space: nowrap;
   margin: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const RowsContainer = styled.div`
@@ -1512,6 +1646,35 @@ const Option = styled.div`
   &:hover {
     background: #414b57;
   }
+`;
+
+const Arrow = styled.img`
+  width:30px;
+  height: 0;
+
+  opacity:0;
+
+  transition: transform 0.4s ease-out , opacity 0.5s ease-out , height 0.3s ease-out;
+
+
+
+  ${(props) =>
+    props.status === 1
+      ? css`
+      height: auto;
+          opacity: 1;
+          margin-bottom: 2px;
+        `
+      :props.status === -1 ? css`
+      height: auto;
+          opacity: 1;
+          margin-bottom: 2px;
+
+          -webkit-transform: scaleY(-1);
+          transform: scaleY(-1);
+      ` : css`
+      
+      `}
 `;
 
 export default Home;

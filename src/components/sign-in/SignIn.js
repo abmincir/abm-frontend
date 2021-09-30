@@ -82,6 +82,17 @@ const SignIn = ({ setToAdmin, setToUser }) => {
   const [dataBases, setDataBases] = useState([]);
   const [accounts, setAccounts] = useState([]);
 
+  // const [dataBases, setDataBases] = useState([
+  //   { name: 'تدبیر' },
+  //   { name: 'MIS' },
+  // ]);
+  // const [accounts, setAccounts] = useState([
+  //   { username: 'exon test1' },
+  //   { username: 'exon test2' },
+  //   { username: 'exon test3' },
+  //   { username: 'exon test4' },
+  // ]);
+
   useEffect(() => {
     Axios.get(`${URI}/databases/all`)
       .then((result) => {
