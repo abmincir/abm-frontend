@@ -452,8 +452,6 @@ const Home = () => {
     } else {
       setSortObj({ ...sortObj, customerName: 0 });
     }
-
-    console.log('sortObj :>> ', sortObj);
   };
 
   const sortByBillStatus = () => {
