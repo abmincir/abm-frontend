@@ -251,7 +251,7 @@ const AllDatabases = () => {
                         }
                         type="checkbox"
                       />
-                      <label for="switch-shadow"></label>
+                      <label htmlFor="switch-shadow"></label>
                     </div>
                     میلادی
                   </div>
