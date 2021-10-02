@@ -223,7 +223,7 @@ const AllDatabases = () => {
                 <Column>
                   <DataValue
                     onChange={(e) => editUsernameHandler(index, e.target.value)}
-                    value={database.userName}
+                    value={database.username}
                   />
                 </Column>
                 <Column>
@@ -244,7 +244,8 @@ const AllDatabases = () => {
                       setshamsi(e.target.value);
                       setShamsiIndex(index);
                     }}
-                    value={database.isShamsi ? 'شمسی' : 'میلادی'}
+                    placeholder={database.isShamsi ? 'شمسی' : 'میلادی'}
+                    value={shamsi}
                   />
                 </Column>
                 <Column>
