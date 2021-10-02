@@ -60,7 +60,6 @@ const AllAccounts = () => {
     setAccounts(
       accounts.map((u, indx) => {
         if (index !== indx) return u;
-
         return { ...u, password };
       })
     );
@@ -70,7 +69,6 @@ const AllAccounts = () => {
     setAccounts(
       accounts.map((u, indx) => {
         if (index !== indx) return u;
-
         return { ...u, username };
       })
     );

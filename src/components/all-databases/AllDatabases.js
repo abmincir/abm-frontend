@@ -244,7 +244,8 @@ const AllDatabases = () => {
                       setshamsi(e.target.value);
                       setShamsiIndex(index);
                     }}
-                    value={database.isShamsi ? 'شمسی' : 'میلادی'}
+                    placeholder={database.isShamsi ? 'شمسی' : 'میلادی'}
+                    value={shamsi}
                   />
                 </Column>
                 <Column>
