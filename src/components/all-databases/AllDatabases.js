@@ -4,6 +4,7 @@ import { IonToast } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import SideMenu from '../side-menu/SideMenu';
+import './style.css';
 
 const URI = process.env.REACT_APP_REST_ENDPOINT;
 
@@ -43,12 +44,6 @@ const AllDatabases = () => {
   }, []);
 
   const changeHandler = async (index) => {
-    shamsi === 'شمسی'
-      ? editIsShamsiHandler(shamsiIndex, true)
-      : shamsi === 'میلادی'
-      ? editIsShamsiHandler(shamsiIndex, false)
-      : setShowErrorMessage(true);
-
     const { _id, name, address, username, password, proc, isShamsi } =
       databases[index];
     const data = { _id, name, address, username, password, proc, isShamsi };
@@ -102,7 +97,7 @@ const AllDatabases = () => {
     setDatabases(
       databases.map((u, indx) => {
         if (index !== indx) return u;
-        return { ...u, isShamsi };
+        return { ...u, isShamsi: !isShamsi };
       })
     );
   };
@@ -189,7 +184,7 @@ const AllDatabases = () => {
             <ColumnsTitle>نام عملکرد</ColumnsTitle>
           </Column>
           <Column>
-            <ColumnsTitle>شمسی - میلادی</ColumnsTitle>
+            <ColumnsTitle>شمسی - میلادی </ColumnsTitle>
           </Column>
           <Column>
             <Button onClick={addDatabaseHandler} color="green">
@@ -239,14 +234,27 @@ const AllDatabases = () => {
                   />
                 </Column>
                 <Column>
-                  <DataValue
-                    onChange={(e) => {
-                      setshamsi(e.target.value);
-                      setShamsiIndex(index);
-                    }}
-                    placeholder={database.isShamsi ? 'شمسی' : 'میلادی'}
-                    value={shamsi}
-                  />
+                  <div className="switch-wrapper">
+                    شمسی
+                    <div
+                      className="switch__container"
+                      onClick={(e) =>
+                        editIsShamsiHandler(index, database.isShamsi)
+                      }
+                    >
+                      <input
+                        id="switch-shadow"
+                        className={
+                          database.isShamsi
+                            ? 'switch--shadow'
+                            : 'switch--shadow-miladi'
+                        }
+                        type="checkbox"
+                      />
+                      <label for="switch-shadow"></label>
+                    </div>
+                    میلادی
+                  </div>
                 </Column>
                 <Column>
                   <Button
