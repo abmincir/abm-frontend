@@ -35,6 +35,7 @@ function CreateNewDatabase(props) {
     userName: '',
     password: '',
     proc: '',
+    isShamsi: false,
   });
   const [databaseName, setDatabaseName] = useState('');
   const [databaseAdress, setDatabaseAdress] = useState('');
@@ -42,6 +43,17 @@ function CreateNewDatabase(props) {
   const [password, setPassword] = useState('');
   const [proc, setProc] = useState('');
   const history = useHistory();
+
+  const [isShamsi, setIsShamsi] = useState(false);
+  const [activeIsShamsi, setActiveIsShamsi] = useState(false);
+  const toggleActiveIsShamsi = () => {
+    setActiveIsShamsi(!activeIsShamsi);
+  };
+
+  const toggleSelectedShamsi = (e) => {
+    setActiveIsShamsi(false);
+    setIsShamsi(e);
+  };
 
   const {
     createDatabaseName,
@@ -62,6 +74,7 @@ function CreateNewDatabase(props) {
       username: userName,
       password: password,
       proc: proc,
+      isShamsi: isShamsi,
     });
 
     Axios.post(`${URI}/databases/create`, database)
@@ -88,7 +101,8 @@ function CreateNewDatabase(props) {
         <div onClick={() => setVisible(!visible)}>{menu}</div>
         <p>کشت و صنعت اکسون</p>
       </Header>
-      <div className="change-password border-1px-dove-gray">
+
+      <Container activeIsShamsi={activeIsShamsi}>
         <IonLoading
           cssClass="custom-loading"
           isOpen={loading}
@@ -148,6 +162,32 @@ function CreateNewDatabase(props) {
               setProc(u.target.value);
             }}
           ></input>
+          <SelectBox>
+            <OptionContainer active={activeIsShamsi}>
+              <Option
+                onClick={(e) => {
+                  toggleSelectedShamsi(true);
+                }}
+              >
+                شمسی
+              </Option>
+              <Option
+                onClick={(e) => {
+                  toggleSelectedShamsi(false);
+                }}
+              >
+                میلادی
+              </Option>
+            </OptionContainer>
+
+            <SelectedOption
+              onClick={toggleActiveIsShamsi}
+              active={activeIsShamsi}
+            >
+              {' '}
+              تاریخ پایگاه داده: {isShamsi === false ? 'میلادی' : 'شمسی'}
+            </SelectedOption>
+          </SelectBox>
           <button
             type="button"
             className="pass-change-confirm dana-regular-normal-white-16px create-user-btn"
@@ -172,7 +212,7 @@ function CreateNewDatabase(props) {
           message="حساب کاربری جدید ایجاد شد"
           duration={1000}
         />
-      </div>
+      </Container>
     </>
   );
 }
@@ -282,4 +322,181 @@ const Header = styled.div`
       : css`
           background-color: var(--caribbean-green);
         `}
+`;
+
+// select box
+
+const SelectBox = styled.div`
+  // height: 40px;
+  width: 280px;
+
+  margin-bottom: 8px;
+  margin-top: 8px;
+
+  display: flex;
+  flex-direction: column;
+
+  direction: rtl;
+`;
+
+const OptionContainer = styled.div`
+  background: #2f3640;
+  color: #f5f6fa;
+  height: 0px;
+  max-height: 0px;
+  width: 280px;
+  transition: visibility 0.3s ease-in, opacity 0.5s ease-out,
+    max-height 0.4s ease-in;
+  border-radius: 8px;
+  overflow: hidden;
+  visibility: hidden;
+  opacity: 0;
+
+  position: relative;
+
+  margin-bottom: 0px;
+
+  top: 3px;
+
+  ${(props) =>
+    props.active
+      ? css`
+          opacity: 1;
+          visibility: visible;
+          height: auto;
+          max-height: auto;
+          margin-bottom: 8px;
+        `
+      : css``}
+
+  order: 1;
+  max-height: 240px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 0px;
+    background: #0d141f;
+    border-radius: 0 8px 8px 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #525861;
+    border-radius: 0 8px 8px 0;
+  }
+`;
+
+const SelectedOption = styled.div`
+  background: #2f3640;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  color: #f5f6fa;
+  position: relative;
+
+  order: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::after {
+    content: '';
+    background: url('img/arrow-down.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+
+    position: absolute;
+    height: 100%;
+    width: 32px;
+    right: 10px;
+    top: 5px;
+
+    transition: all 0.4s;
+  }
+
+  padding: 12px 24px;
+  cursor: pointer;
+`;
+
+const Option = styled.div`
+  padding: 12px 24px;
+  cursor: pointer;
+
+  &:hover {
+    background: #414b57;
+  }
+`;
+
+const DateOptionContainer = styled.div`
+  background: #2f3640;
+  color: #f5f6fa;
+  height: 0px;
+  max-height: 0px;
+  width: 180px;
+  transition: visibility 0.3s ease-in, opacity 0.5s ease-out,
+    max-height 0.4s ease-in;
+  border-radius: 8px;
+  overflow: hidden;
+  visibility: hidden;
+  opacity: 0;
+
+  position: fixed;
+
+  margin-bottom: 0px;
+  margin-right: 22px;
+
+  top: 128px;
+
+  ${(props) =>
+    props.active
+      ? css`
+          opacity: 1;
+          visibility: visible;
+          height: auto;
+          max-height: auto;
+          margin-bottom: 8px;
+        `
+      : css``}
+
+  order: 1;
+  max-height: 240px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 0px;
+    background: #0d141f;
+    border-radius: 0 8px 8px 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #525861;
+    border-radius: 0 8px 8px 0;
+  }
+`;
+
+const Container = styled.div`
+  align-items: flex-start;
+  background-color: white;
+  border-radius: 40px;
+  display: flex;
+  flex-direction: column;
+  max-height: 462px;
+  overflow: hidden;
+  padding: 29.5px 51px;
+  width: 383px;
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  margin: 0;
+
+  border: 1px solid rgba(112, 112, 112, 1);
+
+  ${(props) =>
+    props.activeIsShamsi
+      ? css`
+          max-height: 586px;
+        `
+      : css``}
 `;

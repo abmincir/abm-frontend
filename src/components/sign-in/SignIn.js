@@ -41,6 +41,17 @@ const SignIn = ({ setToAdmin, setToUser }) => {
   };
 
   const userLoginHandler = (event) => {
+    if (dataBaseSelected === 0) {
+      setMessage('انتخاب پایگاه داده اجباریست');
+      setShowMassage(true);
+      return;
+    }
+    if (accountSelected === 0) {
+      setMessage('انتخاب حساب کاربری اجباریست');
+      setShowMassage(true);
+      return;
+    }
+
     setLoading(true);
 
     const data = {
@@ -67,10 +78,28 @@ const SignIn = ({ setToAdmin, setToUser }) => {
       });
   };
 
+  const adminLoginCheck = () => {
+    if (dataBaseSelected === 0) {
+      setMessage('هشدار: ورود بدون انتخاب پایگاه داده');
+      setShowMassage(true);
+      setTimeout(() => {
+        adminLoginHandler();
+      }, 3000);
+    } else if (accountSelected === 0) {
+      setMessage('هشدار: ورود بدون انتخاب حساب کاربری');
+      setShowMassage(true);
+      setTimeout(() => {
+        adminLoginHandler();
+      }, 3000);
+    } else {
+      adminLoginHandler();
+    }
+  };
+
   const onKeyPress = (e) => {
     if (e.charCode === 13) {
       if (isAdmin) {
-        adminLoginHandler();
+        adminLoginCheck();
       } else {
         userLoginHandler();
       }
@@ -285,7 +314,7 @@ const SignIn = ({ setToAdmin, setToUser }) => {
             <Enter
               type="button"
               isAdmin={isAdmin}
-              onClick={isAdmin ? adminLoginHandler : userLoginHandler}
+              onClick={isAdmin ? adminLoginCheck : userLoginHandler}
             >
               ورود
             </Enter>

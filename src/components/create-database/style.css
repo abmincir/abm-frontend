@@ -17,25 +17,7 @@
   border: 1px solid var(--dove-gray);
 }
 
-.change-password {
-  align-items: flex-start;
-  background-color: white;
-  border-radius: 40px;
-  display: flex;
-  flex-direction: column;
-  height: 416px;
-  overflow: hidden;
-  padding: 29.5px 51px;
-  width: 383px;
-  display: flex;
-  flex-direction: column;
-
-  justify-content: center;
-  align-items: center;
-
-  margin: 0;
-}
-.change-password .current-pass-txt {
+.current-pass-txt {
   border: 1px solid var(--dove-gray);
   background-color: white;
   border-radius: 20px;
@@ -56,7 +38,7 @@
   text-align: center;
   white-space: nowrap;
 }
-.change-password .new-pass-repeat-txt {
+.new-pass-repeat-txt {
   border: 1px solid var(--dove-gray);
   background-color: white;
   border-radius: 20px;
@@ -79,7 +61,7 @@
   text-align: center;
   white-space: nowrap;
 }
-.change-password .new-pass-txt {
+.new-pass-txt {
   border: 1px solid var(--dove-gray);
   background-color: white;
   border-radius: 20px;
@@ -103,7 +85,7 @@
   white-space: nowrap;
 }
 
-.change-password .pass-change-confirm {
+.pass-change-confirm {
   align-items: flex-end;
   align-self: center;
   background-color: var(--caribbean-green);
@@ -132,7 +114,7 @@
   transform: scale(1.1);
   cursor: pointer;
 }
-.change-password .pass-change-title {
+.pass-change-title {
   align-self: center;
   letter-spacing: 0px;
   line-height: 20px;

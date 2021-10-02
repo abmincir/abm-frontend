@@ -1,6 +1,7 @@
 import { IonLoading, IonToast } from '@ionic/react';
 import Axios from 'axios';
 import React, { useState } from 'react';
+import store from '../../store';
 
 const URI = process.env.REACT_APP_REST_ENDPOINT;
 
@@ -29,9 +30,12 @@ function Modal(props) {
     e.stopPropagation();
     setCheckLoading(true);
 
+    console.log(store.getState().account._id);
+
     const data = {
       _id: bill._id,
       weight,
+      accountId: store.getState().account._id,
     };
 
     try {

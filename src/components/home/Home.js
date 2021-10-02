@@ -17,7 +17,7 @@ import SideMenu from '../side-menu/SideMenu';
 import Modal from './Modal';
 import * as actions from '../../actions';
 import store from '../../store';
-import arrowDown from '../../fonts/down_arrow_icon.svg'
+import arrowDown from '../../fonts/down_arrow_icon.svg';
 
 const URI = process.env.REACT_APP_REST_ENDPOINT;
 const Home = () => {
@@ -86,6 +86,8 @@ const Home = () => {
       purchaseNumber,
       status: statusFilter,
       productName,
+      sort: sortObj,
+      dbId: dataBaseSelected._id,
     };
 
     Axios.post(`${URI}/bill/all`, data)
@@ -123,6 +125,7 @@ const Home = () => {
     const data = {
       startDate: startDateSave,
       endDate: endDateSave,
+      dbId: dataBaseSelected._id,
     };
 
     console.log({
@@ -155,6 +158,8 @@ const Home = () => {
       purchaseId: bill.purchaseId,
       weight: bill.bill.weight,
       billNumber: bill.bill.number,
+      username: localStorage.getItem('username'),
+      accountId: accountSelected._id,
     };
 
     Axios.post(`${URI}/bill/estelam`, data)
@@ -198,6 +203,8 @@ const Home = () => {
         purchaseId: bill.purchaseId,
         weight: bill.bill.weight,
         billNumber: bill.bill.number,
+        username: localStorage.getItem('username'),
+        accountId: accountSelected._id,
       };
 
       try {
@@ -316,7 +323,6 @@ const Home = () => {
   const [dataBaseSelected, setDataBaseSelected] = useState(
     store.getState().dataBase ? store.getState().dataBase : 0
   );
-
   const [accountSelected, setAccountSelected] = useState(
     store.getState().account ? store.getState().account : 0
   );
@@ -801,36 +807,65 @@ const Home = () => {
         <ColumnsSection>
           <CheckBoxColumn />
           <Column onClick={sortByPurchaseId}>
-            <ColumnsTitle><Arrow status={sortObj.purchaseId} src={arrowDown}></Arrow> شناسه بازارگاه</ColumnsTitle>
+            <ColumnsTitle>
+              <Arrow status={sortObj.purchaseId} src={arrowDown}></Arrow> شناسه
+              بازارگاه
+            </ColumnsTitle>
           </Column>
           <Column onClick={sortBySpsWeight}>
-            <ColumnsTitle><Arrow status={sortObj.spsWeight} src={arrowDown}></Arrow>وزن بازارگاه</ColumnsTitle>
+            <ColumnsTitle>
+              <Arrow status={sortObj.spsWeight} src={arrowDown}></Arrow>وزن
+              بازارگاه
+            </ColumnsTitle>
           </Column>
           <Column onClick={sortByBillWeight}>
-            <ColumnsTitle><Arrow status={sortObj.billWeight} src={arrowDown}></Arrow>وزن بارنامه</ColumnsTitle>
+            <ColumnsTitle>
+              <Arrow status={sortObj.billWeight} src={arrowDown}></Arrow>وزن
+              بارنامه
+            </ColumnsTitle>
           </Column>
           <Column onClick={sortBySaveDate}>
-            <ColumnsTitle><Arrow status={sortObj.saveDate} src={arrowDown}></Arrow>تاریخ ثبت</ColumnsTitle>
+            <ColumnsTitle>
+              <Arrow status={sortObj.saveDate} src={arrowDown}></Arrow>تاریخ ثبت
+            </ColumnsTitle>
           </Column>
           <Column onClick={sortByBillDate}>
-            <ColumnsTitle><Arrow status={sortObj.billDate} src={arrowDown}></Arrow>تاریخ بارنامه</ColumnsTitle>
+            <ColumnsTitle>
+              <Arrow status={sortObj.billDate} src={arrowDown}></Arrow>تاریخ
+              بارنامه
+            </ColumnsTitle>
           </Column>
           <Column onClick={sortByBillSerial}>
-            <ColumnsTitle><Arrow status={sortObj.billSerial} src={arrowDown}></Arrow>سریال بارنامه</ColumnsTitle>
+            <ColumnsTitle>
+              <Arrow status={sortObj.billSerial} src={arrowDown}></Arrow>سریال
+              بارنامه
+            </ColumnsTitle>
           </Column>
           <Column onClick={sortByBillNumber}>
-            <ColumnsTitle><Arrow status={sortObj.billNumber} src={arrowDown}></Arrow>شماره بارنامه</ColumnsTitle>
+            <ColumnsTitle>
+              <Arrow status={sortObj.billNumber} src={arrowDown}></Arrow>شماره
+              بارنامه
+            </ColumnsTitle>
           </Column>
           <Column onClick={sortByProductName}>
-            <ColumnsTitle><Arrow status={sortObj.productName} src={arrowDown}></Arrow>نام کالا</ColumnsTitle>
+            <ColumnsTitle>
+              <Arrow status={sortObj.productName} src={arrowDown}></Arrow>نام
+              کالا
+            </ColumnsTitle>
           </Column>
 
           <NameColumn onClick={sortByCustomerName}>
-            <ColumnsTitle><Arrow status={sortObj.customerName} src={arrowDown}></Arrow>نام خریدار</ColumnsTitle>
+            <ColumnsTitle>
+              <Arrow status={sortObj.customerName} src={arrowDown}></Arrow>نام
+              خریدار
+            </ColumnsTitle>
           </NameColumn>
 
           <StatusColumn onClick={sortByBillStatus}>
-            <ColumnsTitle><Arrow status={sortObj.billStatus} src={arrowDown}></Arrow>وضعیت استعلام</ColumnsTitle>
+            <ColumnsTitle>
+              <Arrow status={sortObj.billStatus} src={arrowDown}></Arrow>وضعیت
+              استعلام
+            </ColumnsTitle>
           </StatusColumn>
         </ColumnsSection>
 
@@ -1605,6 +1640,53 @@ const OptionContainer = styled.div`
   }
 `;
 
+const DateOptionContainer = styled.div`
+  background: #2f3640;
+  color: #f5f6fa;
+  height: 0px;
+  max-height: 0px;
+  width: 180px;
+  transition: visibility 0.3s ease-in, opacity 0.5s ease-out,
+    max-height 0.4s ease-in;
+  border-radius: 8px;
+  overflow: hidden;
+  visibility: hidden;
+  opacity: 0;
+
+  position: fixed;
+
+  margin-bottom: 0px;
+  margin-right: 22px;
+
+  top: 128px;
+
+  ${(props) =>
+    props.active
+      ? css`
+          opacity: 1;
+          visibility: visible;
+          height: auto;
+          max-height: auto;
+          margin-bottom: 8px;
+        `
+      : css``}
+
+  order: 1;
+  max-height: 240px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 0px;
+    background: #0d141f;
+    border-radius: 0 8px 8px 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #525861;
+    border-radius: 0 8px 8px 0;
+  }
+`;
+
 const SelectedOption = styled.div`
   background: #2f3640;
   border-radius: 8px;
@@ -1647,32 +1729,31 @@ const Option = styled.div`
 `;
 
 const Arrow = styled.img`
-  width:30px;
+  width: 30px;
   height: 0;
 
-  opacity:0;
+  opacity: 0;
 
-  transition: transform 0.4s ease-out , opacity 0.5s ease-out , height 0.3s ease-out;
-
-
+  transition: transform 0.4s ease-out, opacity 0.5s ease-out,
+    height 0.3s ease-out;
 
   ${(props) =>
     props.status === 1
       ? css`
-      height: auto;
+          height: auto;
           opacity: 1;
           margin-bottom: 2px;
         `
-      :props.status === -1 ? css`
-      height: auto;
+      : props.status === -1
+      ? css`
+          height: auto;
           opacity: 1;
           margin-bottom: 2px;
 
           -webkit-transform: scaleY(-1);
           transform: scaleY(-1);
-      ` : css`
-      
-      `}
+        `
+      : css``}
 `;
 
 export default Home;

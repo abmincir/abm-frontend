@@ -10,6 +10,9 @@ const URI = process.env.REACT_APP_REST_ENDPOINT;
 const AllDatabases = () => {
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState('');
+  const [errMessage, setErrMessage] = useState(
+    'لطفا اسم نوع تاریخ را به درستی وارد کنید'
+  );
 
   const [isAdmin] = useState(true);
   const [visible, setVisible] = useState(false);
@@ -22,13 +25,14 @@ const AllDatabases = () => {
       .then((result) => {
         setDatabases(
           result.data.dbs.map(
-            ({ name, address, username, password, proc, _id }) => {
+            ({ name, address, username, password, proc, isShamsi, _id }) => {
               return {
                 name,
                 address,
                 username,
                 password,
                 proc,
+                isShamsi,
                 _id,
               };
             }
@@ -39,8 +43,15 @@ const AllDatabases = () => {
   }, []);
 
   const changeHandler = async (index) => {
-    const { _id, name, address, username, password, proc } = databases[index];
-    const data = { _id, name, address, username, password, proc };
+    shamsi === 'شمسی'
+      ? editIsShamsiHandler(shamsiIndex, true)
+      : shamsi === 'میلادی'
+      ? editIsShamsiHandler(shamsiIndex, false)
+      : setShowErrorMessage(true);
+
+    const { _id, name, address, username, password, proc, isShamsi } =
+      databases[index];
+    const data = { _id, name, address, username, password, proc, isShamsi };
 
     try {
       const result = await Axios.post(`${URI}/databases/change-database`, data);
@@ -84,6 +95,18 @@ const AllDatabases = () => {
     );
   };
 
+  const [shamsi, setshamsi] = useState('');
+  const [shamsiIndex, setShamsiIndex] = useState();
+
+  const editIsShamsiHandler = (index, isShamsi) => {
+    setDatabases(
+      databases.map((u, indx) => {
+        if (index !== indx) return u;
+        return { ...u, isShamsi };
+      })
+    );
+  };
+
   const editPasswordHandler = (index, password) => {
     setDatabases(
       databases.map((u, indx) => {
@@ -122,6 +145,8 @@ const AllDatabases = () => {
     } finally {
     }
   };
+
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
 
   const addDatabaseHandler = async () => {
     history.push('/create-database');
@@ -162,6 +187,9 @@ const AllDatabases = () => {
           </Column>
           <Column>
             <ColumnsTitle>نام عملکرد</ColumnsTitle>
+          </Column>
+          <Column>
+            <ColumnsTitle>شمسی - میلادی</ColumnsTitle>
           </Column>
           <Column>
             <Button onClick={addDatabaseHandler} color="green">
@@ -211,6 +239,15 @@ const AllDatabases = () => {
                   />
                 </Column>
                 <Column>
+                  <DataValue
+                    onChange={(e) => {
+                      setshamsi(e.target.value);
+                      setShamsiIndex(index);
+                    }}
+                    value={database.isShamsi ? 'شمسی' : 'میلادی'}
+                  />
+                </Column>
+                <Column>
                   <Button
                     onClick={() => deleteDatabaseHandler(index)}
                     color="black"
@@ -226,6 +263,13 @@ const AllDatabases = () => {
           )}
         </RowsContainer>
       </Wrapper>
+      <IonToast
+        isOpen={showErrorMessage}
+        cssClass="custom-toast"
+        onDidDismiss={() => setShowErrorMessage(false)}
+        message={errMessage}
+        duration={6000}
+      />
     </>
   );
 };
