@@ -1583,7 +1583,6 @@ const ShowTotalText = styled.p`
 // select box
 
 const SelectBox = styled.div`
-  // height: 40px;
   width: 280px;
 
   margin-right: 18px;
