@@ -223,7 +223,7 @@ const AllDatabases = () => {
                 <Column>
                   <DataValue
                     onChange={(e) => editUsernameHandler(index, e.target.value)}
-                    value={database.userName}
+                    value={database.username}
                   />
                 </Column>
                 <Column>
