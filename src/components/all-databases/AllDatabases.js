@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { IonToast } from '@ionic/react';
+import { IonToast, IonToggle } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import SideMenu from '../side-menu/SideMenu';
@@ -236,39 +236,12 @@ const AllDatabases = () => {
                 <Column>
                   <div className="switch-wrapper">
                     شمسی
-                    {/* <div
-                      className="switch__container"
-                      onClick={(e) =>
+                    <IonToggle
+                      checkedk={database.isShamsi}
+                      onIonChange={(e) =>
                         editIsShamsiHandler(index, database.isShamsi)
                       }
-                    >
-                      <input
-                        id="switch-shadow"
-                        className={
-                          database.isShamsi
-                            ? 'switch--shadow'
-                            : 'switch--shadow-miladi'
-                        }
-                        type="checkbox"
-                      />
-                      <label htmlFor="switch-shadow"></label>
-                    </div> */}
-                    <div className="switch-container">
-                      <label>
-                        <input
-                          ref="switch"
-                          checked={database.isShamsi}
-                          onChange={(e) =>
-                            editIsShamsiHandler(index, database.isShamsi)
-                          }
-                          className="switch"
-                          type="checkbox"
-                        />
-                        <div>
-                          <div></div>
-                        </div>
-                      </label>
-                    </div>
+                    ></IonToggle>
                     میلادی
                   </div>
                 </Column>
