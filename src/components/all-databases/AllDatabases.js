@@ -236,7 +236,7 @@ const AllDatabases = () => {
                 <Column>
                   <div className="switch-wrapper">
                     شمسی
-                    <div
+                    {/* <div
                       className="switch__container"
                       onClick={(e) =>
                         editIsShamsiHandler(index, database.isShamsi)
@@ -252,6 +252,22 @@ const AllDatabases = () => {
                         type="checkbox"
                       />
                       <label htmlFor="switch-shadow"></label>
+                    </div> */}
+                    <div className="switch-container">
+                      <label>
+                        <input
+                          ref="switch"
+                          checked={database.isShamsi}
+                          onChange={(e) =>
+                            editIsShamsiHandler(index, database.isShamsi)
+                          }
+                          className="switch"
+                          type="checkbox"
+                        />
+                        <div>
+                          <div></div>
+                        </div>
+                      </label>
                     </div>
                     میلادی
                   </div>
