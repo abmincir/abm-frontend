@@ -14,6 +14,7 @@ function CreateAccount() {
       newAccountTxt="نام کاربری"
       passTxt="رمز عبور"
       createAccountConfirm="تأیید"
+      titleTxt="عنوان حساب"
     />
   );
 }
@@ -28,10 +29,16 @@ function CreateNewAccount(props) {
   const [errorMessage, setErrorMessage] = useState(false);
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [title, setTitle] = useState('');
   const history = useHistory();
 
-  const { createAccountTitle, newAccountTxt, passTxt, createAccountConfirm } =
-    props;
+  const {
+    createAccountTitle,
+    newAccountTxt,
+    passTxt,
+    createAccountConfirm,
+    titleTxt,
+  } = props;
 
   const createAccountHandler = () => {
     setLoading(true);
@@ -39,6 +46,7 @@ function CreateNewAccount(props) {
     const data = {
       username: userName,
       password: password,
+      title: title,
     };
 
     Axios.post(`${URI}/accounts/create`, data)
@@ -85,6 +93,16 @@ function CreateNewAccount(props) {
             value={userName}
             onChange={(u) => {
               setUserName(u.target.value);
+            }}
+          ></input>
+
+          <input
+            type="text"
+            placeholder={titleTxt}
+            className="new-pass-txt dana-regular-normal-dove-gray-16px"
+            value={title}
+            onChange={(u) => {
+              setTitle(u.target.value);
             }}
           ></input>
 

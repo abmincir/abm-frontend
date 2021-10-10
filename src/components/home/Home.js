@@ -740,7 +740,7 @@ const Home = () => {
                   <IonSelectOption value="0">عدم تطابق وزن</IonSelectOption>
                 </IonSelect>
               </IonItem>
-
+              <DateText>پایگاه داده</DateText>
               <SelectBox>
                 <OptionContainer active={activeDataBase}>
                   {dataBases.map((d) => {
@@ -770,7 +770,7 @@ const Home = () => {
                     : dataBaseSelected.name}
                 </SelectedOption>
               </SelectBox>
-
+              <DateText>حساب کاربری</DateText>
               <SelectBox>
                 <OptionContainer active={activeAccount}>
                   {accounts.map((d) => {
