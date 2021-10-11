@@ -26,7 +26,16 @@ const AllDatabases = () => {
       .then((result) => {
         setDatabases(
           result.data.dbs.map(
-            ({ name, address, username, password, proc, isShamsi, _id }) => {
+            ({
+              name,
+              address,
+              username,
+              password,
+              proc,
+              isShamsi,
+              title,
+              _id,
+            }) => {
               return {
                 name,
                 address,
@@ -34,6 +43,7 @@ const AllDatabases = () => {
                 password,
                 proc,
                 isShamsi,
+                title,
                 _id,
               };
             }
@@ -44,9 +54,18 @@ const AllDatabases = () => {
   }, []);
 
   const changeHandler = async (index) => {
-    const { _id, name, address, username, password, proc, isShamsi } =
+    const { _id, name, address, username, password, proc, isShamsi, title } =
       databases[index];
-    const data = { _id, name, address, username, password, proc, isShamsi };
+    const data = {
+      _id,
+      name,
+      address,
+      username,
+      password,
+      proc,
+      isShamsi,
+      title,
+    };
 
     try {
       const result = await Axios.post(`${URI}/databases/change-database`, data);
@@ -73,6 +92,16 @@ const AllDatabases = () => {
       })
     );
   };
+
+  const editTitleHandler = (index, title) => {
+    setDatabases(
+      databases.map((u, indx) => {
+        if (index !== indx) return u;
+        return { ...u, title };
+      })
+    );
+  };
+
   const editAddressHandler = (index, address) => {
     setDatabases(
       databases.map((u, indx) => {
@@ -173,6 +202,9 @@ const AllDatabases = () => {
             <ColumnsTitle>نام پایگاه</ColumnsTitle>
           </Column>
           <Column>
+            <ColumnsTitle>عنوان پایگاه</ColumnsTitle>
+          </Column>
+          <Column>
             <ColumnsTitle>آدرس پایگاه</ColumnsTitle>
           </Column>
           <Column>
@@ -208,6 +240,12 @@ const AllDatabases = () => {
                   <DataValue
                     onChange={(e) => editNameHandler(index, e.target.value)}
                     value={database.name}
+                  />
+                </Column>
+                <Column>
+                  <DataValue
+                    onChange={(e) => editTitleHandler(index, e.target.value)}
+                    value={database.title}
                   />
                 </Column>
                 <Column>

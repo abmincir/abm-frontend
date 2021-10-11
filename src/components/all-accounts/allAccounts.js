@@ -21,10 +21,11 @@ const AllAccounts = () => {
     Axios.get(`${URI}/accounts/all`)
       .then((result) => {
         setAccounts(
-          result.data.accounts.map(({ username, password, _id }) => {
+          result.data.accounts.map(({ username, password, title, _id }) => {
             return {
               username,
               password,
+              title,
               _id,
             };
           })
@@ -34,8 +35,8 @@ const AllAccounts = () => {
   }, []);
 
   const changeHandler = async (index) => {
-    const { _id, username, password } = accounts[index];
-    const data = { _id, username, password };
+    const { _id, username, password, title } = accounts[index];
+    const data = { _id, username, password, title };
 
     try {
       const result = await Axios.post(`${URI}/accounts/change-user`, data);
@@ -70,6 +71,15 @@ const AllAccounts = () => {
       accounts.map((u, indx) => {
         if (index !== indx) return u;
         return { ...u, username };
+      })
+    );
+  };
+
+  const editTitleHandler = (index, title) => {
+    setAccounts(
+      accounts.map((u, indx) => {
+        if (index !== indx) return u;
+        return { ...u, title };
       })
     );
   };
@@ -125,6 +135,9 @@ const AllAccounts = () => {
             <ColumnsTitle>رمز عبور</ColumnsTitle>
           </Column>
           <Column>
+            <ColumnsTitle>عنوان حساب کاربری</ColumnsTitle>
+          </Column>
+          <Column>
             <Button onClick={addAccountHandler} color="green">
               <ButtonText>افزودن حساب کاربری</ButtonText>
             </Button>
@@ -151,6 +164,12 @@ const AllAccounts = () => {
                   <DataValue
                     onChange={(e) => editPasswordHandler(index, e.target.value)}
                     value={account.password}
+                  />
+                </Column>
+                <Column>
+                  <DataValue
+                    onChange={(e) => editTitleHandler(index, e.target.value)}
+                    value={account.title}
                   />
                 </Column>
                 <Column>

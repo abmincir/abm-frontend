@@ -17,6 +17,7 @@ function CreateDatabase() {
       databasePassword="رمز عبور"
       dataBaseProcName="نام عملکرد"
       createDatabaseConfirm="تأیید"
+      titleTxt="عنوان پایگاه"
     />
   );
 }
@@ -36,11 +37,13 @@ function CreateNewDatabase(props) {
     password: '',
     proc: '',
     isShamsi: false,
+    title: '',
   });
   const [databaseName, setDatabaseName] = useState('');
   const [databaseAdress, setDatabaseAdress] = useState('');
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [title, setTitle] = useState('');
   const [proc, setProc] = useState('');
   const history = useHistory();
 
@@ -63,6 +66,7 @@ function CreateNewDatabase(props) {
     databasePassword,
     dataBaseProcName,
     createDatabaseConfirm,
+    titleTxt,
   } = props;
 
   const createDatabaseHandler = () => {
@@ -75,6 +79,7 @@ function CreateNewDatabase(props) {
       password: password,
       proc: proc,
       isShamsi: isShamsi,
+      title: title,
     });
 
     Axios.post(`${URI}/databases/create`, database)
@@ -122,6 +127,15 @@ function CreateNewDatabase(props) {
             value={databaseName}
             onChange={(u) => {
               setDatabaseName(u.target.value);
+            }}
+          ></input>
+          <input
+            type="text"
+            placeholder={titleTxt}
+            className="current-pass-txt dana-regular-normal-dove-gray-16px form-input"
+            value={title}
+            onChange={(u) => {
+              setTitle(u.target.value);
             }}
           ></input>
 
@@ -479,7 +493,7 @@ const Container = styled.div`
   border-radius: 40px;
   display: flex;
   flex-direction: column;
-  max-height: 462px;
+  max-height: 542px;
   overflow: hidden;
   padding: 29.5px 51px;
   width: 383px;
@@ -496,7 +510,7 @@ const Container = styled.div`
   ${(props) =>
     props.activeIsShamsi
       ? css`
-          max-height: 586px;
+          max-height: 666px;
         `
       : css``}
 `;
