@@ -97,7 +97,8 @@ const AllDatabases = () => {
     setDatabases(
       databases.map((u, indx) => {
         if (index !== indx) return u;
-        return { ...u, isShamsi: !isShamsi };
+        u.isShamsi = isShamsi;
+        return u;
       })
     );
   };
@@ -237,9 +238,9 @@ const AllDatabases = () => {
                   <div className="switch-wrapper">
                     شمسی
                     <IonToggle
-                      checkedk={database.isShamsi}
+                      checked={database.isShamsi}
                       onIonChange={(e) =>
-                        editIsShamsiHandler(index, database.isShamsi)
+                        editIsShamsiHandler(index, e.detail.checked)
                       }
                     ></IonToggle>
                     میلادی
