@@ -92,17 +92,27 @@ const Home = () => {
 
     Axios.post(`${URI}/bill/all`, data)
       .then((result) => {
-        console.log(result.data);
         const fetchedBills = result.data.bill.map((bill) => {
-          return { ...bill, selected: false };
+          if (dataBaseSelected.isShamsi) {
+            return { ...bill, selected: false };
+          }
+
+          let b = { ...bill, selected: false };
+          console.log(moment(b.bill.date).format('jYYYY/jMM/jDD'), b.bill.date);
+
+          b.bill.date = moment(b.bill.date).format('jYYYY/jMM/jDD');
+          b.draft.date = moment(b.draft.date).format('jYYYY/jMM/jDD');
+          b.saveDate = moment(b.saveDate).format('jYYYY/jMM/jDD');
+
+          return b;
         });
+
         setBills(fetchedBills);
 
         if (bills.length) {
           setTotalWeight(
             bills
               .map((bill) => {
-                console.log(+bill.bill.weight, bill.bill.weight, bill);
                 return +bill.bill.weight;
               })
               .reduce((totalWeight, billWeight) => totalWeight + billWeight)
@@ -161,6 +171,7 @@ const Home = () => {
       username: localStorage.getItem('username'),
       accountId: accountSelected._id,
     };
+    console.log(data, accountSelected._id);
 
     Axios.post(`${URI}/bill/estelam`, data)
       .then((result) => {
@@ -236,33 +247,35 @@ const Home = () => {
     setIsShowingModal(!isShowingModal);
   };
 
-  // const [dataBases, setDataBases] = useState([
-  //   { name: 'تدبیر' },
-  //   { name: 'MIS' },
-  // ]);
-  // const [accounts, setAccounts] = useState([
-  //   { username: 'exon test1' },
-  //   { username: 'exon test2' },
-  //   { username: 'exon test3' },
-  //   { username: 'exon test4' },
-  // ]);
-
   const [dataBases, setDataBases] = useState([]);
   const [accounts, setAccounts] = useState([]);
 
   useEffect(() => {
+    console.log(store.getState().dataBase);
+
     setAdmin(localStorage.getItem('isAdmin') === 'true');
     searchHandler();
     Axios.get(`${URI}/databases/all`)
       .then((result) => {
         setDataBases(
           result.data.dbs.map(
-            ({ name, address, username, password, proc, _id }) => {
+            ({
+              name,
+              title,
+              address,
+              username,
+              password,
+              isShamsi,
+              proc,
+              _id,
+            }) => {
               return {
                 name,
+                title,
                 address,
                 username,
                 password,
+                isShamsi,
                 proc,
                 _id,
               };
@@ -275,9 +288,10 @@ const Home = () => {
     Axios.get(`${URI}/accounts/all`)
       .then((result) => {
         setAccounts(
-          result.data.accounts.map(({ username, password, _id }) => {
+          result.data.accounts.map(({ username, title, password, _id }) => {
             return {
               username,
+              title,
               password,
               _id,
             };
@@ -340,21 +354,32 @@ const Home = () => {
   const toggleSelectedDataBase = (
     _id,
     name,
+    title,
     address,
     username,
     password,
+    isShamsi,
     proc,
     data
   ) => {
     setActiveDataBase(false);
     setDataBaseSelected(data);
-    actions.dataBaseChange(_id, name, address, username, password, proc);
+    actions.dataBaseChange(
+      _id,
+      name,
+      title,
+      address,
+      username,
+      password,
+      isShamsi,
+      proc
+    );
   };
 
-  const toggleSelectedAccount = (_id, username, password, acc) => {
+  const toggleSelectedAccount = (_id, username, title, password, acc) => {
     setAccountSelected(acc);
     setActiveAccount(false);
-    actions.accountChange(_id, username, password);
+    actions.accountChange(_id, username, title, password);
   };
 
   const [sortObj, setSortObj] = useState({
@@ -740,7 +765,9 @@ const Home = () => {
                   <IonSelectOption value="0">عدم تطابق وزن</IonSelectOption>
                 </IonSelect>
               </IonItem>
+
               <DateText>پایگاه داده</DateText>
+
               <SelectBox>
                 <OptionContainer active={activeDataBase}>
                   {dataBases.map((d) => {
@@ -750,15 +777,17 @@ const Home = () => {
                           toggleSelectedDataBase(
                             d._id,
                             d.name,
+                            d.title,
                             d.address,
                             d.username,
                             d.password,
+                            d.isShamsi,
                             d.proc,
                             d
                           )
                         }
                       >
-                        {d.name}
+                        {d.title}
                       </Option>
                     );
                   })}
@@ -767,9 +796,10 @@ const Home = () => {
                 <SelectedOption onClick={toggleActiveDataBase}>
                   {dataBaseSelected === 0
                     ? 'انتخاب پایگاه داده'
-                    : dataBaseSelected.name}
+                    : dataBaseSelected.title}
                 </SelectedOption>
               </SelectBox>
+
               <DateText>حساب کاربری</DateText>
               <SelectBox>
                 <OptionContainer active={activeAccount}>
@@ -780,12 +810,13 @@ const Home = () => {
                           toggleSelectedAccount(
                             d._id,
                             d.username,
+                            d.title,
                             d.password,
                             d
                           )
                         }
                       >
-                        {d.username}
+                        {d.title}
                       </Option>
                     );
                   })}
@@ -797,7 +828,7 @@ const Home = () => {
                 >
                   {accountSelected === 0
                     ? 'انتخاب حساب کاربری'
-                    : accountSelected.username}
+                    : accountSelected.title}
                 </SelectedOption>
               </SelectBox>
             </DateSection>
@@ -1597,6 +1628,7 @@ const OptionContainer = styled.div`
   background: #2f3640;
   color: #f5f6fa;
   height: 0px;
+  margin-top: 6px;
   max-height: 0px;
   width: 280px;
   transition: visibility 0.3s ease-in, opacity 0.5s ease-out,
@@ -1619,54 +1651,6 @@ const OptionContainer = styled.div`
           visibility: visible;
           height: auto;
           max-height: auto;
-          margin-bottom: 8px;
-        `
-      : css``}
-
-  order: 1;
-  max-height: 240px;
-  overflow-y: scroll;
-
-  &::-webkit-scrollbar {
-    width: 0px;
-    background: #0d141f;
-    border-radius: 0 8px 8px 0;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #525861;
-    border-radius: 0 8px 8px 0;
-  }
-`;
-
-const DateOptionContainer = styled.div`
-  background: #2f3640;
-  color: #f5f6fa;
-  height: 0px;
-  max-height: 0px;
-  width: 180px;
-  transition: visibility 0.3s ease-in, opacity 0.5s ease-out,
-    max-height 0.4s ease-in;
-  border-radius: 8px;
-  overflow: hidden;
-  visibility: hidden;
-  opacity: 0;
-
-  position: fixed;
-
-  margin-bottom: 0px;
-  margin-right: 22px;
-
-  top: 128px;
-
-  ${(props) =>
-    props.active
-      ? css`
-          opacity: 1;
-          visibility: visible;
-          height: auto;
-          max-height: auto;
-          margin-bottom: 8px;
         `
       : css``}
 
@@ -1689,7 +1673,6 @@ const DateOptionContainer = styled.div`
 const SelectedOption = styled.div`
   background: #2f3640;
   border-radius: 8px;
-  margin-bottom: 8px;
   color: #f5f6fa;
   position: relative;
 

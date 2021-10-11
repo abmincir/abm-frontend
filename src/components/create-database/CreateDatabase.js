@@ -341,7 +341,6 @@ const Header = styled.div`
 // select box
 
 const SelectBox = styled.div`
-  // height: 40px;
   width: 280px;
 
   margin-bottom: 8px;

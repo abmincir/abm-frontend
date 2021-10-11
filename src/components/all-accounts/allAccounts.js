@@ -40,11 +40,10 @@ const AllAccounts = () => {
 
     try {
       const result = await Axios.post(`${URI}/accounts/change-user`, data);
+      console.log(result);
       setAccounts(
         [...accounts].map((account) =>
-          account._id === accounts[index]._id
-            ? result.data.account._id
-            : account
+          account._id === accounts[index]._id ? result.data.account : account
         )
       );
       setMessage('تغییرات مورد نظر اعمال شد');

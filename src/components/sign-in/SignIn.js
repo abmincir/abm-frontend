@@ -106,33 +106,31 @@ const SignIn = ({ setToAdmin, setToUser }) => {
     }
   };
 
-  // select box
-
   const [dataBases, setDataBases] = useState([]);
   const [accounts, setAccounts] = useState([]);
-
-  // const [dataBases, setDataBases] = useState([
-  //   { name: 'تدبیر' },
-  //   { name: 'MIS' },
-  // ]);
-  // const [accounts, setAccounts] = useState([
-  //   { username: 'exon test1' },
-  //   { username: 'exon test2' },
-  //   { username: 'exon test3' },
-  //   { username: 'exon test4' },
-  // ]);
 
   useEffect(() => {
     Axios.get(`${URI}/databases/all`)
       .then((result) => {
         setDataBases(
           result.data.dbs.map(
-            ({ name, address, username, password, proc, _id }) => {
+            ({
+              name,
+              title,
+              address,
+              username,
+              password,
+              proc,
+              isShamsi,
+              _id,
+            }) => {
               return {
                 name,
+                title,
                 address,
                 username,
                 password,
+                isShamsi,
                 proc,
                 _id,
               };
@@ -145,9 +143,10 @@ const SignIn = ({ setToAdmin, setToUser }) => {
     Axios.get(`${URI}/accounts/all`)
       .then((result) => {
         setAccounts(
-          result.data.accounts.map(({ username, password, _id }) => {
+          result.data.accounts.map(({ username, title, password, _id }) => {
             return {
               username,
+              title,
               password,
               _id,
             };
@@ -178,6 +177,7 @@ const SignIn = ({ setToAdmin, setToUser }) => {
   const toggleSelectedDataBase = (
     _id,
     name,
+    title,
     address,
     username,
     password,
@@ -186,13 +186,13 @@ const SignIn = ({ setToAdmin, setToUser }) => {
   ) => {
     setActiveDataBase(false);
     setDataBaseSelected(data);
-    actions.dataBaseChange(_id, name, address, username, password, proc);
+    actions.dataBaseChange(_id, name, title, address, username, password, proc);
   };
 
-  const toggleSelectedAccount = (_id, username, password, acc) => {
+  const toggleSelectedAccount = (_id, username, title, password, acc) => {
     setAccountSelected(acc);
     setActiveAccount(false);
-    actions.accountChange(_id, username, password);
+    actions.accountChange(_id, username, title, password);
   };
 
   return (
@@ -243,6 +243,7 @@ const SignIn = ({ setToAdmin, setToUser }) => {
                         toggleSelectedDataBase(
                           d._id,
                           d.name,
+                          d.title,
                           d.address,
                           d.username,
                           d.password,
@@ -251,7 +252,7 @@ const SignIn = ({ setToAdmin, setToUser }) => {
                         )
                       }
                     >
-                      {d.name}
+                      {d.title}
                     </Option>
                   );
                 })}
@@ -260,7 +261,7 @@ const SignIn = ({ setToAdmin, setToUser }) => {
               <SelectedOption onClick={toggleActiveDataBase}>
                 {dataBaseSelected === 0
                   ? 'انتخاب پایگاه داده'
-                  : dataBaseSelected.name}
+                  : dataBaseSelected.title}
               </SelectedOption>
             </SelectBox>
 
@@ -270,10 +271,16 @@ const SignIn = ({ setToAdmin, setToUser }) => {
                   return (
                     <Option
                       onClick={(e) =>
-                        toggleSelectedAccount(d._id, d.username, d.password, d)
+                        toggleSelectedAccount(
+                          d._id,
+                          d.username,
+                          d.title,
+                          d.password,
+                          d
+                        )
                       }
                     >
-                      {d.username}
+                      {d.title}
                     </Option>
                   );
                 })}
@@ -285,7 +292,7 @@ const SignIn = ({ setToAdmin, setToUser }) => {
               >
                 {accountSelected === 0
                   ? 'انتخاب حساب کاربری'
-                  : accountSelected.username}
+                  : accountSelected.title}
               </SelectedOption>
             </SelectBox>
 
@@ -514,7 +521,6 @@ const User = styled.div`
 `;
 
 const SelectBox = styled.div`
-  // height: 40px;
   width: 280px;
 
   margin-bottom: 8px;

@@ -6,9 +6,11 @@ const reducer = (state = {}, action) => {
         dataBase: {
           _id: action.payload._id,
           name: action.payload.name,
+          title: action.payload.title,
           address: action.payload.address,
           username: action.payload.username,
           password: action.payload.password,
+          isShamsi: action.payload.isShamsi,
           proc: action.payload.proc,
         },
       };
@@ -18,6 +20,7 @@ const reducer = (state = {}, action) => {
         account: {
           _id: action.payload._id,
           username: action.payload.username,
+          title: action.payload.title,
           password: action.payload.password,
         },
       };

@@ -498,6 +498,9 @@ const Column = styled.div`
   justify-content: center;
   flex-basis: 0;
   flex-grow: 1;
+
+  max-width: 220px;
+  margin-left: 20px;
 `;
 
 const ColumnsSection = styled.div`
@@ -560,6 +563,7 @@ const ColumnsTitle = styled.p`
   text-align: center;
   white-space: nowrap;
   margin: 0;
+  min-width: 220px;
 `;
 
 export default AllDatabases;
