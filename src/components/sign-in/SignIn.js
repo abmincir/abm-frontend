@@ -369,7 +369,7 @@ const Header = styled.div`
   ${(props) =>
     props.isAdmin
       ? css`
-          background-color: rgba(112, 112, 112, 1) !important ;
+          background-color: rgb(17, 160, 179) !important ;
         `
       : css`
           background-color: var(--caribbean-green);
@@ -478,7 +478,7 @@ const Admin = styled.div`
         `}
 `;
 const MidLine = styled.div`
-  background-color: var(--dove-gray);
+  background-color: var(--light-blue);
   height: 46px;
   width: 1px;
 `;
@@ -697,7 +697,7 @@ const Enter = styled.button`
   ${(props) =>
     props.isAdmin
       ? css`
-          background-color: rgba(112, 112, 112, 1) !important;
+          background-color: rgb(17, 160, 179) !important;
         `
       : css`
           background-color: var(--caribbean-green);

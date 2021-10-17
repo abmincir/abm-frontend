@@ -168,6 +168,7 @@
 :root {
   --caribbean-green: rgba(37, 225, 161, 1);
   --dove-gray: rgba(112, 112, 112, 1);
+  --light-blue: rgb(17, 160, 179);
 }
 .change-pass-form {
   display: flex;
@@ -179,7 +180,7 @@
   margin-top: 39px;
 }
 .create-user-btn {
-  background-color: rgba(112, 112, 112, 1) !important;
+  background-color: rgb(17, 160, 179) !important;
 }
 .custom-toast {
   text-align: center;

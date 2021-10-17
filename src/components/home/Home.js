@@ -543,7 +543,10 @@ const Home = () => {
                 <ButtonText>جست و جو</ButtonText>
               </Button>
 
-              <Button onClick={fetchHandler} color={isAdmin ? 'black' : 'gray'}>
+              <Button
+                onClick={fetchHandler}
+                color={isAdmin ? 'rgb(32 107 116)' : 'gray'}
+              >
                 <ButtonText>بروزرسانی</ButtonText>
               </Button>
             </ButtonsRow>
@@ -551,7 +554,7 @@ const Home = () => {
             <ButtonsRow>
               <CheckAllBox
                 onClick={checkAllHandler}
-                color={isAdmin ? 'black' : 'gray'}
+                color={isAdmin ? 'rgb(32 107 116)' : 'gray'}
               >
                 <CheckAllTxt>انتخاب همه</CheckAllTxt>
               </CheckAllBox>
@@ -565,13 +568,13 @@ const Home = () => {
               </Button>
             </ButtonsRow>
 
-            <ShowTotalRow>
+            <ShowTotalRowTop>
               <ShowTotal>
                 <ShowTotalText>
                   بارنامه های پیدا شده : {'( ' + bills.length + ' )'}
                 </ShowTotalText>
               </ShowTotal>
-            </ShowTotalRow>
+            </ShowTotalRowTop>
             <ShowTotalRow>
               <ShowTotal>
                 <ShowTotalText>
@@ -651,104 +654,7 @@ const Home = () => {
           </Dialog>
 
           <DateSectionContainer>
-            <DateSection>
-              <DateInput>
-                <DateText>شماره خرید</DateText>
-                <BillNumberInput
-                  onChange={(e) => setPurchaseNumber(e.target.value)}
-                  onKeyPress={onKeyPress}
-                ></BillNumberInput>
-
-                <DateText onClick={() => setStartDateCalendarOpenSave(true)}>
-                  تاریخ ثبت از
-                </DateText>
-                <DateValue onClick={() => setStartDateCalendarOpenSave(true)}>
-                  {startDateSave}
-                </DateValue>
-                {startDateSave && (
-                  <CloseButton
-                    onClick={() => {
-                      setStartDateSave('');
-                      setCalendarStartDateSave(null);
-                    }}
-                  >
-                    X
-                  </CloseButton>
-                )}
-
-                <DateText onClick={() => setEndDateCalendarOpenSave(true)}>
-                  تاریخ ثبت تا
-                </DateText>
-
-                <DateValue onClick={() => setEndDateCalendarOpenSave(true)}>
-                  {endDateSave}
-                </DateValue>
-                {endDateSave && (
-                  <CloseButton
-                    onClick={() => {
-                      setEndDateSave('');
-                      setCalendarEndDateSave(null);
-                    }}
-                  >
-                    X
-                  </CloseButton>
-                )}
-              </DateInput>
-            </DateSection>
-
-            <DateSection>
-              <DateInput>
-                <DateText>نام کالا</DateText>
-                <BillNumberInput
-                  style={{ 'font-size': '16px' }}
-                  onChange={(e) => setProductName(e.target.value)}
-                  onKeyPress={onKeyPress}
-                ></BillNumberInput>
-
-                <DateText>شماره بارنامه</DateText>
-                <BillNumberInput
-                  onChange={(e) => setBillNumber(e.target.value)}
-                  onKeyPress={onKeyPress}
-                ></BillNumberInput>
-
-                <DateText onClick={() => setStartDateCalendarOpenBill(true)}>
-                  تاریخ بارنامه از
-                </DateText>
-                <DateValue onClick={() => setStartDateCalendarOpenBill(true)}>
-                  {startDateBill}
-                </DateValue>
-                {startDateBill && (
-                  <CloseButton
-                    onClick={() => {
-                      setStartDateBill('');
-                      setCalendarStartDateBill(null);
-                    }}
-                  >
-                    X
-                  </CloseButton>
-                )}
-
-                <DateText onClick={() => setEndDateCalendarOpenBill(true)}>
-                  تاریخ بارنامه تا
-                </DateText>
-
-                <DateValue onClick={() => setEndDateCalendarOpenBill(true)}>
-                  {endDateBill}
-                </DateValue>
-                {endDateBill && (
-                  <CloseButton
-                    onClick={() => {
-                      setEndDateBill('');
-                      setCalendarEndDateBill(null);
-                    }}
-                  >
-                    X
-                  </CloseButton>
-                )}
-              </DateInput>
-            </DateSection>
-
-            <DateSection>
+            <SelectionSection>
               <IonItem lines="none">
                 <IonLabel>وضیعت استعلام</IonLabel>
                 <IonSelect
@@ -831,6 +737,109 @@ const Home = () => {
                     : accountSelected.title}
                 </SelectedOption>
               </SelectBox>
+            </SelectionSection>
+
+            <DateSection>
+              <DateInput>
+                <DateTextFirstRow>شماره خرید</DateTextFirstRow>
+                <BillNumberInput
+                  onChange={(e) => setPurchaseNumber(e.target.value)}
+                  onKeyPress={onKeyPress}
+                ></BillNumberInput>
+
+                <DateTextMarginLow>شماره بارنامه</DateTextMarginLow>
+                <BillNumberInput
+                  onChange={(e) => setBillNumber(e.target.value)}
+                  onKeyPress={onKeyPress}
+                ></BillNumberInput>
+
+                <DateTextMarginHigh>نام کالا</DateTextMarginHigh>
+                <BillNumberInput
+                  style={{ 'font-size': '16px' }}
+                  onChange={(e) => setProductName(e.target.value)}
+                  onKeyPress={onKeyPress}
+                ></BillNumberInput>
+              </DateInput>
+            </DateSection>
+
+            <DateSection>
+              <DateInput>
+                <DateTextFirstRow
+                  onClick={() => setStartDateCalendarOpenSave(true)}
+                >
+                  تاریخ ثبت از
+                </DateTextFirstRow>
+                <DateValue onClick={() => setStartDateCalendarOpenSave(true)}>
+                  {startDateSave}
+                </DateValue>
+                {startDateSave && (
+                  <CloseButton
+                    onClick={() => {
+                      setStartDateSave('');
+                      setCalendarStartDateSave(null);
+                    }}
+                  >
+                    X
+                  </CloseButton>
+                )}
+
+                <DateTextFirstRow
+                  onClick={() => setEndDateCalendarOpenSave(true)}
+                >
+                  تاریخ ثبت تا
+                </DateTextFirstRow>
+
+                <DateValue onClick={() => setEndDateCalendarOpenSave(true)}>
+                  {endDateSave}
+                </DateValue>
+                {endDateSave && (
+                  <CloseButton
+                    onClick={() => {
+                      setEndDateSave('');
+                      setCalendarEndDateSave(null);
+                    }}
+                  >
+                    X
+                  </CloseButton>
+                )}
+
+                <DateTextBordered
+                  onClick={() => setStartDateCalendarOpenBill(true)}
+                >
+                  تاریخ بارنامه از
+                </DateTextBordered>
+                <DateValue onClick={() => setStartDateCalendarOpenBill(true)}>
+                  {startDateBill}
+                </DateValue>
+                {startDateBill && (
+                  <CloseButton
+                    onClick={() => {
+                      setStartDateBill('');
+                      setCalendarStartDateBill(null);
+                    }}
+                  >
+                    X
+                  </CloseButton>
+                )}
+
+                <DateText onClick={() => setEndDateCalendarOpenBill(true)}>
+                  تاریخ بارنامه تا
+                </DateText>
+
+                <DateValue onClick={() => setEndDateCalendarOpenBill(true)}>
+                  {endDateBill}
+                </DateValue>
+                {endDateBill && (
+                  <CloseButton
+                    onClick={() => {
+                      setEndDateBill('');
+                      setCalendarEndDateBill(null);
+                    }}
+                  >
+                    X
+                  </CloseButton>
+                )}
+              </DateInput>
             </DateSection>
           </DateSectionContainer>
         </FiltersContainer>
@@ -1173,7 +1182,7 @@ const Header = styled.div`
   ${(props) =>
     props.isAdmin
       ? css`
-          background-color: rgba(112, 112, 112, 1) !important ;
+          background-color: rgb(17, 160, 179) !important ;
         `
       : css`
           background-color: var(--caribbean-green);
@@ -1201,6 +1210,11 @@ const Buttons = styled.div`
   flex-direction: column;
   height: 200px;
   justify-content: space-between;
+
+  margin-left: 20px;
+  padding-left: 20px;
+
+  border-left: 1px solid var(--dove-gray);
 `;
 
 const ButtonsRow = styled.div`
@@ -1234,14 +1248,14 @@ const Button = styled.div`
   ${(props) =>
     props.color === 'gray'
       ? css`
-          background: var(--dove-gray);
+          background: var(--light-blue);
         `
       : props.color === 'green'
       ? css`
           background: var(--caribbean-green);
         `
       : css`
-          background: black;
+          background: rgb(32 107 116);
         `}
 
   border-radius: 12px;
@@ -1285,6 +1299,20 @@ const DateSection = styled.div`
   min-height: 70px;
 `;
 
+const SelectionSection = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: center;
+
+  border-bottom: 1px solid var(--dove-gray);
+
+  padding-bottom: 10px;
+
+  width: 100%;
+  min-height: 70px;
+`;
+
 const DateText = styled.p`
   color: var(--dove-gray);
   font-family: 'Dana-Regular', Helvetica, Arial, serif;
@@ -1294,13 +1322,69 @@ const DateText = styled.p`
   text-align: center;
   white-space: nowrap;
   margin: 0 40px 0 24px;
+  width: 114px;
+`;
+
+const DateTextMarginLow = styled.p`
+  color: var(--dove-gray);
+  font-family: 'Dana-Regular', Helvetica, Arial, serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  margin: 0 30px 0 24px;
+  width: 114px;
+`;
+
+const DateTextMarginHigh = styled.p`
+  color: var(--dove-gray);
+  font-family: 'Dana-Regular', Helvetica, Arial, serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  margin: 0 55px 0 24px;
+  width: 114px;
+`;
+
+const DateTextBordered = styled.p`
+  color: var(--dove-gray);
+  font-family: 'Dana-Regular', Helvetica, Arial, serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  margin: 0 20px 0 24px;
+  padding-right: 30px;
+  padding-left:20px
+  width: 114px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid var(--dove-gray);
+`;
+
+const DateTextFirstRow = styled.p`
+  color: var(--dove-gray);
+  font-family: 'Dana-Regular', Helvetica, Arial, serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  margin: 0 30px 0 24px;
+  width: 110px;
 `;
 
 const DateInput = styled.form`
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: row-reverse;
 `;
 
@@ -1548,14 +1632,14 @@ const CheckAllBox = styled.div`
   ${(props) =>
     props.color === 'gray'
       ? css`
-          background: var(--dove-gray);
+          background: var(--light-blue);
         `
       : props.color === 'green'
       ? css`
           background: var(--caribbean-green);
         `
       : css`
-          background: black;
+          background: rgb(32 107 116);
         `}
 
   border-radius: 12px;
@@ -1600,6 +1684,16 @@ const ShowTotalRow = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
+const ShowTotalRowTop = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: center;
+
+  border-top: 1px solid var(--dove-gray);
+  margin-top: 10px;
+`;
 const ShowTotalText = styled.p`
   color: black;
   font-family: 'Dana-Regular', Helvetica, Arial, serif;
@@ -1625,7 +1719,7 @@ const SelectBox = styled.div`
 `;
 
 const OptionContainer = styled.div`
-  background: #2f3640;
+  background: rgb(32 107 116);
   color: #f5f6fa;
   height: 0px;
   margin-top: 6px;
@@ -1660,18 +1754,18 @@ const OptionContainer = styled.div`
 
   &::-webkit-scrollbar {
     width: 0px;
-    background: #0d141f;
+    background: rgb(32 107 116);
     border-radius: 0 8px 8px 0;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #525861;
+    background: rgb(32 107 116);
     border-radius: 0 8px 8px 0;
   }
 `;
 
 const SelectedOption = styled.div`
-  background: #2f3640;
+  background: rgb(17, 160, 179);
   border-radius: 8px;
   color: #f5f6fa;
   position: relative;
@@ -1706,7 +1800,7 @@ const Option = styled.div`
   cursor: pointer;
 
   &:hover {
-    background: #414b57;
+    background: rgb(53 160 173);
   }
 `;
 
