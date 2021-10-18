@@ -150,6 +150,7 @@
 :root {
   --caribbean-green: rgba(37, 225, 161, 1);
   --dove-gray: rgba(112, 112, 112, 1);
+  --dove-light-gray: rgba(112, 112, 112, 0.3);
   --light-blue: rgb(17, 160, 179);
   --blue: #5c7aea;
   --dark-blue: #14279b;

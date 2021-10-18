@@ -61,7 +61,7 @@ const Home = () => {
   const [isAdmin, setAdmin] = useState(false);
 
   const [bill, setBill] = useState();
-  const [isAllSelected, setAllSelected] = useState(false);
+  const [isAllSelected, setAllSelected] = useState(true);
   const [bills, setBills] = useState([]);
   const [selectedBills, setSelectedBills] = useState([]);
 
@@ -570,7 +570,15 @@ const Home = () => {
               </CheckAllBox>
               <Button
                 onClick={selectedBillsInquiry}
-                color={selectedBills.length ? 'green' : 'gray'}
+                color={
+                  isAdmin
+                    ? selectedBills.length
+                      ? 'dark-blue'
+                      : 'blue'
+                    : selectedBills.length
+                    ? 'green'
+                    : 'gray'
+                }
               >
                 <ButtonText>
                   استعلام {'( ' + selectedBills.length + ' )'}
@@ -1230,7 +1238,7 @@ const Buttons = styled.div`
   margin-left: 20px;
   padding-left: 20px;
 
-  border-left: 1px solid var(--dove-gray);
+  border-left: 1px solid var(--dove-light-gray);
 `;
 
 const ButtonsRow = styled.div`
@@ -1325,7 +1333,7 @@ const SelectionSection = styled.div`
   align-items: center;
   justify-content: center;
 
-  border-bottom: 1px solid var(--dove-gray);
+  border-bottom: 1px solid var(--dove-light-gray);
 
   padding-bottom: 10px;
 
@@ -1385,7 +1393,7 @@ const DateTextBordered = styled.p`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-right: 1px solid var(--dove-gray);
+  border-right: 1px solid var(--dove-light-gray);
 `;
 
 const DateTextFirstRow = styled.p`
@@ -1715,7 +1723,7 @@ const ShowTotalRowTop = styled.div`
   align-items: center;
   justify-content: center;
 
-  border-top: 1px solid var(--dove-gray);
+  border-top: 1px solid var(--dove-light-gray);
   margin-top: 10px;
 `;
 const ShowTotalText = styled.p`
