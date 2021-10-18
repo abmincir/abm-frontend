@@ -390,7 +390,7 @@ const Home = () => {
     } else if (sortObj.purchaseId === 1) {
       setSortObj({ purchaseId: -1 });
     } else {
-      setSortObj({ purchaseId: 1 });
+      setSortObj({ purchaseId: -1 });
     }
     searchHandler();
   };
@@ -401,7 +401,7 @@ const Home = () => {
     } else if (sortObj.spsWeight === 1) {
       setSortObj({ spsWeight: -1 });
     } else {
-      setSortObj({ spsWeight: 1 });
+      setSortObj({ spsWeight: -1 });
     }
     searchHandler();
   };
@@ -412,7 +412,7 @@ const Home = () => {
     } else if (sortObj.billWeight === 1) {
       setSortObj({ billWeight: -1 });
     } else {
-      setSortObj({ billWeight: 1 });
+      setSortObj({ billWeight: -1 });
     }
     searchHandler();
   };
@@ -423,7 +423,7 @@ const Home = () => {
     } else if (sortObj.saveDate === 1) {
       setSortObj({ saveDate: -1 });
     } else {
-      setSortObj({ saveDate: 1 });
+      setSortObj({ saveDate: -1 });
     }
     searchHandler();
   };
@@ -434,7 +434,7 @@ const Home = () => {
     } else if (sortObj.billDate === 1) {
       setSortObj({ billDate: -1 });
     } else {
-      setSortObj({ billDate: 1 });
+      setSortObj({ billDate: -1 });
     }
     searchHandler();
   };
@@ -445,7 +445,7 @@ const Home = () => {
     } else if (sortObj.billSerial === 1) {
       setSortObj({ billSerial: -1 });
     } else {
-      setSortObj({ billSerial: 1 });
+      setSortObj({ billSerial: -1 });
     }
     searchHandler();
   };
@@ -456,7 +456,7 @@ const Home = () => {
     } else if (sortObj.productName === 1) {
       setSortObj({ productName: -1 });
     } else {
-      setSortObj({ productName: 1 });
+      setSortObj({ productName: -1 });
     }
     searchHandler();
   };
@@ -467,7 +467,7 @@ const Home = () => {
     } else if (sortObj.billNumber === 1) {
       setSortObj({ billNumber: -1 });
     } else {
-      setSortObj({ billNumber: 1 });
+      setSortObj({ billNumber: -1 });
     }
     searchHandler();
   };
@@ -478,7 +478,7 @@ const Home = () => {
     } else if (sortObj.customerName === 1) {
       setSortObj({ customerName: -1 });
     } else {
-      setSortObj({ customerName: 1 });
+      setSortObj({ customerName: -1 });
     }
     searchHandler();
   };
@@ -489,7 +489,7 @@ const Home = () => {
     } else if (sortObj.billStatus === 1) {
       setSortObj({ billStatus: -1 });
     } else {
-      setSortObj({ billStatus: 1 });
+      setSortObj({ billStatus: -1 });
     }
     searchHandler();
   };
@@ -1352,8 +1352,6 @@ const DateTextMarginLow = styled.p`
   white-space: nowrap;
   margin: 0 30px 0 24px;
   width: 114px;
-
-  startDateSave
 `;
 
 const DateTextMarginHigh = styled.p`
