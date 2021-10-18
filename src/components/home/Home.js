@@ -382,22 +382,11 @@ const Home = () => {
     actions.accountChange(_id, username, title, password);
   };
 
-  const [sortObj, setSortObj] = useState({
-    purchaseId: 0,
-    spsWeight: 0,
-    billWeight: 0,
-    saveDate: 0,
-    billDate: 0,
-    billSerial: 0,
-    billNumber: 0,
-    productName: 0,
-    customerName: 0,
-    billStatus: 0,
-  });
+  const [sortObj, setSortObj] = useState({});
 
   const sortByPurchaseId = () => {
     if (sortObj.purchaseId === -1) {
-      setSortObj({ purchaseId: 0 });
+      setSortObj({});
     } else if (sortObj.purchaseId === 1) {
       setSortObj({ purchaseId: -1 });
     } else {
@@ -408,7 +397,7 @@ const Home = () => {
 
   const sortBySpsWeight = () => {
     if (sortObj.spsWeight === -1) {
-      setSortObj({ spsWeight: 0 });
+      setSortObj({});
     } else if (sortObj.spsWeight === 1) {
       setSortObj({ spsWeight: -1 });
     } else {
@@ -419,7 +408,7 @@ const Home = () => {
 
   const sortByBillWeight = () => {
     if (sortObj.billWeight === -1) {
-      setSortObj({ billWeight: 0 });
+      setSortObj({});
     } else if (sortObj.billWeight === 1) {
       setSortObj({ billWeight: -1 });
     } else {
@@ -430,7 +419,7 @@ const Home = () => {
 
   const sortBySaveDate = () => {
     if (sortObj.saveDate === -1) {
-      setSortObj({ saveDate: 0 });
+      setSortObj({});
     } else if (sortObj.saveDate === 1) {
       setSortObj({ saveDate: -1 });
     } else {
@@ -441,7 +430,7 @@ const Home = () => {
 
   const sortByBillDate = () => {
     if (sortObj.billDate === -1) {
-      setSortObj({ billDate: 0 });
+      setSortObj({});
     } else if (sortObj.billDate === 1) {
       setSortObj({ billDate: -1 });
     } else {
@@ -452,7 +441,7 @@ const Home = () => {
 
   const sortByBillSerial = () => {
     if (sortObj.billSerial === -1) {
-      setSortObj({ billSerial: 0 });
+      setSortObj({});
     } else if (sortObj.billSerial === 1) {
       setSortObj({ billSerial: -1 });
     } else {
@@ -463,7 +452,7 @@ const Home = () => {
 
   const sortByProductName = () => {
     if (sortObj.productName === -1) {
-      setSortObj({ productName: 0 });
+      setSortObj({});
     } else if (sortObj.productName === 1) {
       setSortObj({ productName: -1 });
     } else {
@@ -474,7 +463,7 @@ const Home = () => {
 
   const sortByBillNumber = () => {
     if (sortObj.billNumber === -1) {
-      setSortObj({ billNumber: 0 });
+      setSortObj({});
     } else if (sortObj.billNumber === 1) {
       setSortObj({ billNumber: -1 });
     } else {
@@ -485,7 +474,7 @@ const Home = () => {
 
   const sortByCustomerName = () => {
     if (sortObj.customerName === -1) {
-      setSortObj({ customerName: 0 });
+      setSortObj({});
     } else if (sortObj.customerName === 1) {
       setSortObj({ customerName: -1 });
     } else {
@@ -496,7 +485,7 @@ const Home = () => {
 
   const sortByBillStatus = () => {
     if (sortObj.billStatus === -1) {
-      setSortObj({ billStatus: 0 });
+      setSortObj({});
     } else if (sortObj.billStatus === 1) {
       setSortObj({ billStatus: -1 });
     } else {
@@ -1363,6 +1352,8 @@ const DateTextMarginLow = styled.p`
   white-space: nowrap;
   margin: 0 30px 0 24px;
   width: 114px;
+
+  startDateSave
 `;
 
 const DateTextMarginHigh = styled.p`
