@@ -403,6 +403,7 @@ const Home = () => {
     } else {
       setSortObj({ ...sortObj, purchaseId: 0 });
     }
+    searchHandler();
   };
 
   const sortBySpsWeight = () => {
@@ -413,6 +414,7 @@ const Home = () => {
     } else {
       setSortObj({ ...sortObj, spsWeight: 0 });
     }
+    searchHandler();
   };
 
   const sortByBillWeight = () => {
@@ -423,6 +425,7 @@ const Home = () => {
     } else {
       setSortObj({ ...sortObj, billWeight: 0 });
     }
+    searchHandler();
   };
 
   const sortBySaveDate = () => {
@@ -433,6 +436,7 @@ const Home = () => {
     } else {
       setSortObj({ ...sortObj, saveDate: 0 });
     }
+    searchHandler();
   };
 
   const sortByBillDate = () => {
@@ -443,6 +447,7 @@ const Home = () => {
     } else {
       setSortObj({ ...sortObj, billDate: 0 });
     }
+    searchHandler();
   };
 
   const sortByBillSerial = () => {
@@ -453,6 +458,7 @@ const Home = () => {
     } else {
       setSortObj({ ...sortObj, billSerial: 0 });
     }
+    searchHandler();
   };
 
   const sortByProductName = () => {
@@ -463,6 +469,7 @@ const Home = () => {
     } else {
       setSortObj({ ...sortObj, productName: 0 });
     }
+    searchHandler();
   };
 
   const sortByBillNumber = () => {
@@ -473,6 +480,7 @@ const Home = () => {
     } else {
       setSortObj({ ...sortObj, billNumber: 0 });
     }
+    searchHandler();
   };
 
   const sortByCustomerName = () => {
@@ -483,6 +491,7 @@ const Home = () => {
     } else {
       setSortObj({ ...sortObj, customerName: 0 });
     }
+    searchHandler();
   };
 
   const sortByBillStatus = () => {
@@ -493,6 +502,7 @@ const Home = () => {
     } else {
       setSortObj({ ...sortObj, billStatus: 0 });
     }
+    searchHandler();
   };
 
   return (
