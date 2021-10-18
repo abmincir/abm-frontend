@@ -247,7 +247,7 @@ const Home = () => {
     setIsShowingModal(!isShowingModal);
   };
 
-  const [dataBases, setDataBases] = useState([]);
+  const [dataBases, setDataBases] = useState([{}, {}]);
   const [accounts, setAccounts] = useState([]);
 
   useEffect(() => {
@@ -396,111 +396,111 @@ const Home = () => {
   });
 
   const sortByPurchaseId = () => {
-    if (sortObj.purchaseId === 0) {
-      setSortObj({ ...sortObj, purchaseId: 1 });
+    if (sortObj.purchaseId === -1) {
+      setSortObj({ purchaseId: 0 });
     } else if (sortObj.purchaseId === 1) {
-      setSortObj({ ...sortObj, purchaseId: -1 });
+      setSortObj({ purchaseId: -1 });
     } else {
-      setSortObj({ ...sortObj, purchaseId: 0 });
+      setSortObj({ purchaseId: 1 });
     }
     searchHandler();
   };
 
   const sortBySpsWeight = () => {
-    if (sortObj.spsWeight === 0) {
-      setSortObj({ ...sortObj, spsWeight: 1 });
+    if (sortObj.spsWeight === -1) {
+      setSortObj({ spsWeight: 0 });
     } else if (sortObj.spsWeight === 1) {
-      setSortObj({ ...sortObj, spsWeight: -1 });
+      setSortObj({ spsWeight: -1 });
     } else {
-      setSortObj({ ...sortObj, spsWeight: 0 });
+      setSortObj({ spsWeight: 1 });
     }
     searchHandler();
   };
 
   const sortByBillWeight = () => {
-    if (sortObj.billWeight === 0) {
-      setSortObj({ ...sortObj, billWeight: 1 });
+    if (sortObj.billWeight === -1) {
+      setSortObj({ billWeight: 0 });
     } else if (sortObj.billWeight === 1) {
-      setSortObj({ ...sortObj, billWeight: -1 });
+      setSortObj({ billWeight: -1 });
     } else {
-      setSortObj({ ...sortObj, billWeight: 0 });
+      setSortObj({ billWeight: 1 });
     }
     searchHandler();
   };
 
   const sortBySaveDate = () => {
-    if (sortObj.saveDate === 0) {
-      setSortObj({ ...sortObj, saveDate: 1 });
+    if (sortObj.saveDate === -1) {
+      setSortObj({ saveDate: 0 });
     } else if (sortObj.saveDate === 1) {
-      setSortObj({ ...sortObj, saveDate: -1 });
+      setSortObj({ saveDate: -1 });
     } else {
-      setSortObj({ ...sortObj, saveDate: 0 });
+      setSortObj({ saveDate: 1 });
     }
     searchHandler();
   };
 
   const sortByBillDate = () => {
-    if (sortObj.billDate === 0) {
-      setSortObj({ ...sortObj, billDate: 1 });
+    if (sortObj.billDate === -1) {
+      setSortObj({ billDate: 0 });
     } else if (sortObj.billDate === 1) {
-      setSortObj({ ...sortObj, billDate: -1 });
+      setSortObj({ billDate: -1 });
     } else {
-      setSortObj({ ...sortObj, billDate: 0 });
+      setSortObj({ billDate: 1 });
     }
     searchHandler();
   };
 
   const sortByBillSerial = () => {
-    if (sortObj.billSerial === 0) {
-      setSortObj({ ...sortObj, billSerial: 1 });
+    if (sortObj.billSerial === -1) {
+      setSortObj({ billSerial: 0 });
     } else if (sortObj.billSerial === 1) {
-      setSortObj({ ...sortObj, billSerial: -1 });
+      setSortObj({ billSerial: -1 });
     } else {
-      setSortObj({ ...sortObj, billSerial: 0 });
+      setSortObj({ billSerial: 1 });
     }
     searchHandler();
   };
 
   const sortByProductName = () => {
-    if (sortObj.productName === 0) {
-      setSortObj({ ...sortObj, productName: 1 });
+    if (sortObj.productName === -1) {
+      setSortObj({ productName: 0 });
     } else if (sortObj.productName === 1) {
-      setSortObj({ ...sortObj, productName: -1 });
+      setSortObj({ productName: -1 });
     } else {
-      setSortObj({ ...sortObj, productName: 0 });
+      setSortObj({ productName: 1 });
     }
     searchHandler();
   };
 
   const sortByBillNumber = () => {
-    if (sortObj.billNumber === 0) {
-      setSortObj({ ...sortObj, billNumber: 1 });
+    if (sortObj.billNumber === -1) {
+      setSortObj({ billNumber: 0 });
     } else if (sortObj.billNumber === 1) {
-      setSortObj({ ...sortObj, billNumber: -1 });
+      setSortObj({ billNumber: -1 });
     } else {
-      setSortObj({ ...sortObj, billNumber: 0 });
+      setSortObj({ billNumber: 1 });
     }
     searchHandler();
   };
 
   const sortByCustomerName = () => {
-    if (sortObj.customerName === 0) {
-      setSortObj({ ...sortObj, customerName: 1 });
+    if (sortObj.customerName === -1) {
+      setSortObj({ customerName: 0 });
     } else if (sortObj.customerName === 1) {
-      setSortObj({ ...sortObj, customerName: -1 });
+      setSortObj({ customerName: -1 });
     } else {
-      setSortObj({ ...sortObj, customerName: 0 });
+      setSortObj({ customerName: 1 });
     }
     searchHandler();
   };
 
   const sortByBillStatus = () => {
-    if (sortObj.billStatus === 0) {
-      setSortObj({ ...sortObj, billStatus: 1 });
+    if (sortObj.billStatus === -1) {
+      setSortObj({ billStatus: 0 });
     } else if (sortObj.billStatus === 1) {
-      setSortObj({ ...sortObj, billStatus: -1 });
+      setSortObj({ billStatus: -1 });
     } else {
-      setSortObj({ ...sortObj, billStatus: 0 });
+      setSortObj({ billStatus: 1 });
     }
     searchHandler();
   };
@@ -548,14 +548,14 @@ const Home = () => {
             <ButtonsRow>
               <Button
                 onClick={searchHandler}
-                color={isAdmin ? 'gray' : 'green'}
+                color={isAdmin ? 'dark-blue' : 'green'}
               >
                 <ButtonText>جست و جو</ButtonText>
               </Button>
 
               <Button
                 onClick={fetchHandler}
-                color={isAdmin ? 'rgb(32 107 116)' : 'gray'}
+                color={isAdmin ? 'dark-blue' : 'green'}
               >
                 <ButtonText>بروزرسانی</ButtonText>
               </Button>
@@ -564,7 +564,7 @@ const Home = () => {
             <ButtonsRow>
               <CheckAllBox
                 onClick={checkAllHandler}
-                color={isAdmin ? 'rgb(32 107 116)' : 'gray'}
+                color={isAdmin ? 'dark-blue' : 'green'}
               >
                 <CheckAllTxt>انتخاب همه</CheckAllTxt>
               </CheckAllBox>
@@ -685,10 +685,11 @@ const Home = () => {
               <DateText>پایگاه داده</DateText>
 
               <SelectBox>
-                <OptionContainer active={activeDataBase}>
+                <OptionContainer active={activeDataBase} isAdmin={isAdmin}>
                   {dataBases.map((d) => {
                     return (
                       <Option
+                        isAdmin={isAdmin}
                         onClick={(e) =>
                           toggleSelectedDataBase(
                             d._id,
@@ -709,7 +710,10 @@ const Home = () => {
                   })}
                 </OptionContainer>
 
-                <SelectedOption onClick={toggleActiveDataBase}>
+                <SelectedOption
+                  onClick={toggleActiveDataBase}
+                  isAdmin={isAdmin}
+                >
                   {dataBaseSelected === 0
                     ? 'انتخاب پایگاه داده'
                     : dataBaseSelected.title}
@@ -718,10 +722,11 @@ const Home = () => {
 
               <DateText>حساب کاربری</DateText>
               <SelectBox>
-                <OptionContainer active={activeAccount}>
+                <OptionContainer active={activeAccount} isAdmin={isAdmin}>
                   {accounts.map((d) => {
                     return (
                       <Option
+                        isAdmin={isAdmin}
                         onClick={(e) =>
                           toggleSelectedAccount(
                             d._id,
@@ -741,6 +746,7 @@ const Home = () => {
                 <SelectedOption
                   onClick={toggleActiveAccount}
                   active={activeAccount}
+                  isAdmin={isAdmin}
                 >
                   {accountSelected === 0
                     ? 'انتخاب حساب کاربری'
@@ -1192,7 +1198,7 @@ const Header = styled.div`
   ${(props) =>
     props.isAdmin
       ? css`
-          background-color: rgb(17, 160, 179) !important ;
+          background-color: #5c7aea !important ;
         `
       : css`
           background-color: var(--caribbean-green);
@@ -1256,16 +1262,20 @@ const Button = styled.div`
   }
 
   ${(props) =>
-    props.color === 'gray'
+    props.color === 'blue'
       ? css`
-          background: var(--light-blue);
+          background: var(--blue);
+        `
+      : props.color === 'gray'
+      ? css`
+          background: var(--dove-gray);
         `
       : props.color === 'green'
       ? css`
           background: var(--caribbean-green);
         `
       : css`
-          background: rgb(32 107 116);
+          background: var(--dark-blue);
         `}
 
   border-radius: 12px;
@@ -1640,16 +1650,20 @@ const CheckAllBox = styled.div`
   }
 
   ${(props) =>
-    props.color === 'gray'
+    props.color === 'blue'
       ? css`
-          background: var(--light-blue);
+          background: var(--blue);
+        `
+      : props.color === 'gray'
+      ? css`
+          background: var(--dove-gray);
         `
       : props.color === 'green'
       ? css`
           background: var(--caribbean-green);
         `
       : css`
-          background: rgb(32 107 116);
+          background: var(--dark-blue);
         `}
 
   border-radius: 12px;
@@ -1729,7 +1743,7 @@ const SelectBox = styled.div`
 `;
 
 const OptionContainer = styled.div`
-  background: rgb(32 107 116);
+  background: var(--dark-blue);
   color: #f5f6fa;
   height: 0px;
   margin-top: 6px;
@@ -1746,7 +1760,7 @@ const OptionContainer = styled.div`
 
   margin-bottom: 0px;
 
-  top: 290px;
+  top: 120px;
 
   ${(props) =>
     props.active
@@ -1758,24 +1772,49 @@ const OptionContainer = styled.div`
         `
       : css``}
 
+  ${(props) =>
+    props.isAdmin
+      ? css`
+          background: var(--dark-blue);
+          &::-webkit-scrollbar {
+            width: 0px;
+            background: var(--dark-blue);
+          }
+
+          &::-webkit-scrollbar-thumb {
+            background: var(--dark-blue);
+          }
+        `
+      : css`
+          background-color: var(--green);
+          &::-webkit-scrollbar {
+            width: 0px;
+            background: var(--green);
+          }
+
+          &::-webkit-scrollbar-thumb {
+            background: var(--green);
+          }
+        `}
+    
+
   order: 1;
   max-height: 240px;
   overflow-y: scroll;
 
   &::-webkit-scrollbar {
     width: 0px;
-    background: rgb(32 107 116);
+    background: var(--dark-blue);
     border-radius: 0 8px 8px 0;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgb(32 107 116);
+    background: var(--dark-blue);
     border-radius: 0 8px 8px 0;
   }
 `;
 
 const SelectedOption = styled.div`
-  background: rgb(17, 160, 179);
   border-radius: 8px;
   color: #f5f6fa;
   position: relative;
@@ -1803,15 +1842,33 @@ const SelectedOption = styled.div`
 
   padding: 12px 24px;
   cursor: pointer;
+
+  ${(props) =>
+    props.isAdmin
+      ? css`
+          background-color: var(--dark-blue);
+        `
+      : css`
+          background-color: var(--green);
+        `}
 `;
 
 const Option = styled.div`
   padding: 12px 24px;
   cursor: pointer;
 
-  &:hover {
-    background: rgb(53 160 173);
-  }
+  ${(props) =>
+    props.isAdmin
+      ? css`
+          &:hover {
+            background: var(--blue);
+          }
+        `
+      : css`
+          &:hover {
+            background: var(--dove-gray);
+          }
+        `}
 `;
 
 const Arrow = styled.img`

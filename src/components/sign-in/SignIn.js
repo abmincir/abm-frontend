@@ -223,7 +223,7 @@ const SignIn = ({ setToAdmin, setToUser }) => {
             >
               ورود کاربر
             </User>
-            <MidLine></MidLine>
+            <MidLine isAdmin={isAdmin}></MidLine>
             <Admin
               onClick={() => {
                 setIsAdmin(true);
@@ -235,10 +235,11 @@ const SignIn = ({ setToAdmin, setToUser }) => {
           </SelectionBox>
           <FlexWrapper>
             <SelectBox>
-              <OptionContainer active={activeDataBase}>
+              <OptionContainer active={activeDataBase} isAdmin={isAdmin}>
                 {dataBases.map((d) => {
                   return (
                     <Option
+                      isAdmin={isAdmin}
                       onClick={(e) =>
                         toggleSelectedDataBase(
                           d._id,
@@ -258,7 +259,7 @@ const SignIn = ({ setToAdmin, setToUser }) => {
                 })}
               </OptionContainer>
 
-              <SelectedOption onClick={toggleActiveDataBase}>
+              <SelectedOption onClick={toggleActiveDataBase} isAdmin={isAdmin}>
                 {dataBaseSelected === 0
                   ? 'انتخاب پایگاه داده'
                   : dataBaseSelected.title}
@@ -266,10 +267,11 @@ const SignIn = ({ setToAdmin, setToUser }) => {
             </SelectBox>
 
             <SelectBox>
-              <OptionContainer active={activeAccount}>
+              <OptionContainer active={activeAccount} isAdmin={isAdmin}>
                 {accounts.map((d) => {
                   return (
                     <Option
+                      isAdmin={isAdmin}
                       onClick={(e) =>
                         toggleSelectedAccount(
                           d._id,
@@ -287,6 +289,7 @@ const SignIn = ({ setToAdmin, setToUser }) => {
               </OptionContainer>
 
               <SelectedOption
+                isAdmin={isAdmin}
                 onClick={toggleActiveAccount}
                 active={activeAccount}
               >
@@ -369,7 +372,7 @@ const Header = styled.div`
   ${(props) =>
     props.isAdmin
       ? css`
-          background-color: rgb(17, 160, 179) !important ;
+          background-color: var(--blue) !important ;
         `
       : css`
           background-color: var(--caribbean-green);
@@ -478,7 +481,14 @@ const Admin = styled.div`
         `}
 `;
 const MidLine = styled.div`
-  background-color: var(--light-blue);
+  ${(props) =>
+    props.isAdmin
+      ? css`
+          background-color: var(--blue);
+        `
+      : css`
+          background-color: var(--green);
+        `}
   height: 46px;
   width: 1px;
 `;
@@ -561,6 +571,31 @@ const OptionContainer = styled.div`
         `
       : css``}
 
+  ${(props) =>
+    props.isAdmin
+      ? css`
+          background: var(--dark-blue);
+          &::-webkit-scrollbar {
+            width: 0px;
+            background: var(--dark-blue);
+          }
+
+          &::-webkit-scrollbar-thumb {
+            background: var(--dark-blue);
+          }
+        `
+      : css`
+          background-color: var(--green);
+          &::-webkit-scrollbar {
+            width: 0px;
+            background: var(--green);
+          }
+
+          &::-webkit-scrollbar-thumb {
+            background: var(--green);
+          }
+        `}
+
   order: 1;
   max-height: 240px;
   overflow-y: scroll;
@@ -590,6 +625,15 @@ const SelectedOption = styled.div`
   align-items: center;
   justify-content: center;
 
+  ${(props) =>
+    props.isAdmin
+      ? css`
+          background-color: var(--dark-blue);
+        `
+      : css`
+          background-color: var(--green);
+        `}
+
   &::after {
     content: '';
     background: url('img/arrow-down.svg');
@@ -616,6 +660,19 @@ const Option = styled.div`
   &:hover {
     background: #414b57;
   }
+
+  ${(props) =>
+    props.isAdmin
+      ? css`
+          &:hover {
+            background: var(--blue);
+          }
+        `
+      : css`
+          &:hover {
+            background: var(--dove-gray);
+          }
+        `}
 `;
 
 const UserName = styled.input`
@@ -697,7 +754,7 @@ const Enter = styled.button`
   ${(props) =>
     props.isAdmin
       ? css`
-          background-color: rgb(17, 160, 179) !important;
+          background-color: var(--blue) !important;
         `
       : css`
           background-color: var(--caribbean-green);

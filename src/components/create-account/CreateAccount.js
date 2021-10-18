@@ -244,7 +244,7 @@ const Header = styled.div`
   ${(props) =>
     props.isAdmin
       ? css`
-          background-color: rgb(17, 160, 179) !important ;
+          background-color: var(--blue) !important ;
         `
       : css`
           background-color: var(--caribbean-green);
