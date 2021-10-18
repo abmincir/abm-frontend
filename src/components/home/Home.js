@@ -760,13 +760,27 @@ const Home = () => {
                   onKeyPress={onKeyPress}
                 ></BillNumberInput>
 
-                <DateTextMarginLow>شماره بارنامه</DateTextMarginLow>
+                <DateTextMarginLow
+                  startDateSave={startDateSave}
+                  endDateSave={endDateSave}
+                  startDateBill={startDateBill}
+                  endDateBill={endDateBill}
+                >
+                  شماره بارنامه
+                </DateTextMarginLow>
                 <BillNumberInput
                   onChange={(e) => setBillNumber(e.target.value)}
                   onKeyPress={onKeyPress}
                 ></BillNumberInput>
 
-                <DateTextMarginHigh>نام کالا</DateTextMarginHigh>
+                <DateTextMarginHigh
+                  startDateSave={startDateSave}
+                  endDateSave={endDateSave}
+                  startDateBill={startDateBill}
+                  endDateBill={endDateBill}
+                >
+                  نام کالا
+                </DateTextMarginHigh>
                 <BillNumberInput
                   style={{ 'font-size': '16px' }}
                   onChange={(e) => setProductName(e.target.value)}
@@ -1352,6 +1366,39 @@ const DateTextMarginLow = styled.p`
   white-space: nowrap;
   margin: 0 30px 0 24px;
   width: 114px;
+
+  ${(props) =>
+    props.startDateSave
+      ? props.endDateSave
+        ? props.startDateBill
+          ? props.endDateBill
+            ? css``
+            : css``
+          : props.endDateBill
+          ? css``
+          : css``
+        : props.startDateBill
+        ? props.endDateBill
+          ? css``
+          : css``
+        : props.endDateBill
+        ? css``
+        : css``
+      : props.endDateSave
+      ? props.startDateBill
+        ? props.endDateBill
+          ? css``
+          : css``
+        : props.endDateBill
+        ? css``
+        : css``
+      : props.startDateBill
+      ? props.endDateBill
+        ? css``
+        : css``
+      : props.endDateBill
+      ? css``
+      : css``}
 `;
 
 const DateTextMarginHigh = styled.p`
