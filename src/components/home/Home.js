@@ -1372,33 +1372,65 @@ const DateTextMarginLow = styled.p`
       ? props.endDateSave
         ? props.startDateBill
           ? props.endDateBill
-            ? css``
-            : css``
+            ? css`
+                margin: 0 104px 0 24px;
+              `
+            : css`
+                margin: 0 104px 0 24px;
+              `
           : props.endDateBill
-          ? css``
-          : css``
+          ? css`
+              margin: 0 104px 0 24px;
+            `
+          : css`
+              margin: 0 104px 0 24px;
+            `
         : props.startDateBill
         ? props.endDateBill
-          ? css``
-          : css``
+          ? css`
+              margin: 0 104px 0 24px;
+            `
+          : css`
+              margin: 0 104px 0 24px;
+            `
         : props.endDateBill
-        ? css``
-        : css``
+        ? css`
+            margin: 0 104px 0 24px;
+          `
+        : css`
+            margin: 0 106px 0 24px;
+          `
       : props.endDateSave
       ? props.startDateBill
         ? props.endDateBill
-          ? css``
-          : css``
+          ? css`
+              margin: 0 60px 0 24px;
+            `
+          : css`
+              margin: 0 60px 0 24px;
+            `
         : props.endDateBill
-        ? css``
-        : css``
+        ? css`
+            margin: 0 60px 0 24px;
+          `
+        : css`
+            margin: 0 60px 0 24px;
+          `
       : props.startDateBill
       ? props.endDateBill
-        ? css``
-        : css``
+        ? css`
+            margin: 0 55px 0 24px;
+          `
+        : css`
+            margin: 0 55px 0 24px;
+          `
       : props.endDateBill
-      ? css``
-      : css``}
+      ? css`
+          margin: 0 55px 0 24px;
+        `
+      : css`
+          margin: 0 58px 0 24px;
+        `}
 `;
 
 const DateTextMarginHigh = styled.p`
@@ -1409,8 +1441,14 @@ const DateTextMarginHigh = styled.p`
   font-weight: 400;
   text-align: center;
   white-space: nowrap;
-  margin: 0 55px 0 24px;
+  margin: 0 38px 0 24px;
   width: 114px;
+  ${(props) =>
+    props.endDateSave
+      ? css`
+          margin: 0 81px 0 24px;
+        `
+      : css``}
 `;
 
 const DateTextBordered = styled.p`
@@ -1423,13 +1461,12 @@ const DateTextBordered = styled.p`
   white-space: nowrap;
   margin: 0 20px 0 24px;
   padding-right: 30px;
-  padding-left:20px
+  padding-left: 20px;
   width: 114px;
   height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-right: 1px solid var(--dove-light-gray);
 `;
 
 const DateTextFirstRow = styled.p`
