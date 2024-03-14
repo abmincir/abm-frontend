@@ -194,7 +194,7 @@ const AllDatabases = () => {
 
       <Header isAdmin={isAdmin}>
         <div onClick={() => setVisible(!visible)}>{menu}</div>
-        <p>کشت و صنعت اکسون</p>
+        <p>ایده پردازان کارآفرین</p>
       </Header>
       <Wrapper>
         <ColumnsSection>

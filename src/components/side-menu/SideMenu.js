@@ -33,6 +33,9 @@ const SideMenu = ({ changePassBtn__Txt, exportBtn__Txt, exitBtn__Txt }) => {
   const handleHomeClick = () => {
     history.push('/home');
   };
+  const handleAddressClick = ()=>{
+    history.push('/address')
+  }
 
   const logout = () => {
     setShowMassage(true);
@@ -117,7 +120,17 @@ const SideMenu = ({ changePassBtn__Txt, exportBtn__Txt, exitBtn__Txt }) => {
             onClick={handleHomeClick}
           >
             <div className="change-pass-btntxt dana-regular-normal-white-20px">
-              خانه
+            بازارگاه
+            </div>
+          </div>
+
+          <div
+            style={{ top: '520px' }}
+            className="overlap-group2 border-class-1 side-menu-btn"
+            onClick={handleAddressClick}
+          >
+            <div className="change-pass-btntxt dana-regular-normal-white-20px">
+            بندرگاه
             </div>
           </div>
 

@@ -71,7 +71,7 @@ function CreateNewAccount(props) {
 
       <Header isAdmin={isAdmin}>
         <div onClick={() => setVisible(!visible)}>{menu}</div>
-        <p>کشت و صنعت اکسون</p>
+        <p>ایده پردازان کارآفرین</p>
       </Header>
       <div className="change-password border-1px-dove-gray">
         <IonLoading

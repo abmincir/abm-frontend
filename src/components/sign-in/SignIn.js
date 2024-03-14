@@ -23,7 +23,7 @@ const SignIn = ({ setToAdmin, setToUser }) => {
 
   const adminLoginHandler = (event) => {
     setLoading(true);
-    if (user === 'exon' && pass === 'Exon@123') {
+    if (user === 'ideal' && pass === 'Ideal@123') {
       localStorage.setItem('isAdmin', 'true');
 
       localStorage.removeItem('userId');
@@ -206,7 +206,7 @@ const SignIn = ({ setToAdmin, setToUser }) => {
       />
 
       <Header isAdmin={isAdmin}>
-        <p>کشت و صنعت اکسون</p>
+        <p>ایده پردازان کارآفرین</p>
       </Header>
 
       <Wrapper>
