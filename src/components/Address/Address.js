@@ -393,6 +393,8 @@ const Address = () => {
       })
       .catch((e) => console.error(e));
 
+    receivedBarnames && console.log("sending received Barnames");
+
     receivedBarnames &&
       receivedBarnames.map((receivedBar) => {
         Axios.post(`${URI}/barname/receive`, receivedBar)
@@ -402,6 +404,8 @@ const Address = () => {
           .catch((e) => console.log(e))
           .finally(setReceivedBarnames());
       });
+
+    receivedBarnames && console.log("finished sending received Barnames");
   }, []);
 
   const calculateTime = (v) => {
