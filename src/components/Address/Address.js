@@ -40,6 +40,8 @@ const Address = () => {
 
   const [hamlCompanyCode, setHamlCompanyCode] = useState();
 
+  const [receivedBarnames, setReceivedBarnames] = useState();
+
   // const [isShowingModal, setIsShowingModal] = useState(false);
 
   const [visible, setVisible] = useState(false);
@@ -135,7 +137,7 @@ const Address = () => {
 
     Axios.post(`${URI}/companies/all`, data)
       .then((result) => {
-        console.log(result);
+        setReceivedBarnames(result.data);
       })
       .catch((error) => {
         console.log(error);
@@ -390,6 +392,16 @@ const Address = () => {
         setCompanies(result);
       })
       .catch((e) => console.error(e));
+
+    receivedBarnames &&
+      receivedBarnames.map((receivedBar) => {
+        Axios.post(`${URI}/barname/receive`, receivedBar)
+          .then((result) => {
+            console.log(result);
+          })
+          .catch((e) => console.log(e))
+          .finally(setReceivedBarnames());
+      });
   }, []);
 
   const calculateTime = (v) => {
