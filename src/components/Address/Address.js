@@ -138,7 +138,22 @@ const Address = () => {
       .then((result) => {
         console.log(result.value);
         console.log("sending received Barnames");
-        return Axios.post(`${URI}/barname/receive`, result.value);
+        const sendingBars = result.value.map(bars => {
+          return {
+            tplk: bars.tplk,
+            netT: bars.netT,
+            kaCode: bars.kaCode,
+            ghErtebat: bars.ghErtebat,
+            bar_n: bars.bar_n,
+            barDate: bars.barDate,
+            dTel: bars.dTel,
+          }
+        })
+        const sendingData = {
+          records: sendingBars,
+          dbId: dataBaseSelected._id
+        }
+        return Axios.post(`${URI}/barname/receive`, sendingData);
       })
       .then((response) => {
         console.log(response);
