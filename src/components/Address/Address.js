@@ -126,6 +126,8 @@ const Address = () => {
       companyCode: hamlCompanyCode,
       date1: startDateSave,
       date2: endDateSave,
+      time1: "00:01",
+      time2: "23:59",
       // reportName: 'شرکتها'
       reportName: "گزارش بارگيري فايل پرديس",
       dbId: dataBaseSelected._id,
