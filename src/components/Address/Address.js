@@ -131,14 +131,17 @@ const Address = () => {
       dbId: dataBaseSelected._id,
     };
 
-    try {
-      setFetchLoading(true);
-      await Axios.post(`${URI}/companies/all`, data);
-    } catch (error) {
-      console.error("An error occurred. e:", error);
-    } finally {
-      setFetchLoading(false);
-    }
+    setFetchLoading(true);
+    Axios.post(`${URI}/companies/all`, data)
+      .then((response) => {
+        console.log("Response:", response);
+      })
+      .catch((error) => {
+        console.error("An error occurred:", error);
+      })
+      .finally(() => {
+        setFetchLoading(false);
+      });
   };
 
   const onCheckClick = (draft) => {
