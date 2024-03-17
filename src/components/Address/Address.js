@@ -378,11 +378,11 @@ const Address = () => {
       })
       .catch((e) => console.error(e));
 
-    Axios.post(`${URI}/companies/data`)
-      .then((result) => {
-        setCompanies(result);
-      })
-      .catch((e) => console.error(e));
+    // Axios.post(`${URI}/companies/data`)
+    //   .then((result) => {
+    //     setCompanies(result);
+    //   })
+    //   .catch((e) => console.error(e));
   }, []);
 
   const calculateTime = (v) => {
