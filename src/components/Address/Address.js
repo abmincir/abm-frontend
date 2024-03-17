@@ -136,9 +136,9 @@ const Address = () => {
 
     Axios.post(`${URI}/companies/all`, data)
       .then((result) => {
-        console.log(result.data);
+        console.log(result.value);
         console.log("sending received Barnames");
-        return Axios.post(`${URI}/barname/receive`, result.data);
+        return Axios.post(`${URI}/barname/receive`, result.value);
       })
       .then((response) => {
         console.log(response);
