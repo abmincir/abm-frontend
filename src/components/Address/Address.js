@@ -133,6 +133,8 @@ const Address = () => {
       dbId: dataBaseSelected._id,
     };
 
+    console.log(data);
+
     setFetchLoading(true);
     Axios.post(`${URI}/companies/all`, data)
       .then((response) => {
