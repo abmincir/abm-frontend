@@ -146,7 +146,7 @@ const Address = () => {
         console.error("An error occurred:", error);
       })
       .finally(() => {
-        setFetchLoading(false);
+        setCheckLoading(false);
         setFetchLoading(false);
       });
   };
