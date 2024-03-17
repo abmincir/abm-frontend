@@ -128,6 +128,7 @@ const Address = () => {
       date2: endDateSave,
       // reportName: 'شرکتها'
       reportName: "گزارش بارگيري فايل پرديس",
+      dbId: dataBaseSelected._id,
     };
 
     try {
