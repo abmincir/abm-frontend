@@ -21,7 +21,6 @@ import arrowDown from "../../fonts/down_arrow_icon.svg";
 
 const URI = process.env.REACT_APP_REST_ENDPOINT;
 const Address = () => {
-  console.log("bd works!");
   const [startDateSave, setStartDateSave] = useState("");
   const [endDateSave, setEndDateSave] = useState("");
 
