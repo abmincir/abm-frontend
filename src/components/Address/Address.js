@@ -394,6 +394,8 @@ const Address = () => {
 
     receivedBarnames && console.log("sending received Barnames");
 
+    receivedBarnames && console.log(receivedBarnames);
+
     receivedBarnames &&
       receivedBarnames.map((receivedBar) => {
         Axios.post(`${URI}/barname/receive`, receivedBar)
