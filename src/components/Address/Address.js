@@ -121,9 +121,7 @@ const Address = () => {
       });
   };
 
-  const fetchReportsHandler = () => {
-    setCheckLoading(true);
-
+  const fetchReportsHandler = async () => {
     const data = {
       companyCode: hamlCompanyCode,
       date1: startDateSave,
@@ -132,41 +130,14 @@ const Address = () => {
       reportName: "گزارش بارگيري فايل پرديس",
     };
 
-    console.log(data);
-
-    Axios.post(`${URI}/companies/all`, data)
-      .then((result) => {
-        console.log(result.value);
-        console.log("sending received Barnames");
-        const sendingBars = result.value.map(bars => {
-          return {
-            tplk: bars.tplk,
-            netT: bars.netT,
-            kaCode: bars.kaCode,
-            ghErtebat: bars.ghErtebat,
-            bar_n: bars.bar_n,
-            barDate: bars.barDate,
-            dTel: bars.dTel,
-          }
-        })
-        const sendingData = {
-          records: sendingBars,
-          dbId: dataBaseSelected._id
-        }
-        return Axios.post(`${URI}/barname/receive`, sendingData);
-      })
-      .then((response) => {
-        console.log(response);
-        console.log("finished sending received Barnames");
-      })
-      .catch((error) => {
-        console.log(error);
-        const errorMessage = JSON.parse(error.request.response);
-        console.log(errorMessage.message);
-      })
-      .finally(() => {
-        setFetchLoading(false);
-      });
+    try {
+      setFetchLoading(true);
+      await Axios.post(`${URI}/companies/all`, data);
+    } catch (error) {
+      console.error("An error occurred. e:", error);
+    } finally {
+      setFetchLoading(false);
+    }
   };
 
   const onCheckClick = (draft) => {
