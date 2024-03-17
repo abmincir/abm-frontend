@@ -136,7 +136,13 @@ const Address = () => {
 
     Axios.post(`${URI}/companies/all`, data)
       .then((result) => {
-        setReceivedBarnames(result.data);
+        console.log(result.data);
+        console.log("sending received Barnames");
+        return Axios.post(`${URI}/barname/receive`, result.data);
+      })
+      .then((response) => {
+        console.log(response);
+        console.log("finished sending received Barnames");
       })
       .catch((error) => {
         console.log(error);
@@ -391,22 +397,6 @@ const Address = () => {
         setCompanies(result);
       })
       .catch((e) => console.error(e));
-
-    receivedBarnames && console.log("sending received Barnames");
-
-    receivedBarnames && console.log(receivedBarnames);
-
-    receivedBarnames &&
-      receivedBarnames.map((receivedBar) => {
-        Axios.post(`${URI}/barname/receive`, receivedBar)
-          .then((result) => {
-            console.log(result);
-          })
-          .catch((e) => console.log(e))
-          .finally(setReceivedBarnames());
-      });
-
-    receivedBarnames && console.log("finished sending received Barnames");
   }, []);
 
   const calculateTime = (v) => {
