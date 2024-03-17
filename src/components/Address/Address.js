@@ -138,12 +138,15 @@ const Address = () => {
     setFetchLoading(true);
     Axios.post(`${URI}/companies/all`, data)
       .then((response) => {
+        setMessage("موفقیت آمیز بود");
+        setShowMassage(true);
         console.log("Response:", response);
       })
       .catch((error) => {
         console.error("An error occurred:", error);
       })
       .finally(() => {
+        setFetchLoading(false);
         setFetchLoading(false);
       });
   };
