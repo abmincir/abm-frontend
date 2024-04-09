@@ -152,6 +152,10 @@ const Address = () => {
   };
 
   const onCheckClick = (draft) => {
+      if (draft.status === "added" || draft.status === "Added" || draft.status === "success" || draft.status === "Success"){
+        console.log('[]');
+        return
+      }
     setCheckLoading(true);
 
     const addresses = [
@@ -174,6 +178,7 @@ const Address = () => {
         explanations: "",
       },
     ];
+
 
     Axios.post(`${URI}/addresses/add`, addresses)
       .then((result) => {
@@ -286,7 +291,11 @@ const Address = () => {
       return;
     }
 
-    const addresses = selectedDrafts.map((d) => {
+    const filteredDrafts = selectedDrafts.filter(d => 
+      d.status !== "added" && d.status !== "Added" && d.status !== "success" && d.status !== "Success"
+     );
+
+    const addresses = filteredDrafts.map((d) => {
       return {
         goId: "f2589520-c565-4d1b-958f-f0332ecba2f3",
         hamlCode: contractCode.toString(),
@@ -306,6 +315,8 @@ const Address = () => {
         explanations: "",
       };
     });
+
+    console.log(addresses);
 
     Axios.post(`${URI}/addresses/add`, addresses)
       .then((result) => {
@@ -976,13 +987,11 @@ const Address = () => {
             return (
               <DataRow
                 id={draft._id}
-                // unknown={draft.status === -1}
-                // success={draft.status === 1}
-                // warning={draft.status === 0}
-                // fail={draft.status === 2}
-                unknown={true}
-                success={false}
-                warning={false}
+                unknown={draft.status === "unknown" ||
+                draft.status === null ||
+                draft.status === undefined}
+                success={ draft.status === "added" || draft.status === "Added" || draft.status === "success" || draft.status === "Success"}
+                warning={draft.status === "updated"}
                 fail={false}
                 // onClick={() => switchModal(draft)}
               >
@@ -1045,9 +1054,9 @@ const Address = () => {
                 >
                   {draft.status === "unknown" ||
                   draft.status === null ||
-                  undefined
+                  draft.status === undefined
                     ? unknown
-                    : draft.status === "added"
+                    : draft.status === "added" || draft.status === "Added" || draft.status === "success" || draft.status === "Success"
                     ? success
                     : draft.status === "updated"
                     ? warning
@@ -1060,16 +1069,7 @@ const Address = () => {
                     onDeleteClick(draft);
                   }}
                 >
-                  {draft.status === "added" ||
-                  "unknown" ||
-                  draft.status === null ||
-                  undefined
-                    ? unknown
-                    : draft.status === "deleted"
-                    ? success
-                    : draft.status === "updated"
-                    ? warning
-                    : fail}
+                  {unknown}
                 </StatusColumn>
               </DataRow>
             );
